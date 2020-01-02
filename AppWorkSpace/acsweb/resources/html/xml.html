@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../libs/jq3/jquery-3.3.1.min.js"></script>
+    <title>Spring多源数据库配置</title>
+    <style>
+        pre {
+            outline: 1px solid #ccc;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .string {
+            color: green;
+        }
+
+        .number {
+            color: darkorange;
+        }
+
+        .boolean {
+            color: blue;
+        }
+
+        .null {
+            color: magenta;
+        }
+
+        .key {
+            color: red;
+        }
+    </style>
+    <link rel="stylesheet" href="../libs/prism/prism.css">
+</head>
+<body onload="writeXmlText()">
+<script src="../libs/prism/prism.js"></script>
+<h5>Spring多源数据库配置模板</h5>
+<p style="color:red;font-family: 黑体,serif;font-weight: bold;">
+    写在前面：模板演示一个工程两个数据库配置的方法，更多数据库配置类似，推荐一个工程对应一个数据库，如需要单工程支持多数据库，可以通过同一个工程配置+不同数据库配置的方式创建工程及相关接口，并集成到一个工程中。</p>
+<pre id="xmlContentId" class="language-java"></pre>
+</body>
+<script type="text/javascript">
+    let xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+        '<beans\n' +
+        '\txmlns="http://www.springframework.org/schema/beans"\n' +
+        '\txmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n' +
+        '\txmlns:aop="http://www.springframework.org/schema/aop"\n' +
+        '\txmlns:tx="http://www.springframework.org/schema/tx"\n' +
+        '\txmlns:context="http://www.springframework.org/schema/context"\n' +
+        '\txmlns:task="http://www.springframework.org/schema/task"\n' +
+        '       xsi:schemaLocation="http://www.springframework.org/schema/beans\n' +
+        '\t   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd\n' +
+        '\t   http://www.springframework.org/schema/tx\n' +
+        '\t   http://www.springframework.org/schema/tx/spring-tx.xsd\n' +
+        '\t   http://www.springframework.org/schema/task \n' +
+        '       http://www.springframework.org/schema/task/spring-task-3.0.xsd\n' +
+        '\t   http://www.springframework.org/schema/aop\n' +
+        '\t   http://www.springframework.org/schema/aop/spring-aop.xsd\n' +
+        '\t   http://www.springframework.org/schema/context\n' +
+        '\t   http://www.springframework.org/schema/context/spring-context.xsd">\n' +
+        '\t<!-- 写在前面，请认真阅读：该模板配置了两个oracle数据源，其他数据库请自行调整配置 -->\n' +
+        '\t<!-- 启用注解 -->\n' +
+        '\t<context:annotation-config/>\n' +
+        '\t<!-- 自动扫描组件，当前采用整个工程扫描 -->\n' +
+        '\t<context:component-scan base-package="com.acstpl4test"/>\n' +
+        '\t<!--切面分析自动代理-->\n' +
+        '\t<aop:aspectj-autoproxy proxy-target-class="true"/>\n' +
+        '\t<!--加载数据库配置信息到Spring容器当中 -->\n' +
+        '\t<bean id="propertyConfigurer"\n' +
+        '          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">\n' +
+        '\t\t<property name="location">\n' +
+        '\t\t\t<value>classpath:jdbc.properties</value>\n' +
+        '\t\t</property>\n' +
+        '\t</bean>\n' +
+        '\t<bean id="DataSource1" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">\n' +
+        '\t\t<property name="driverClassName" value="${jdbc.driverClasss}"/>\n' +
+        '\t\t<property name="url" value="${jdbc.jdbcUrl1}"/>\n' +
+        '\t\t<property name="username" value="${jdbc.username1}"/>\n' +
+        '\t\t<property name="password" value="${jdbc.password1}"/>\n' +
+        '\t\t<!-- 初始化连接大小 -->\n' +
+        '\t\t<property name="initialSize" value="${jdbc.initialSize}"></property>\n' +
+        '\t\t<!-- 连接池最大数量 -->\n' +
+        '\t\t<property name="maxActive" value="${jdbc.maxActive}"></property>\n' +
+        '\t\t<!-- 连接池最小空闲-->\n' +
+        '\t\t<property name="minIdle" value="${jdbc.minIdle}"></property>\n' +
+        '\t\t<!-- 获取连接最大等待时间 -->\n' +
+        '\t\t<property name="maxWait" value="${jdbc.maxWait}"></property>\n' +
+        '\t\t<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->\n' +
+        '\t\t<property name="timeBetweenEvictionRunsMillis" value="60000"/>\n' +
+        '\t\t<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->\n' +
+        '\t\t<property name="minEvictableIdleTimeMillis" value="300000"/>\n' +
+        '\t\t<property name="testWhileIdle" value="true"/>\n' +
+        '\t\t<!-- 这里建议配置为TRUE，防止取到的连接不可用 -->\n' +
+        '\t\t<property name="testOnBorrow" value="true"/>\n' +
+        '\t\t<property name="testOnReturn" value="false"/>\n' +
+        '\t\t<!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->\n' +
+        '\t\t<property name="defaultAutoCommit" value="true"/>\n' +
+        '\t\t<!-- 验证连接有效与否的SQL，不同的数据配置不同 -->\n' +
+        '\t\t<property name="validationQuery">\n' +
+        '\t\t\t<value>select 1</value>\n' +
+        '\t\t</property>\n' +
+        '\t\t<!--\n' +
+        '\t  打开PSCache，并且指定每个连接上PSCache的大小\n' +
+        '\t  如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false\n' +
+        '-->\n' +
+        '\t\t<property name="poolPreparedStatements" value="true"/>\n' +
+        '\t\t<property name="maxPoolPreparedStatementPerConnectionSize"\n' +
+        '                  value="20"/>\n' +
+        '\t\t<!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->\n' +
+        '\t\t<property name="filters" value="stat,wall,log4j2"/>\n' +
+        '\t\t<!--\n' +
+        '\t\t\t如果配置了proxyFilters，此配置可以不配置\n' +
+        '\t\t\tdruid.stat.mergeSql=true 合并执行的相同sql，避免因为参数不同而统计多条sql语句\n' +
+        '\t\t\tdruid.stat.slowSqlMillis=10000 用来配置SQL慢的标准，执行时间超过slowSqlMillis的就是慢\n' +
+        '\t\t<property name="connectionProperties" value="druid.stat.mergeSql=true;druid.stat.slowSqlMillis=10000" />\n' +
+        '\t\t -->\n' +
+        '\t\t<!-- 监控统计拦截的filters -->\n' +
+        '\t\t<!-- 并在filters属性中配置了log4j -->\n' +
+        '\t\t<property name="proxyFilters">\n' +
+        '\t\t\t<list>\n' +
+        '\t\t\t\t<ref bean="statFilter"/>\n' +
+        '\t\t\t\t<ref bean="logFilter"/>\n' +
+        '\t\t\t</list>\n' +
+        '\t\t</property>\n' +
+        '\t</bean>\n' +
+        '\t<bean id="DataSource2" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">\n' +
+        '\t\t<property name="driverClassName" value="${jdbc.driverClasss}"/>\n' +
+        '\t\t<property name="url" value="${jdbc.jdbcUrl2}"/>\n' +
+        '\t\t<property name="username" value="${jdbc.username2}"/>\n' +
+        '\t\t<property name="password" value="${jdbc.passwor2}"/>\n' +
+        '\t\t<!-- 初始化连接大小 -->\n' +
+        '\t\t<property name="initialSize" value="${jdbc.initialSize}"></property>\n' +
+        '\t\t<!-- 连接池最大数量 -->\n' +
+        '\t\t<property name="maxActive" value="${jdbc.maxActive}"></property>\n' +
+        '\t\t<!-- 连接池最小空闲-->\n' +
+        '\t\t<property name="minIdle" value="${jdbc.minIdle}"></property>\n' +
+        '\t\t<!-- 获取连接最大等待时间 -->\n' +
+        '\t\t<property name="maxWait" value="${jdbc.maxWait}"></property>\n' +
+        '\t\t<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->\n' +
+        '\t\t<property name="timeBetweenEvictionRunsMillis" value="60000"/>\n' +
+        '\t\t<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->\n' +
+        '\t\t<property name="minEvictableIdleTimeMillis" value="300000"/>\n' +
+        '\t\t<property name="testWhileIdle" value="true"/>\n' +
+        '\t\t<!-- 这里建议配置为TRUE，防止取到的连接不可用 -->\n' +
+        '\t\t<property name="testOnBorrow" value="true"/>\n' +
+        '\t\t<property name="testOnReturn" value="false"/>\n' +
+        '\t\t<!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->\n' +
+        '\t\t<property name="defaultAutoCommit" value="true"/>\n' +
+        '\t\t<!-- 验证连接有效与否的SQL，不同的数据配置不同 -->\n' +
+        '\t\t<property name="validationQuery">\n' +
+        '\t\t\t<value>select 1</value>\n' +
+        '\t\t</property>\n' +
+        '\t\t<!--\n' +
+        '\t  打开PSCache，并且指定每个连接上PSCache的大小\n' +
+        '\t  如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false\n' +
+        '-->\n' +
+        '\t\t<property name="poolPreparedStatements" value="true"/>\n' +
+        '\t\t<property name="maxPoolPreparedStatementPerConnectionSize"\n' +
+        '                  value="20"/>\n' +
+        '\t\t<!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->\n' +
+        '\t\t<property name="filters" value="stat,wall,log4j2"/>\n' +
+        '\t\t<!--\n' +
+        '\t\t\t如果配置了proxyFilters，此配置可以不配置\n' +
+        '\t\t\tdruid.stat.mergeSql=true 合并执行的相同sql，避免因为参数不同而统计多条sql语句\n' +
+        '\t\t\tdruid.stat.slowSqlMillis=10000 用来配置SQL慢的标准，执行时间超过slowSqlMillis的就是慢\n' +
+        '\t\t<property name="connectionProperties" value="druid.stat.mergeSql=true;druid.stat.slowSqlMillis=10000" />\n' +
+        '\t\t -->\n' +
+        '\t\t<!-- 监控统计拦截的filters -->\n' +
+        '\t\t<!-- 并在filters属性中配置了log4j -->\n' +
+        '\t\t<property name="proxyFilters">\n' +
+        '\t\t\t<list>\n' +
+        '\t\t\t\t<ref bean="statFilter"/>\n' +
+        '\t\t\t\t<ref bean="logFilter"/>\n' +
+        '\t\t\t</list>\n' +
+        '\t\t</property>\n' +
+        '\t</bean>\n' +
+        '\t<!-- 慢SQL记录-->\n' +
+        '\t<bean id="statFilter" class="com.alibaba.druid.filter.stat.StatFilter">\n' +
+        '\t\t<property name="mergeSql" value="true"/>\n' +
+        '\t\t<property name="slowSqlMillis" value="10000"/>\n' +
+        '\t\t<property name="logSlowSql" value="true"/>\n' +
+        '\t</bean>\n' +
+        '\t<!--日志监控-->\n' +
+        '\t<bean id="logFilter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">\n' +
+        '\t\t<!-- 配置druid监控spring jdbc -->\n' +
+        '\t\t<bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor"/>\n' +
+        '\t\t<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">\n' +
+        '\t\t\t<property name="patterns">\n' +
+        '\t\t\t\t<list>\n' +
+        '\t\t\t\t\t<value>com.acstpl4test.service.*</value>\n' +
+        '\t\t\t\t\t<!--DataSource1 相关 Dao-->\n' +
+        '\t\t\t\t\t<value>com.acstpl4test.dao1.*</value>\n' +
+        '\t\t\t\t\t<!--DataSource2 相关 Dao-->\n' +
+        '\t\t\t\t\t<value>com.acstpl4test.dao2.*</value>\n' +
+        '\t\t\t\t</list>\n' +
+        '\t\t\t</property>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<aop:config>\n' +
+        '\t\t\t<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut"/>\n' +
+        '\t\t</aop:config>\n' +
+        '\t\t<!--druid 配置 end-->\n' +
+        '\t\t<!--DataSource1 相关配置 start-->\n' +
+        '\t\t<!--配置jdbcTemplate模板 ,若采用JdbcDaoSupport,可以不需要配置模版 -->\n' +
+        '\t\t<bean id="jdbcTemplate1" class="org.springframework.jdbc.core.JdbcTemplate">\n' +
+        '\t\t\t<property name="dataSource">\n' +
+        '\t\t\t\t<ref bean="DataSource1"/>\n' +
+        '\t\t\t</property>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<!-- 配置namedParameterJdbcTemplate ，具名参数 -->\n' +
+        '\t\t<bean id="namedParameterJdbcTemplate1" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">\n' +
+        '\t\t\t<constructor-arg ref="DataSource1"></constructor-arg>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<bean id="sqlSessionFactory1" class="org.mybatis.spring.SqlSessionFactoryBean">\n' +
+        '\t\t\t<property name="dataSource" ref="DataSource1"/>\n' +
+        '\t\t\t<property name="configLocation" value="classpath:mybatis-config.xml"/>\n' +
+        '\t\t\t<!-- 自动扫描与DataSource1相关的mapping1目录下的mapping.xml文件 -->\n' +
+        '\t\t\t<property name="mapperLocations" value="classpath:mapping1/*/*.xml"></property>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<bean id="sqlSessionTemplate1" class="org.mybatis.spring.SqlSessionTemplate">\n' +
+        '\t\t\t<constructor-arg ref="sqlSessionFactory1"/>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<!-- DAO接口所在包名，Spring会自动查找其下的类 ,包下的类需要使用@MapperScan注解,否则容器注入会失败,本框架在Dao层添加了@Repository,可不配置该注解 -->\n' +
+        '\t\t<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">\n' +
+        '\t\t\t<!--这里需要根据实际的DAO文件所在包配置-->\n' +
+        '\t\t\t<property name="basePackage" value="com.acstpl4test.dao1"/>\n' +
+        '\t\t\t<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory1"></property>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<!-- 事务管理-对象 -->\n' +
+        '\t\t<bean id="transactionManager1"\n' +
+        '          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">\n' +
+        '\t\t\t<property name="dataSource" ref="DataSource1"/>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<!-- 事务管理-通知-->\n' +
+        '\t\t<tx:advice id="txAdvice1" transaction-manager="transactionManager1">\n' +
+        '\t\t\t<tx:attributes>\n' +
+        '\t\t\t\t<tx:method name="save*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="add*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="create*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="insert*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="update*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="delete*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="merge*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="del*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="remove*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="put*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="get*" propagation="SUPPORTS" read-only="true"/>\n' +
+        '\t\t\t\t<tx:method name="count*" propagation="SUPPORTS" read-only="true"/>\n' +
+        '\t\t\t\t<tx:method name="find*" propagation="SUPPORTS" read-only="true"/>\n' +
+        '\t\t\t\t<tx:method name="list*" propagation="SUPPORTS" read-only="true"/>\n' +
+        '\t\t\t\t<tx:method name="*" propagation="SUPPORTS" read-only="true"/>\n' +
+        '\t\t\t</tx:attributes>\n' +
+        '\t\t</tx:advice>\n' +
+        '\t\t<!-- 事物管理-组装 -->\n' +
+        '\t\t<aop:config>\n' +
+        '\t\t\t<aop:pointcut id="serviceMethod1" expression="execution(* com.acstpl4test.service..*(..))"/>\n' +
+        '\t\t\t<aop:advisor pointcut-ref="serviceMethod1" advice-ref="txAdvice1"/>\n' +
+        '\t\t</aop:config>\n' +
+        '\t\t<!--DataSource1 相关配置 end-->\n' +
+        '\t\t<!--DataSource2 相关配置 start-->\n' +
+        '\t\t<!--配置jdbcTemplate模板 ,若采用JdbcDaoSupport,可以不需要配置模版 -->\n' +
+        '\t\t<bean id="jdbcTemplate2" class="org.springframework.jdbc.core.JdbcTemplate">\n' +
+        '\t\t\t<property name="dataSource">\n' +
+        '\t\t\t\t<ref bean="DataSource2"/>\n' +
+        '\t\t\t</property>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<!-- 配置namedParameterJdbcTemplate ，具名参数 -->\n' +
+        '\t\t<bean id="namedParameterJdbcTemplate2" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">\n' +
+        '\t\t\t<constructor-arg ref="DataSource2"></constructor-arg>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<bean id="sqlSessionFactory2" class="org.mybatis.spring.SqlSessionFactoryBean">\n' +
+        '\t\t\t<property name="dataSource" ref="DataSource2"/>\n' +
+        '\t\t\t<property name="configLocation" value="classpath:mybatis-config.xml"/>\n' +
+        '\t\t\t<!-- 自动扫描与DataSource2相关的mapping2目录下的mapping.xml文件 -->\n' +
+        '\t\t\t<property name="mapperLocations" value="classpath:mapping2/*/*.xml"></property>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<bean id="sqlSessionTemplate2" class="org.mybatis.spring.SqlSessionTemplate">\n' +
+        '\t\t\t<constructor-arg ref="sqlSessionFactory2"/>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<!-- DAO接口所在包名，Spring会自动查找其下的类 ,包下的类需要使用@MapperScan注解,否则容器注入会失败,本框架在Dao层添加了@Repository,可不配置该注解 -->\n' +
+        '\t\t<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">\n' +
+        '\t\t\t<!--这里需要根据实际的DAO文件所在包配置-->\n' +
+        '\t\t\t<property name="basePackage" value="com.acstpl4test.dao2"/>\n' +
+        '\t\t\t<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory2"></property>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<!-- 事务管理-对象 -->\n' +
+        '\t\t<bean id="transactionManager2"\n' +
+        '          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">\n' +
+        '\t\t\t<property name="dataSource" ref="DataSource2"/>\n' +
+        '\t\t</bean>\n' +
+        '\t\t<!-- 事务管理-通知-->\n' +
+        '\t\t<tx:advice id="txAdvice2" transaction-manager="transactionManager2">\n' +
+        '\t\t\t<tx:attributes>\n' +
+        '\t\t\t\t<tx:method name="save*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="add*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="create*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="insert*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="update*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="delete*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="merge*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="del*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="remove*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="put*" propagation="REQUIRED"/>\n' +
+        '\t\t\t\t<tx:method name="get*" propagation="SUPPORTS" read-only="true"/>\n' +
+        '\t\t\t\t<tx:method name="count*" propagation="SUPPORTS" read-only="true"/>\n' +
+        '\t\t\t\t<tx:method name="find*" propagation="SUPPORTS" read-only="true"/>\n' +
+        '\t\t\t\t<tx:method name="list*" propagation="SUPPORTS" read-only="true"/>\n' +
+        '\t\t\t\t<tx:method name="*" propagation="SUPPORTS" read-only="true"/>\n' +
+        '\t\t\t</tx:attributes>\n' +
+        '\t\t</tx:advice>\n' +
+        '\t\t<!-- 事物管理-组装 -->\n' +
+        '\t\t<aop:config>\n' +
+        '\t\t\t<aop:pointcut id="serviceMethod2" expression="execution(* com.acstpl4test.service..*(..))"/>\n' +
+        '\t\t\t<aop:advisor pointcut-ref="serviceMethod2" advice-ref="txAdvice2"/>\n' +
+        '\t\t</aop:config>\n' +
+        '\t\t<!--DataSource2 相关配置 end-->\n' +
+        '\t</beans>';
+
+    // Returns a highlighted HTML string
+    let html = Prism.highlight(xml, Prism.languages.xml, 'xml');
+
+    function writeXmlText() {
+        $('#xmlContentId').html(html);
+    }
+</script>
+</html>

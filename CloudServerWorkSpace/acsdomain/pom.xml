@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>acscloud</artifactId>
+        <groupId>com</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>acsdomain</artifactId>
+    <packaging>jar</packaging>
+
+    <name>AcsDomain</name>
+    <!-- 网站地址根据需要确定 -->
+    <url>http://www.piesat.com.cn/</url>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!--卫星轨道计算模型-->
+        <!-- https://mvnrepository.com/artifact/com.github.davidmoten/predict4java -->
+        <dependency>
+            <groupId>com.github.davidmoten</groupId>
+            <artifactId>predict4java</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+
+    </dependencies>
+</project>

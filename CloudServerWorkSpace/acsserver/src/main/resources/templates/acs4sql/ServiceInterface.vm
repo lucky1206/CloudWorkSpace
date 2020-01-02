@@ -1,0 +1,48 @@
+package ${ppn}.${ppsc.pci.servName}.${acsId};
+
+#if("$!req" != "")
+import ${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName};
+#end
+
+import com.alibaba.fastjson.JSONObject;
+
+##请求体、响应体均不为空
+#if("$!res" != "" && "$!req" != "")
+/**
+ * @desc ${ao.apiDesc}
+ */
+public interface I${ao.apiName}Service {
+	##此处根据pagging设置是否进行查询
+	#if(${pagging} == true)
+	//需要分页，增加页面序号-pageNo及页面尺寸-pageSize参数
+	JSONObject ${ao.apiNameLow}Handler(${req.upperCaseName} ${req.lowerCaseName}Params,Integer pageNo,Integer pageSize);
+	#else
+    JSONObject ${ao.apiNameLow}Handler(${req.upperCaseName} ${req.lowerCaseName}Params);
+    #end
+    
+}
+
+##请求体为空，响应体不为空，这里是指不带条件的查询语句
+#elseif("$!res" != "" && "$!req" == "" && ${ao.apiOperation} == 'select')
+/**
+ * @desc ${ao.apiDesc}
+ */
+
+public interface I${ao.apiName}Service {
+    #if(${pagging} == true)
+    //需要分页，增加页面序号-pageNo及页面尺寸-pageSize参数
+	JSONObject ${ao.apiNameLow}Handler(Integer pageNo,Integer pageSize);
+	#else
+	JSONObject ${ao.apiNameLow}Handler();
+    #end
+}
+
+##请求体不为空，响应体为空,此时需要返回执行状态信息
+#elseif("$!res" == "" && "$!req" != "")
+/**
+ * @desc ${ao.apiDesc}
+ */
+public interface I${ao.apiName}Service {
+    JSONObject ${ao.apiNameLow}Handler(${req.upperCaseName} ${req.lowerCaseName}Params);
+}
+#end

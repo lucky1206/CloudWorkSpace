@@ -1,0 +1,22 @@
+##直接读取JavaBean中的数组对象并遍历打印出值。
+package ${ppn}.${ppsc.pci.epName}.${acsId};
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "${res.upperCaseName}", description = "${res.responseDesc}")
+public class ${res.upperCaseName}{
+#foreach($col in $resCols)
+	@ApiModelProperty(value = "${col.desc}")
+	private ${col.javaType} ${col.javaname};
+
+	public ${col.javaType} get${col.upname}() {
+		return ${col.javaname};
+	}
+
+	public void set${col.upname}(${col.javaType} ${col.javaname}) {
+		this.${col.javaname} = ${col.javaname};
+	}
+	
+#end
+}

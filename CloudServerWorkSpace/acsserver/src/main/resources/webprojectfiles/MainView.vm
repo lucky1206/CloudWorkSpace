@@ -1,0 +1,46 @@
+/**
+ * This class is the main view for the application. It is specified in app.js as the
+ * "mainView" property. That setting automatically applies the "viewport"
+ * plugin causing this view to become the body element (i.e., the viewport).
+ *
+ * TODO - Replace this content of this view to suite the needs of your application.
+ */
+Ext.define('${pps.pci.projectName}.view.main.Main', {
+    extend: 'Ext.panel.Panel',
+    xtype: 'main',
+
+    requires: [
+        'Ext.plugin.Viewport',
+		'${pps.pci.projectName}.util.WrapUtil',
+        '${pps.pci.projectName}.view.left.Left',
+        '${pps.pci.projectName}.view.main.MainController',
+        '${pps.pci.projectName}.view.main.MainModel'
+    ],
+    controller: 'main',
+    viewModel: 'main',
+	layout: {
+	type: 'hbox',
+	pack: 'start',
+	align: 'stretch'
+	},
+	items: [
+		/* include child components here */
+		{
+			xtype:'left',
+			width:300
+		},
+		{
+			xtype: 'warputil',
+			id: 'module-wrap',
+			reference: 'moduleContainerWrap',
+			flex: 1,
+			layout: {
+			type: 'card',
+			anchor: '100%'
+			},
+			listeners: {
+				render: 'onModuleViewRender'
+			}
+		}
+	]
+});

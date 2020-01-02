@@ -1,0 +1,16 @@
+jdbc.driverClasss=${pps.dbci.dbType}
+#if(${pps.dbci.dbType} == 'com.mysql.jdbc.Driver')
+jdbc.jdbcUrl=jdbc:mysql://${pps.dbci.dbAddress}:${pps.dbci.dbPort}/${pps.dbci.dbName}?useSSL=false&&useUnicode=true&characterEncoding=utf-8
+#elseif(${pps.dbci.dbType} == 'oracle.jdbc.driver.OracleDriver')  
+jdbc.jdbcUrl=jdbc\:oracle\:thin\:@${pps.dbci.dbAddress}\:${pps.dbci.dbPort}\:${pps.dbci.dbName}
+#elseif(${pps.dbci.dbType} == 'org.postgresql.Driver')
+jdbc.jdbcUrl=jdbc:postgresql://${pps.dbci.dbAddress}:${pps.dbci.dbPort}/${pps.dbci.dbName}
+#end
+jdbc.username=${pps.dbci.dbUser}
+jdbc.password=${pps.dbci.dbPassword}
+
+##连接池配置信息
+jdbc.initialSize=3
+jdbc.maxActive=20
+jdbc.minIdle=1
+jdbc.maxWait=120000

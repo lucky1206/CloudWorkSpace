@@ -1,0 +1,11 @@
+##直接读取JavaBean中的数组对象并遍历打印出值。
+
+/**-----------------${req.upperCaseName}对象，仅供请求参数参考，不建议直接引用-----------------*/
+var ${req.upperCaseName} ={
+#foreach($col in $reqCols)
+    
+    //${col.desc}
+	${col.javaname} : null#if($velocityCount != $reqCols.size()),#end ##最后一个属性不再添加逗号。  
+#end
+
+}

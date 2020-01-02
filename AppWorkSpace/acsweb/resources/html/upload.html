@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传</title>
+    <link rel="stylesheet" href="../libs/cloudfonts/iconfont.css">
+    <link rel="stylesheet" href="../css/scroller4webkit.css">
+    <link rel="stylesheet" href="../css/button.css">
+    <script src="../libs/upload/plupload.full.min.js"></script>
+    <style>
+        html {
+            overflow: hidden;
+        }
+
+        body {
+            font-size: 12px;
+        }
+
+        #drag-area {
+            display: none;
+            border: 1px solid #ccc;
+            width: 400px;
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
+            color: #aaa;
+        }
+
+        #file-list {
+            clear: both;
+            border: 1px solid #ccc;
+            width: 400px;
+            height: 200px;
+            line-height: 200px;
+            overflow: auto;
+            text-align: center;
+            color: #aaa;
+        }
+
+        .file-item {
+            text-align: left;
+            vertical-align: middle;
+            color: blue;
+            width: 80%;
+            height: 25px;
+            line-height: 25px;
+            border: 1px solid #ccc;
+            float: left;
+            position: relative;
+            padding-left: 5px;
+        }
+
+        .file-item-percent {
+            width: 17%;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #ccc;
+            color: red;
+            float: right;
+        }
+
+        #container {
+            width: 400px;
+            text-align: center;
+        }
+
+        pre {
+            color: #13227a;
+        }
+    </style>
+</head>
+<body>
+<h3><i class="cloud icon-catalog"></i> 文件上传列表</h3>
+<pre style="color: red">注意:上传过程中请勿切换数据库,目前仅支持Shp数据入MySQL库。</pre>
+<div id="file-list">请选择关联数据库</div>
+<div id="container">
+    <p id="drag-area">把要上传的文件拖放到这里(请使用支持html5的浏览器)</p>
+    <pre id="console"></pre>
+    <button id="clean-files" class="button button-rounded button-tiny"><i class="cloud icon-feature-clear"></i>重置
+    </button>
+    <button id="pick-files" class="button button-primary button-rounded button-tiny" style="margin-left: 10px"><i
+            class="cloud icon-select"></i>选择文件
+    </button>
+    <button id="upload-files" class="button button-primary button-rounded button-tiny" style="margin-left: 10px"><i
+            class="cloud icon-upload"></i>上传文件
+    </button>
+</div>
+
+<br/>
+<script type="text/javascript">
+    let databaseConfig = null;
+    let uploader = null;
+    //当前上传是否完成
+    let isCurrentUploadCompleted = false;
+
+    //设定文件上传关联数据库
+    function setDataBase(dbc, uploadUrl) {
+        databaseConfig = dbc;
+        document.getElementById('console').innerHTML = '<span>已选择数据库: ' + dbc['dbDesc'] + '::' + dbc['dbName'] + '</span>';
+        document.getElementById('drag-area').style.display = 'block';
+        if (uploader == null) {
+            initPlupload(uploadUrl);
+        }
+    }
+
+    function enableUploadEnv(isEnabled) {
+        document.getElementById("clean-files").disabled = !isEnabled;
+        document.getElementById("pick-files").disabled = !isEnabled;
+        document.getElementById("upload-files").disabled = !isEnabled;
+
+        isCurrentUploadCompleted = isEnabled;
+    }
+
+    //获取文件上传进度
+    function getUploadState() {
+        return isCurrentUploadCompleted;
+    }
+
+    function changeUploadState() {
+        isCurrentUploadCompleted = false;
+    }
+
+    function initPlupload(uploadUrl) {
+        document.getElementById('clean-files').onclick = function () {
+            if (uploader) {
+                let files = uploader['files'];
+                if (files) {
+                    for (let i = 0; i < files.length; i++) {
+                        uploader.removeFile(files[i])
+                    }
+                }
+            }
+
+            if (databaseConfig) {
+                document.getElementById('console').innerHTML = '<span>已选择数据库: ' + databaseConfig['dbDesc'] + '::' + databaseConfig['dbName'] + '</span>';
+            }
+
+            document.getElementById('file-list').innerHTML = '';
+        };
+
+        uploader = new plupload.Uploader({
+            runtimes: 'html5,flash,silverlight,html4',
+            //chunk_size: '10mb',//若设定分块，后端上传服务也需要支持分块接收拼接功能
+            browse_button: 'pick-files', // you can pass in id...
+            container: document.getElementById('container'), // ... or DOM Element itself
+            url: uploadUrl,
+            flash_swf_url: '../libs/upload/Moxie.swf',
+            silverlight_xap_url: '../libs/upload/Moxie.xap',
+            drop_element: 'drag-area',
+            headers: {
+                "dbAddress": "",
+                "dbName": "",
+                "dbPassword": "",
+                "dbPort": "",
+                "dbType": "",
+                "dbUser": ""
+            },
+            filters: {
+                mime_types: [
+                    {title: "Shapefile files", extensions: "dbf,prj,qix,sbn,sbx,shp,xml,shx,cpg"}
+                ],
+                max_file_size: '5gb',//最大上传单个文件大小为5G
+                prevent_duplicates: true //不允许选取重复文件
+            },
+
+            init: {
+                PostInit: function () {
+                    document.getElementById('file-list').innerHTML = '';
+                    document.getElementById('upload-files').onclick = function () {
+                        if (databaseConfig) {
+                            uploader.start();
+                        } else {
+                            document.getElementById('console').innerHTML = '<span>请选择数据库</span>';
+                        }
+                        return false;
+                    };
+                },
+
+                BeforeUpload: function (uploader, files) {
+                    if (databaseConfig) {
+                        let dbName = databaseConfig['dbName'],
+                            dbPassword = databaseConfig['dbPassword'],
+                            dbPort = databaseConfig['dbPort'],
+                            dbType = databaseConfig['dbType'],
+                            dbUser = databaseConfig['dbUser'],
+                            dbAddress = databaseConfig['dbAddress'];
+
+                        uploader.settings.headers["dbAddress"] = dbAddress;
+                        uploader.settings.headers["dbName"] = dbName;
+                        uploader.settings.headers["dbPassword"] = dbPassword;
+                        uploader.settings.headers["dbPort"] = dbPort;
+                        uploader.settings.headers["dbType"] = dbType;
+                        uploader.settings.headers["dbUser"] = dbUser;
+                    }
+                },
+
+                //当队列中某一个文件上传完成后触发该事件
+                FileUploaded: function (up, file, res) {
+                    //console.log(res.response);
+                },
+
+                FilesAdded: function (up, files) {
+                    isCurrentUploadCompleted = false;
+                    //uploader.start();//禁用选择文件后自动上传
+                    plupload.each(files, function (file) {
+                        document.getElementById('file-list').innerHTML += '<div id="' + file.id + '"  class="file-item">' + file.name + ' (' + plupload.formatSize(file.size) + ')</div><div id="' + file.id + 'percent" class="file-item-percent">未开始</div>';
+                    });
+                },
+
+                UploadProgress: function (up, file) {
+                    document.getElementById(file.id + 'percent').innerHTML = '<span>' + file.percent + "%</span>";
+                    let totalFileNum = up['files'].length, doneNum = up['stats']['done'];
+                    document.getElementById('console').innerHTML = '<span>文件上传总体进度: ' + Math.round(doneNum / totalFileNum * 100) + " %" + "</span>";
+                },
+                UploadComplete: function (up, files, res) {
+                    isCurrentUploadCompleted = true;
+                    //文件上传总体进度
+                    document.getElementById('console').innerHTML = "所有文件上传完成，已上传成功: " + up['stats']['done'] + ' 个，' + '失败: ' + up['stats']['failed'] + ' 个';
+                    //enableUploadEnv(true);
+                },
+                Error: function (up, err) {
+                    if (err.code == -601) {
+                        document.getElementById('console').innerHTML += "\nError #" + err.code + ": " + err.message + ", 文件后缀错误。";
+                    }
+
+                    if (err.code == -600) {
+                        document.getElementById('console').innerHTML += "\nError #" + err.code + ": " + err.message + ", 文件过大。";
+                    }
+                }
+            }
+        });
+
+        uploader.init();
+    }
+</script>
+</body>
+</html>

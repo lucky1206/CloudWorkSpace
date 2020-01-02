@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>轨迹预测</title>
+    <script src="../libs/satellite/satellite.js"></script>
+    <script type="text/javascript">
+        function predict() {
+            // Sample TLE
+            let tleLine1 =  "1 43439U 18040A   19213.89923785  .00000267  00000-0  16152-4 0  9997",
+                tleLine2 = "2 43439  97.3655 290.6238 0012558 102.9042 346.4727 15.18444978 70202";
+
+// Initialize a satellite record
+            let satrec = satellite.twoline2satrec(tleLine1, tleLine2);
+
+//  Propagate satellite using time since epoch (in minutes).
+            //let positionAndVelocity = satellite.sgp4(satrec, timeSinceTleEpochMinutes);
+
+//  Or you can use a JavaScript Date
+            let positionAndVelocity = satellite.propagate(satrec, new Date());
+
+// The position_velocity result is a key-value pair of ECI coordinates.
+// These are the base results from which all other coordinates are derived.
+            let positionEci = positionAndVelocity.position;
+
+// Set the Observer at 122.03 West by 36.96 North, in RADIANS
+            let observerGd = {
+                longitude: satellite.degreesToRadians(0),
+                latitude: satellite.degreesToRadians(0),
+                height:0
+            };
+
+// You will need GMST for some of the coordinate transforms.
+// http://en.wikipedia.org/wiki/Sidereal_time#Definition
+            let gmst = satellite.gstime(new Date());
+
+// You can get ECF, Geodetic, Look Angles, and Doppler Factor.
+            let positionEcf = satellite.eciToEcf(positionEci, gmst),
+                positionGd = satellite.eciToGeodetic(positionEci, gmst),
+                lookAngles = satellite.ecfToLookAngles(observerGd, positionEcf);
+
+// The coordinates are all stored in key-value pairs.
+// ECI and ECF are accessed by `x`, `y`, `z` properties.
+            let satelliteX = positionEci.x,
+                satelliteY = positionEci.y,
+                satelliteZ = positionEci.z;
+
+// Look Angles may be accessed by `azimuth`, `elevation`, `range_sat` properties.
+            let azimuth = lookAngles.azimuth,
+                elevation = lookAngles.elevation,
+                rangeSat = lookAngles.rangeSat;
+
+// Geodetic coords are accessed via `longitude`, `latitude`, `height`.
+            let longitude = positionGd.longitude,
+                latitude = positionGd.latitude,
+                height = positionGd.height;
+
+//  Convert the RADIANS to DEGREES for pretty printing (appends "N", "S", "E", "W", etc).
+            let longitudeStr = satellite.degreesLong(longitude),
+                latitudeStr = satellite.degreesLat(latitude);
+            console.log(longitude + "----" + latitude + "----" + height);
+            console.log(longitudeStr + "----" + latitudeStr);
+        }
+
+
+        predict();
+    </script>
+</head>
+<body>
+</body>
+</html>

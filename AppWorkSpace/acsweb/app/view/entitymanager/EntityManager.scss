@@ -1,0 +1,74 @@
+@include extjs-tab-panel-ui(
+        $ui: 'entity-tab-panel-ui',
+        $ui-tab-background-color: $base-transparent-color,
+        $ui-tab-background-color-focus: $base-component-color,
+        $ui-tab-background-color-over: $base-component-color,
+        $ui-tab-background-color-active: $base-component-color,
+        $ui-tab-background-color-focus-over: $base-component-color,
+        $ui-tab-background-color-focus-active: $base-component-color,
+        $ui-tab-color: rgba($base-common-color, 1),
+        $ui-tab-color-focus: rgba($base-highlight-color, 1),
+        $ui-tab-color-over: rgba($base-highlight-color, 1),
+        $ui-tab-color-active: rgba($base-highlight-color, 1),
+        $ui-tab-color-focus-over: rgba($base-highlight-color, 1),
+        $ui-tab-color-focus-active: rgba($base-highlight-color, 1),
+        $ui-tab-font-size: 12px,
+        $ui-tab-line-height: 24px,
+        $ui-tab-text-padding: 2,
+        $ui-tab-padding: 0px 3px 0px 3px,
+        $ui-bar-background-color: $base-component-color
+);
+
+@include extjs-panel-ui(
+        $ui: 'sql-panel-ui',
+        $ui-header-border-width: 0px,
+        $ui-header-text-padding: 0 0 0 5px,
+        $ui-header-background-color: $base-transparent-color,
+        $ui-header-color: rgb(19, 34, 122),
+        $ui-header-glyph-color: rgba(66, 66, 66, 1.0),
+        $ui-header-glyph-opacity: 1,
+        $ui-header-font-size: 12px,
+        $ui-header-line-height: 28px,
+        $ui-header-font-weight: bold,
+        $ui-header-icon-height: 18px,
+        $ui-header-icon-width: 18px,
+        $ui-header-icon-spacing: 15px,
+        $ui-header-padding: 0,
+        $ui-header-text-margin: 2px,
+        $ui-header-noborder-adjust: false
+);
+
+@include extjs-panel-ui(
+        $ui: 'db-grid-panel-ui',
+        $ui-header-background-color: rgb(16, 154, 228),
+        $ui-header-color: #ffffff,
+        $ui-header-glyph-color: #ffffff,
+        $ui-header-glyph-opacity: 1,
+        $ui-body-color: rgba(63, 81, 181, 1.0),
+        $ui-header-font-size: 12px,
+        $ui-header-line-height: 28px,
+        $ui-header-font-weight: normal,
+        $ui-header-icon-height: 24px,
+        $ui-header-icon-width: 24px,
+        $ui-header-icon-spacing: 15px,
+        $ui-header-padding: 0,
+        $ui-header-text-margin: 2px,
+        $ui-header-noborder-adjust: false
+);
+
+@include extjs-panel-ui(
+        $ui: 'db-field-grid-panel-ui',
+        $ui-header-background-color: $base-component-color,
+        $ui-header-color: #ffffff,
+        $ui-header-glyph-color: #ffffff,
+        $ui-header-glyph-opacity: 1,
+        $ui-header-font-size: 12px,
+        $ui-header-line-height: 28px,
+        $ui-header-font-weight: normal,
+        $ui-header-icon-height: 24px,
+        $ui-header-icon-width: 24px,
+        $ui-header-icon-spacing: 15px,
+        $ui-header-padding: 0,
+        $ui-header-text-margin: 2px,
+        $ui-header-noborder-adjust: false
+);

@@ -1,0 +1,47 @@
+/**
+ * Created by LBM on 2018/2/7.
+ */
+Ext.define('${pps.pci.projectName}.view.left.Left', {
+    extend: 'Ext.panel.Panel',
+
+    requires: [
+        '${pps.pci.projectName}.view.left.LeftController',
+        '${pps.pci.projectName}.view.left.LeftModel'
+    ],
+
+    /*
+    Uncomment to give this component an xtype*/
+    xtype: 'left',
+
+    viewModel: {
+    type: 'left'
+    },
+
+    controller: 'left',
+    title: conf.sys.title,
+    iconCls: 'far fa-object-group',
+    scrollable: 'y',
+    margin: '0 0 0 0',
+    border: true,
+    items: [
+		{
+			xtype: 'treepanel',
+			id: 'moduleTreeId',
+			rootVisible: false,
+			titleCollapse: true,
+			useArrows: true,
+			frame: false,
+			bufferedRenderer: false,
+			animate: true,
+			rowLines: true,
+			columnLines: true,
+			singleExpand: false,
+			expanderOnly: true,
+			expanderFirst: false,
+			itemRipple: true,
+			store: {
+				data: conf.module
+			}
+		}
+	]
+});

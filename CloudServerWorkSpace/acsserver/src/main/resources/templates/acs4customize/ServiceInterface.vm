@@ -1,0 +1,44 @@
+package ${ppn}.${ppsc.pci.servName}.${acsId};
+
+#if("$!reqCols" != "")
+import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C};
+#end
+
+#if("$!reqCols" != "" && ${ao.insert4C} == 'on')
+import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.responseName4C};
+#end
+
+import com.alibaba.fastjson.JSONObject;
+
+##请求体、响应体均不为空
+/**
+* @desc ${ao.apiDesc4C}
+*/
+public interface I${ao.apiName4C}Service {
+#if(${ao.select4C} == 'on' && "$!resCols" != "")
+##此处根据pagging设置是否进行查询
+	#if(${pagging} == true)
+		#if("$!reqCols" != "")
+        JSONObject get${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params,Integer pageNo,Integer pageSize);
+		#else
+        JSONObject get${ao.apiName4C}(Integer pageNo,Integer pageSize);
+		#end
+	#else
+		#if("$!reqCols" != "")
+        JSONObject get${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params);
+		#else
+        JSONObject get${ao.apiName4C}();
+		#end
+	#end
+#end
+#if(${ao.insert4C} == 'on' && "$!resCols" != "")
+JSONObject insert${ao.apiName4C}(${ao.responseName4C} ${ao.responseNameLow4C}Params);
+#end
+#if(${ao.delete4C} == 'on' && "$!reqCols" != "")
+JSONObject delete${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params);
+#end
+#if(${ao.update4C} == 'on' && "$!reqCols" != "" && "$!resCols" != "")
+JSONObject update${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params);
+#end
+}
+

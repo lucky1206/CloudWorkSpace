@@ -1,0 +1,71 @@
+/*
+ *  This file can be used to set variables and supply global styling.  View specific 
+ *  styling should be located the view's corresponding scss file.
+ */
+$enable-font-awesome: dynamic(true);
+
+$base-color: rgba(0, 155, 254, 1);
+
+$base-component-color: rgb(0, 155, 254);
+$font-size: 12px;
+$font-family: "微软雅黑";
+
+$base-transparent-color: rgba(255, 255, 255, 0);
+$base-common-color: rgba(255, 255, 255, 1);
+$base-icon-color: rgba(255, 255, 255, 1);
+$base-highlight-color: rgba(38, 50, 56, 1.0);
+$base-dark-color: rgba(0, 155, 254, 1);
+//----------------------去掉组件水印------start-------可根据需要自行增加---
+.x-title-text-navigation:after {
+  display: none !important;
+}
+
+.x-title-text-default:after {
+  display: none !important;
+}
+
+.x-title-text-project-panel-ui:after {
+  display: none !important;
+}
+
+.x-title-text-version-panel-ui:after {
+  display: none !important;
+}
+
+.x-title-text-db-grid-panel-ui:after {
+  display: none !important;
+}
+
+.x-title-text-sql-panel-ui:after {
+  display: none !important;
+}
+
+.x-title-text-db-field-grid-panel-ui:after {
+  display: none !important;
+}
+
+//--------------------------------------end---------------------------
+//-----------------------grid-actioncolumn--字体图标附加样式-------
+.greenCls {
+  font-size: 16px;
+  color: #00FF00;
+  margin: 0 5px 0 5px;
+}
+
+.redCls {
+  font-size: 16px;
+  color: #FF0000;
+  margin: 0 5px 0 5px;
+}
+
+.yellowCls {
+  font-size: 16px;
+  color: #FF0000;
+  margin: 0 5px 0 5px;
+}
+
+.blueCls {
+  font-size: 16px;
+  color: #0000FF;
+  margin: 0 5px 0 5px;
+}

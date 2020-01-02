@@ -1,0 +1,205 @@
+package ${projectPackageName}.${ppsc.pci.cpName}.${acsId};
+
+import com.alibaba.fastjson.JSON;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import com.alibaba.fastjson.JSONObject;
+
+import ${projectPackageName}.${ppsc.pci.servName}.${acsId}.I${className}Service;
+import ${projectPackageName}.${ppsc.pci.epName}.${acsId}.${className};
+
+/**
+* @desc：${className}控制器
+*/
+@Api(value = "${className}", description="${className}控制器", tags = "${tableName}")
+@Controller
+@RequestMapping(value = "/${classLowName}", method = { RequestMethod.GET, RequestMethod.POST })
+public class ${className}Controller {
+@Autowired
+@Qualifier("${classLowName}Service")
+private I${className}Service ${classLowName}Service;
+
+#foreach($col in $colList)
+    #if(${col.pk} == "1")
+        #set($mainKey =${col.javaname})
+        #break
+    #end
+#end
+//提示：in/not in子句參數，前台输入参数格式为"value1,value2,value3"，后台需要先转化为List，请根据需要自行调整。
+//----------------------查询----------------------
+@RequestMapping(value = "/get${className}List")
+@ResponseBody
+@ApiOperation(value = "查询全部${className}对象", httpMethod = "GET", notes = "查询全部${className}对象", response = ${className}.class, responseContainer = "List", tags = "${tableName}")
+public JSONObject get${className}List() {
+	return ${classLowName}Service.get${className}List();
+}
+
+@RequestMapping(value = "/get${className}ListByPaging")
+@ResponseBody
+@ApiOperation(value = "分页查询全部${className}对象", httpMethod = "GET", notes = "分页查询全部${className}对象", response = ${className}.class, responseContainer = "List", tags = "${tableName}")
+public JSONObject get${className}ListByPaging(
+@ApiParam(required=true, value = "(=)分页查询序号", name = "pageNo") @RequestParam(name = "pageNo") Integer pageNo,
+@ApiParam(required=true, value = "(=)分页查询尺寸", name = "pageSize") @RequestParam(name = "pageSize") Integer pageSize) {
+return ${classLowName}Service.get${className}ListByPaging(pageNo, pageSize);
+}
+
+@RequestMapping(value = "/get${className}")
+@ResponseBody
+@ApiOperation(value = "根据ID查询${className}对象", httpMethod = "GET", notes = "根据ID查询${className}对象", response = ${className}.class, responseContainer = "List", tags = "${tableName}")
+public JSONObject get${className}(
+@ApiParam(required = true, value = "(=)${className}对象ID", name = "$mainKey") @RequestParam(required = true, name = "$mainKey") ${objectPkJavaType} $mainKey) {
+	return ${classLowName}Service.get${className}($mainKey);
+}
+
+/**PS: 查询参数类型默认全部采用String类型*/
+@RequestMapping(value = "/get${className}ExByPaging")
+@ResponseBody
+@ApiOperation(value = "根据条件分页查询${className}对象", httpMethod = "GET", notes = "根据条件分页查询${className}对象", response = ${className}.class, responseContainer = "List", tags = "${tableName}")
+public JSONObject get${className}ExByPaging(
+	@ApiParam(required=true, value = "(=)分页查询序号", name = "pageNo") @RequestParam(name = "pageNo") Integer pageNo,
+	@ApiParam(required=true, value = "(=)分页查询尺寸", name = "pageSize") @RequestParam(name = "pageSize") Integer pageSize,
+	#foreach($col in $colList)
+    	@ApiParam(value = "(=)${col.desc}", name = "${col.javaname}") @RequestParam(required=false, name = "${col.javaname}") ${col.javaType} ${col.javaname}#if($velocityCount != $colList.size()),#end
+	#end
+) {
+	${className} ${classLowName}Params = new ${className}();
+	#foreach($col in $colList)
+		${classLowName}Params.set${col.upname}(${col.javaname});
+	#end
+
+	return ${classLowName}Service.get${className}ExByPaging(${classLowName}Params, pageNo, pageSize);
+}
+
+@RequestMapping(value = "/get${className}Ex")
+@ResponseBody
+@ApiOperation(value = "根据条件查询${className}对象", httpMethod = "GET", notes = "根据条件查询${className}对象", response = ${className}.class, responseContainer = "List", tags = "${tableName}")
+public JSONObject get${className}Ex(
+#foreach($col in $colList)
+@ApiParam(value = "(=)${col.desc}", name = "${col.javaname}") @RequestParam(required=false, name = "${col.javaname}") ${col.javaType} ${col.javaname}#if($velocityCount != $colList.size()),#end
+#end
+) {
+${className} ${classLowName}Params = new ${className}();
+#foreach($col in $colList)
+	${classLowName}Params.set${col.upname}(${col.javaname});
+#end
+
+return ${classLowName}Service.get${className}Ex(${classLowName}Params);
+}
+
+//----------------------增加----------------------
+@RequestMapping(value = "/insert${className}")
+@ResponseBody
+@ApiOperation(value = "在${tableName}中插入${className}对象", httpMethod = "GET", notes = "请参考${className}设置请求参数", tags = "${tableName}")
+public JSONObject insert${className}(
+	#foreach($col in $colList)
+    	@ApiParam(value = "(=)${col.desc}", name = "${col.javaname}") @RequestParam(required=false, name = "${col.javaname}") ${col.javaType} ${col.javaname}#if($velocityCount != $colList.size()),#end
+	#end
+){
+	${className} ${classLowName}Params = new ${className}();
+	#foreach($col in $colList)
+		${classLowName}Params.set${col.upname}(${col.javaname});
+	#end
+
+	return ${classLowName}Service.insert${className}(${classLowName}Params);
+}
+
+@RequestMapping(value = "/insertBatch${className}")
+@ResponseBody
+@ApiOperation(value = "在${tableName}中插入${className}对象,请求参数采用实体对应JSON格式数组字符串,客户端编码之后再发送请求。", httpMethod = "POST", notes = "请参考${className}设置请求参数", tags = "${tableName}")
+public JSONObject insertBatch${className}(
+	@ApiParam(value = "${className}Json数组对象，采用Json格式组织参数", name = "${classLowName}Json") @RequestParam(required = false, name = "${classLowName}Json") String ${classLowName}Json) throws UnsupportedEncodingException {
+	String jsonString = URLDecoder.decode(${classLowName}Json, "UTF-8");
+	//json to list
+	List<${className}> ${classLowName}Params =JSON.parseArray(jsonString, ${className}.class);
+	return ${classLowName}Service.insertBatch${className}(${classLowName}Params);
+}
+
+//----------------------更新----------------------
+@RequestMapping(value = "/update${className}")
+@ResponseBody
+@ApiOperation(value = "在${tableName}中更新${className}对象", httpMethod = "GET", notes = "请参考${className}设置请求参数", tags = "${tableName}")
+public JSONObject update${className}(
+	#foreach($col in $colList)
+		#if(${col.pk} == "1")
+        	@ApiParam(required=true, value = "${col.desc}", name = "${col.javaname}") @RequestParam(name = "${col.javaname}") ${col.javaType} ${col.javaname}#if($velocityCount != $colList.size()),#end
+		#else
+        	@ApiParam(value = "${col.desc}", name = "${col.javaname}") @RequestParam(required=false, name = "${col.javaname}") ${col.javaType} ${col.javaname}#if($velocityCount != $colList.size()),#end
+		#end
+	#end
+) {
+	${className} ${classLowName}Params = new ${className}();
+	#foreach($col in $colList)
+		${classLowName}Params.set${col.upname}(${col.javaname});
+	#end
+
+	return ${classLowName}Service.update${className}(${classLowName}Params);
+}
+
+//----------------------删除----------------------
+@RequestMapping(value = "/delete${className}")
+@ResponseBody
+@ApiOperation(value = "根据ID删除${className}对象", httpMethod = "GET", notes = "根据ID删除${className}对象", tags = "${tableName}")
+public JSONObject delete${className}(@ApiParam(required = true, value = "(=)${className}对象ID", name = "$mainKey") @RequestParam(name = "$mainKey") ${objectPkJavaType} $mainKey) {
+	return ${classLowName}Service.delete${className}($mainKey);
+}
+
+@RequestMapping(value = "/deleteBatch${className}")
+@ResponseBody
+@ApiOperation(value = "根据ID列表批量删除${className}对象", httpMethod = "GET", notes = "根据ID列表批量删除${className}对象，参数格式：前台输入参数格式为: value1,value2,value3，后台需要先转化为List，请根据需要自行调整。", tags = "${tableName}")
+public JSONObject deleteBatch${className}(@ApiParam(required = true, value = "${className}对象ID", name = "${mainKey}s") @RequestParam(name = "${mainKey}s") String ${mainKey}s) {
+	#if(${objectPkJavaType} == 'Double')
+	List<Double> mainKeyList = new ArrayList<Double>();
+	if (null != ${mainKey}s && !${mainKey}s.equals("")) {
+		for (String v : ${mainKey}s.split(",")) {
+			mainKeyList.add(Double.parseDouble(v));
+		}
+	}
+	return ${classLowName}Service.deleteBatch${className}(mainKeyList);
+	#elseif(${objectPkJavaType} == 'Long')
+	List<Long> mainKeyList = new ArrayList<Long>();
+	if (null != ${mainKey}s && !${mainKey}s.equals("")) {
+	for (String v : ${mainKey}s.split(",")) {
+	mainKeyList.add(Long.parseLong(v));
+	}
+	}
+	return ${classLowName}Service.deleteBatch${className}(mainKeyList);
+	#elseif(${objectPkJavaType} == 'Integer')
+	List<Integer> mainKeyList = new ArrayList<Integer>();
+	if (null != ${mainKey}s && !${mainKey}s.equals("")) {
+	for (String v : ${mainKey}s.split(",")) {
+	mainKeyList.add(Integer.parseInt(v));
+	}
+	}
+	return ${classLowName}Service.deleteBatch${className}(mainKeyList);
+	#else
+	List<String> mainKeyList = new ArrayList<String>();
+	if(null != ${mainKey}s && !${mainKey}s.equals("")) {
+		for(String v : ${mainKey}s.split(",")) {
+			mainKeyList.add(v);
+		}
+	}
+	return ${classLowName}Service.deleteBatch${className}(mainKeyList);
+	#end
+}
+}
+
+
+
+
+
+

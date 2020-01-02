@@ -1,0 +1,35 @@
+package ${projectPackageName}.${ppsc.pci.servName}.${acsId};
+
+import java.util.List;
+import ${projectPackageName}.${ppsc.pci.epName}.${acsId}.${className};
+import com.alibaba.fastjson.JSONObject;
+
+public interface I${className}Service {
+
+     #foreach($col in $colList)
+		#if(${col.pk} == "1")
+		#set($mainKey =${col.javaname})
+		#break
+		#end
+	#end
+
+	JSONObject get${className}List();
+
+	JSONObject get${className}(${objectPkJavaType} $mainKey);
+
+	JSONObject get${className}Ex(${className} ${classLowName}Params);
+
+	JSONObject get${className}ListByPaging(Integer pageNo,Integer pageSize);
+
+	JSONObject get${className}ExByPaging(${className} ${classLowName}Params, Integer pageNo,Integer pageSize);
+
+	JSONObject insert${className}(${className} ${classLowName}Params);
+
+	JSONObject insertBatch${className}(List<${className}> ${classLowName}Params);
+
+	JSONObject update${className}(${className} ${classLowName}Params);
+
+	JSONObject delete${className}(${objectPkJavaType} $mainKey);
+
+	JSONObject deleteBatch${className}(List<${objectPkJavaType}> ${mainKey}s);
+}

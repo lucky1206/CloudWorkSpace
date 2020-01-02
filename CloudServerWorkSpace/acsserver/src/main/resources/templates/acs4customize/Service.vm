@@ -1,0 +1,166 @@
+package ${ppn}.${ppsc.pci.servName}.${ppsc.pci.servNameImpl}.${acsId};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import ${ppn}.${ppsc.pci.servName}.${acsId}.I${ao.apiName4C}Service;
+import ${ppn}.${ppsc.pci.dpName}.${acsId}.I${ao.apiName4C}Dao;
+
+#if(${pagging} == true)
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+	#if("$!resCols" != "")
+    import java.util.List;
+    import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.responseName4C};
+	#end
+	#if("$!reqCols" != "")
+    import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C};
+	#end
+#else
+	#if("$!resCols" != "")
+    import com.alibaba.fastjson.JSONArray;
+	#end
+	#if("$!reqCols" != "")
+    import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C};
+	#end
+#end
+
+import com.alibaba.fastjson.JSONObject;
+/**
+* @desc ${ao.apiDesc4C}
+*/
+@Service("${ao.apiNameLow4C}Service")
+@Transactional(rollbackFor = Exception.class)
+public class ${ao.apiName4C}Service implements I${ao.apiName4C}Service {
+@Autowired
+@Qualifier("${ao.apiNameLow4C}Dao")
+private I${ao.apiName4C}Dao ${ao.apiNameLow4C}Dao;
+#if(${ao.select4C} == 'on' && "$!resCols" != "")
+	#if(${pagging} == true)
+		#if("$!reqCols" != "")
+        public JSONObject get${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params,Integer pageNo,Integer pageSize){
+        pageNo = pageNo == null?1:pageNo;
+        pageSize = pageSize == null?10:pageSize;
+
+        JSONObject jo = new JSONObject();
+        try {
+        PageHelper.startPage(pageNo, pageSize);
+        List<${ao.responseName4C}> list = ${ao.apiNameLow4C}Dao.get${ao.apiName4C}(${ao.requestNameLow4C}Params);
+        //用PageInfo对结果进行包装
+        PageInfo<${ao.responseName4C}> page = new PageInfo<${ao.responseName4C}>(list);
+        jo.put("data", JSONObject.toJSON(page));
+        jo.put("status", 1);// 1-成功
+        jo.put("msg", "执行成功");
+        } catch (Exception e) {
+        jo.put("data", null);
+        jo.put("status", 0);// 0-失败
+        jo.put("msg", e.getMessage());// msg-失败信息
+        }
+
+        return jo;
+        }
+		#else
+        public JSONObject get${ao.apiName4C}(Integer pageNo,Integer pageSize){
+        pageNo = pageNo == null?1:pageNo;
+        pageSize = pageSize == null?10:pageSize;
+
+        JSONObject jo = new JSONObject();
+        try {
+        PageHelper.startPage(pageNo, pageSize);
+        List<${ao.responseName4C}> list = ${ao.apiNameLow4C}Dao.get${ao.apiName4C}();
+        //用PageInfo对结果进行包装
+        PageInfo<${ao.responseName4C}> page = new PageInfo<${ao.responseName4C}>(list);
+        jo.put("data", JSONObject.toJSON(page));
+        jo.put("status", 1);// 1-成功
+        jo.put("msg", "执行成功");
+        } catch (Exception e) {
+        jo.put("data", null);
+        jo.put("status", 0);// 0-失败
+        jo.put("msg", e.getMessage());// msg-失败信息
+        }
+
+        return jo;
+        }
+		#end
+	#else
+		#if("$!reqCols" != "")
+        public JSONObject get${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params){
+        JSONObject jo = new JSONObject();
+        try {
+        jo.put("data", JSONObject.toJSON(${ao.apiNameLow4C}Dao.get${ao.apiName4C}(${ao.requestNameLow4C}Params)));
+        jo.put("status", 1);// 1-成功
+        jo.put("msg", "执行成功");
+        } catch (Exception e) {
+        jo.put("data", null);
+        jo.put("status", 0);// 0-失败
+        jo.put("msg", e.getMessage());// msg-失败信息
+        }
+
+        return jo;
+        }
+		#else
+        public JSONObject get${ao.apiName4C}(){
+        JSONObject jo = new JSONObject();
+        try {
+        jo.put("data", JSONObject.toJSON(${ao.apiNameLow4C}Dao.get${ao.apiName4C}()));
+        jo.put("status", 1);// 1-成功
+        jo.put("msg", "执行成功");
+        } catch (Exception e) {
+        jo.put("data", null);
+        jo.put("status", 0);// 0-失败
+        jo.put("msg", e.getMessage());// msg-失败信息
+        }
+
+        return jo;
+        }
+		#end
+	#end
+#end
+#if(${ao.insert4C} == 'on' && "$!resCols" != "")
+public JSONObject insert${ao.apiName4C}(${ao.responseName4C} ${ao.responseNameLow4C}Params){
+JSONObject jo = new JSONObject();
+try {
+	${ao.apiNameLow4C}Dao.insert${ao.apiName4C}(${ao.responseNameLow4C}Params);
+jo.put("status", 1);// 1-成功
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
+
+return jo;
+}
+#end
+#if(${ao.delete4C} == 'on' && "$!reqCols" != "")
+public JSONObject delete${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params){
+JSONObject jo = new JSONObject();
+try {
+	${ao.apiNameLow4C}Dao.delete${ao.apiName4C}(${ao.requestNameLow4C}Params);
+jo.put("status", 1);// 1-成功
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
+
+return jo;
+}
+#end
+#if(${ao.update4C} == 'on' && "$!reqCols" != "" && "$!resCols" != "")
+public JSONObject update${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params){
+JSONObject jo = new JSONObject();
+try {
+		${ao.apiNameLow4C}Dao.update${ao.apiName4C}(${ao.requestNameLow4C}Params);
+		jo.put("status", 1);// 1-成功
+		jo.put("msg", "执行成功");
+	} catch (Exception e) {
+		jo.put("status", 0);// 0-失败
+		jo.put("msg", e.getMessage());// msg-失败信息
+	}
+
+return jo;
+}
+#end
+}

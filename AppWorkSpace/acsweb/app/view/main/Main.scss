@@ -1,0 +1,16 @@
+//自定义样式
+.sys-title {
+  color: rgba(255, 255, 255, 1.0);
+  font-size: 28px;
+  margin-left: 10px;
+}
+
+.sys-logo {
+  background-image: url("images/acsweb/sys-logo.png"); //url(get-resource-path("images/jz/sys-logo.png"));//两种方式都可以
+  background-size: contain;
+}
+
+@include extjs-panel-ui(
+        $ui: 'banner-panel-bgcolor',
+        $ui-body-background-color: $base-component-color
+)

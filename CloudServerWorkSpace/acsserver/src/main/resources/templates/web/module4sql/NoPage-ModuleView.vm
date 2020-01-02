@@ -1,0 +1,203 @@
+/**
+ * Created by LBM on 2018/2/8.   SQL解译-不分页查询
+ */
+Ext.define('${ppsc.pci.projectName}.view.module.${ao.apiNameFullLow}.${ao.apiName}', {
+    extend: 'Ext.Container',
+
+    requires: [
+#foreach($col in $reqCols)
+    #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
+    'Ext.ux.time.DateTimeField',#break
+    #end
+#end
+        '${ppsc.pci.projectName}.view.module.${ao.apiNameFullLow}.${ao.apiName}Controller',
+        '${ppsc.pci.projectName}.view.module.${ao.apiNameFullLow}.${ao.apiName}Model'
+    ],
+
+    /*
+    Uncomment to give this component an xtype*/
+    xtype: '${ao.apiNameFullLow}',
+
+    viewModel: {
+        type: '${ao.apiNameFullLow}'
+    },
+
+    controller: '${ao.apiNameFullLow}',
+
+    layout: {
+        type: 'vbox',
+        pack: 'start',
+        align: 'stretch'
+    },
+    margin: '0 0 0 5',
+    items: [
+        /* include child components here */
+        ##请求体不为空
+        #if("$!req" != "")
+        {
+            xtype: 'form',
+            title: '条件面板',
+            iconCls: 'fab fa-wpforms',
+            reference: '${ao.apiNameFullLow}ConditionForm',
+            defaultButton: '${ao.apiNameFullLow}QueryButtonRef',
+            border: true,
+            bodyPadding: 10,
+            maxHeight: 400,
+            scrollable: true,
+            alignOnScroll: true,
+            fieldDefaults: {
+                labelAlign: 'left',
+                msgTarget: 'side',
+                labelWidth: 150,
+                labelStyle: 'font-weight:bold'
+            },
+
+            layout: {
+                type: 'vbox',
+                pack: 'start',
+                align: 'stretch'
+            },
+            items: [
+        ##设置默认每行3列
+            #set($fColNum = 3)
+        ##计算行数
+            #set($fTotalNum = $reqCols.size())
+            #set($fTempRow = $fTotalNum / $fColNum)
+            #if($fTotalNum % $fColNum > 0)
+                #set($allRowNum = $fTempRow + 1)
+            #else
+                #set($allRowNum = $fTempRow)
+            #end
+        //布局行数：$allRowNum
+            #set($rowList=[1..$allRowNum])
+        ##循环创建行和列
+            #foreach($index in $rowList)
+            {
+            xtype: 'fieldcontainer',
+            layout: 'hbox',
+            defaults: {
+            xtype: 'textfield',
+            border: true
+            },
+            margin: '0 0 0 0',
+            items: [
+                #foreach($col in $reqCols)
+                    #set($startIndex=($index - 1) * $fColNum + 1)
+                    #set($endIndex=$index * $fColNum)
+                    #if($velocityCount >= $startIndex && $velocityCount<= $endIndex)
+                    {
+                        #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
+                        xtype: 'datetimefield',
+                        format: 'Y-m-d H:i:s',
+                        #end
+                    fieldLabel: '${col.desc}(${col.reqBody})',
+                    name: '${col.javaname}',
+                    flex: 1,
+                    margin: '0 0 10 10'
+                    }#if($index != $allRowNum)
+                        #if($velocityCount != $endIndex),#end
+                    #else
+                        #if($velocityCount != $fTotalNum),
+                        #else
+                            #if($fTotalNum % $fColNum == 1)
+                            ,{
+                            xtype: 'component',
+                            flex:2,
+                            margin: '0 0 10 20'
+                            }
+                            #elseif($fTotalNum % $fColNum == 2)
+                            ,{
+                            xtype: 'component',
+                            flex:1,
+                            margin: '0 0 10 10'
+                            }
+                            #end
+                        #end
+                    #end
+
+                    #end
+                #end
+            ]
+            }#if($index != $allRowNum),#end
+            #end
+            ],
+            buttons: [
+                '->',
+                {text: '重置', handler: 'resetHandler'},
+                {text: '查询', reference:'${ao.apiNameFullLow}QueryButtonRef', formBind: true, handler: 'executeHandler'},
+                '->'
+            ]
+        },
+        #end
+        {
+            xtype: 'gridpanel',
+            title: '结果面板',
+            iconCls: 'fas fa-table',
+            margin: '5 0 0 0',
+            flex: 1,
+            hidden: false,
+            border: true,
+            columnLines: true,
+            reserveScrollbar: true,
+            multiSelect: false,
+            scrollable: 'y',
+            viewConfig: {
+                stripeRows: false
+            },
+            listeners: {
+                afterrender: 'gridRenderHandler'
+            },
+            columns: [
+             #foreach($col in $resCols)
+	             {
+	             	text: '${col.desc}',
+	                flex: 1,
+	                dataIndex: '${col.javaname}',
+	                hideable: false,
+	                menuDisabled: true,
+	                resizable: false,
+	                sortable: false,
+	                align: 'center'
+	             }#if($velocityCount != $resCols.size()),#end
+             #end
+             #if(${managing} == true), {
+                    xtype: 'actioncolumn',
+                    text: '操作',
+                    width: 200,
+                    align: 'center',
+                    sortable: false,
+                    menuDisabled: true,
+                    items: [
+                    	{
+                            iconCls: 'fas fa-info-circle greenCls',
+                            tooltip: '详情',
+                            action: 'detail',
+                            handler: 'onDetailClick'
+                        },
+                        {
+                            iconCls: 'fas fa-edit yellowCls',
+                            tooltip: '编辑',
+                            action: 'edit',
+                            handler: 'onEditClick'
+                        },
+                        {
+                            iconCls: 'fas fa-plus-circle yellowCls',
+                            tooltip: '增加',
+                            action: 'add',
+                            handler: 'onAddClick'
+                        },
+                        {
+                            iconCls: 'fas fa-minus-circle redCls',
+                            tooltip: '删除',
+                            action: 'remove',
+                            handler: 'onRemoveClick'
+                        }
+                    ]
+               }
+             #end
+             ],
+            leadingBufferZone: 8,
+            trailingBufferZone: 8
+        }
+    ]
+});

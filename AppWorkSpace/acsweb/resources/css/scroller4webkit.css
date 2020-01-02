@@ -1,0 +1,34 @@
+html, body, div,table {
+    /*三角箭头的颜色*/
+    scrollbar-arrow-color: rgba(145,145,145, 0) !important;
+    /*滚动条滑块按钮的颜色*/
+    scrollbar-face-color: rgba(145,145,145, 0) !important;
+    /*滚动条整体颜色*/
+    scrollbar-highlight-color: rgba(20, 32, 55, 0) !important;
+    /*滚动条阴影*/
+    scrollbar-shadow-color: rgba(20, 32, 55, 0) !important;
+    /*滚动条轨道颜色*/
+    scrollbar-track-color: rgba(20, 32, 55, 0) !important;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(145,145,145, 0.0);
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border: 0 solid rgba(102, 102, 102, 0)
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 1px;
+    border-radius: 1px;
+    background: rgba(145,145,145, 0.5);
+    -webkit-box-shadow: inset 0 0 6px rgba(145,145,145, 0.0);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(145,145,145, 0.4);
+}

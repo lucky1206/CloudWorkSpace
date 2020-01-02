@@ -1,0 +1,44 @@
+/**
+ * Created by LBM on 2018/2/7.
+ */
+Ext.define('${pps.pci.projectName}.controller.AppController', {
+    extend: 'Ext.app.Controller',
+
+    config: {
+        //Uncomment to add references to view components
+        refs: [
+            {
+                ref: 'leftView',
+                selector: 'left'
+            },
+            {
+                ref: 'mainView',
+                selector: 'main'
+            }
+        ],
+        //Uncomment to listen for events from view components
+        control: {
+            '#moduleTreeId': {
+                itemclick: function (tree, record, item, index, e, eOpts) {
+                    let mv = this.getMainView();
+                    if (mv && record) {
+                        let mvc = mv.getController();
+                        let moduleType = record.get("routeId");
+                        if (mvc && moduleType) {
+                            mvc.redirectTo(moduleType);
+                        } else {
+                            Ext.Msg.alert('温馨提示', '请确认模块是否已正确配置？');
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    /**
+     * Called when the view is created
+     */
+    init: function () {
+
+    }
+});

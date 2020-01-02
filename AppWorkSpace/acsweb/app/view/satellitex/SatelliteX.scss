@@ -1,0 +1,77 @@
+@import url(libs/Cesium/Widgets/widgets.css);
+//@todo 先简单处理一下样式，后面可以根据源代码中的css文件酌情调整组件样式。
+.globeContainerCls {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: hidden;
+}
+
+.cesium-baseLayerPicker-sectionTitle {
+  display: block;
+  font-family: sans-serif;
+  font-size: 12pt;
+  text-align: left;
+  color: #edffff;
+  margin-bottom: 4px;
+}
+
+//------customer infobox css start------------
+.cesium-infoBox-title {
+  //todo 20190611-三维属性弹框title暂时隐藏
+  display: block; //block;
+  color: #edffff;
+  height: 20px !important;
+  padding: 5px 30px 5px 25px;
+  background: rgba(84, 84, 84, 1.0);
+  border-top-left-radius: 7px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: content-box;
+}
+
+.cesium-infoBox {
+  border: 1px solid $base-dark-color;
+}
+
+//场景每秒刷新频率（fps），这个值越高越好，以及指令发出之后平均响应时间（ms=1毫秒），这个值越低越好
+.cesium-performanceDisplay-defaultContainer {
+  position: absolute;
+  top: 10px;
+  //left: 200px;
+  left: 50%;
+  text-align: right;
+}
+
+.cesium-performanceDisplay {
+  background-color: rgba(255, 255, 255, 0);
+  padding: 0;
+  border-radius: 0;
+  border: 0 solid #444;
+  font: bold 12px sans-serif;
+  float: left;
+}
+
+//三维场景分割条
+.slider-cls {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  background-color: $base-dark-color;
+  width: 5px;
+  height: 100%;
+  z-index: 9999;
+
+  &:hover {
+    cursor: ew-resize;
+  }
+}
+
+/*#slider:hover {
+  cursor: ew-resize;
+}*/
+//-------------------end------------------------------

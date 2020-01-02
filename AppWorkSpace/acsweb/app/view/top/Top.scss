@@ -1,0 +1,44 @@
+.app-logo-cls {
+  font-size: 36px !important;
+  color: $base-icon-color;
+}
+.app-title-cls {
+  font-size: 28px;
+  font-weight: bold !important;
+  color: $base-common-color;
+}
+
+.app-menu-cls {
+  font-size: 20px !important;
+  color: $base-icon-color !important;
+}
+.app-menu-high-cls {
+  font-size: 24px !important;
+  color: $base-highlight-color !important;
+}
+
+@include extjs-button-medium-ui(
+        $ui: 'menu-button-ui',
+        $font-size: 14px,
+        $font-weight: bold,
+        $border-width: 0px,
+        $inner-border-width: 0px 0px 0px 0px,
+        $color: rgba($base-common-color, 1),
+        $color-over: rgba($base-highlight-color, 1),
+        $color-focus: rgba($base-highlight-color, 1),
+        $color-pressed: rgba($base-highlight-color, 1),
+        $color-focus-over: rgba($base-highlight-color, 1),
+        $color-focus-pressed: rgba($base-highlight-color, 1),
+        $background-color: $base-transparent-color,
+        $background-color-over: $base-transparent-color,
+        $background-color-focus: $base-transparent-color,
+        $background-color-pressed: $base-transparent-color,
+        $background-color-focus-over: $base-transparent-color,
+        $background-color-focus-pressed: $base-transparent-color,
+        $background-color-disabled: $base-transparent-color
+);
+
+@include extjs-panel-ui(
+        $ui: 'banner-panel-bgcolor',
+        $ui-body-background-color: rgba($base-dark-color, 1.0)
+)

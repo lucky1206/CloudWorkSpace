@@ -1,0 +1,11 @@
+##直接读取JavaBean中的数组对象并遍历打印出值。
+
+/**------------------${className}-----------------------------*/
+var ${className} ={
+#foreach($col in $colList)
+    
+    //${col.desc}
+	${col.javaname} : null#if($velocityCount != $colList.size()),#end ##最后一个属性不再添加逗号。  
+#end
+
+}

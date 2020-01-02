@@ -1,0 +1,334 @@
+package ${ppn}.${ppsc.pci.cpName}.${acsId};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+#if("$!reqCols" != "" || ${pagging} == true)
+##需要分页，则需要有分页相关的参数
+import org.springframework.web.bind.annotation.RequestParam;
+import io.swagger.annotations.ApiParam;
+#end
+
+##如果存在in或not in子句，需要添加List数据类型
+#foreach($col in $reqCols)
+    #if(${col.operator} == 'in' || ${col.operator} == 'not in')
+    import java.util.ArrayList;
+    import java.util.List; #break
+    #end
+#end
+
+#if(${pagging} == true && ${ao.select4C} == 'on')
+import com.alibaba.fastjson.JSONObject;
+#else
+    #if("$!resCols" != "")
+    import com.alibaba.fastjson.JSONObject;
+    #else
+    import com.alibaba.fastjson.JSONObject;
+    #end
+#end
+
+import ${ppn}.${ppsc.pci.servName}.${acsId}.I${ao.apiName4C}Service;
+#if("$!resCols" != "" && (${ao.select4C} == 'on' || ${ao.insert4C} == 'on'))
+import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.responseName4C};
+#end
+
+#if("$!reqCols" != "")
+##返回实体不为空，则需要实体类引用
+import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C};
+#end
+
+/**
+* @desc：${ao.apiDesc4C}
+*/
+@Api(value = "${ao.apiName4C}", description="${ao.apiDesc4C}", tags = "${ao.apiGroup4C}")
+@Controller
+@RequestMapping(value = "/${ao.apiNameFullLow4C}", method = { RequestMethod.GET, RequestMethod.POST })
+public class ${ao.apiName4C}Controller {
+@Autowired
+@Qualifier("${ao.apiNameLow4C}Service")
+private I${ao.apiName4C}Service ${ao.apiNameLow4C}Service;
+
+##根据接口动作创建相应的控制器
+#if(${ao.select4C} == 'on' && "$!resCols" != "")
+@RequestMapping(value = "/get${ao.apiName4C}")
+@ResponseBody
+@ApiOperation(value = "select ${className}对象", httpMethod = "GET", notes = "select ${className}对象", response =${ao.responseName4C}.class, responseContainer = "List", tags = "${ao.apiGroup4C}")
+    #if(${pagging} == true)##是否需要查询分页
+    public JSONObject get${ao.apiName4C}(
+    @ApiParam(required=true, value = "(=)分页查询序号)", name = "pageNo") @RequestParam(name = "pageNo") Integer pageNo,
+    @ApiParam(required=true, value = "(=)分页查询尺寸)", name = "pageSize") @RequestParam(name = "pageSize") Integer pageSize
+        #if("$!reqCols" != "")
+        ,#foreach($col in $reqCols)
+            #if(${col.operator} == 'in' || ${col.operator} == 'not in')
+            @ApiParam(value = "(${col.operator})${col.desc}", name = "${col.javaname}") @RequestParam(required=false, name = "${col.javaname}") String ${col.javaname}#if($velocityCount != $reqCols.size()),#end
+            #else
+            @ApiParam(value = "(${col.operator})${col.desc}", name = "${col.javaname}") @RequestParam(required=false, name = "${col.javaname}") ${col.javaType} ${col.javaname}#if($velocityCount != $reqCols.size()),#end
+            #end
+        #end#end){
+        #if("$!reqCols" != "")
+            ${ao.requestName4C} ${ao.requestNameLow4C}Params = new ${ao.requestName4C}();
+        #end
+        #foreach($col in $reqCols)
+            #if(${col.operator} == 'in' || ${col.operator} == 'not in')
+            //in/not in子句參數，需要先转化为List，前台输入参数格式为"value1,value2,value3"
+                #if(${col.javaType} == 'Double')
+                List <${col.javaType}> ${col.javaname}List = new ArrayList <${col.javaType}>();
+                if(null != ${col.javaname} && !${col.javaname}.equals("")) {
+                for(String v : ${col.javaname}.split(",")) {
+                    ${col.javaname}List.add(Double.parseDouble(v));
+                }
+                    ${ao.requestNameLow4C}Params.set${col.upname}List(${col.javaname}List);
+                }
+                #elseif(${col.javaType} == 'Long')
+                List <${col.javaType}> ${col.javaname}List = new ArrayList <${col.javaType}>();
+                if(null != ${col.javaname} && !${col.javaname}.equals("")) {
+                for(String v : ${col.javaname}.split(",")) {
+                    ${col.javaname}List.add(Long.parseLong(v));
+                }
+                    ${ao.requestNameLow4C}Params.set${col.upname}List(${col.javaname}List);
+                }
+                #elseif(${col.javaType} == 'Integer')
+                List <${col.javaType}> ${col.javaname}List = new ArrayList <${col.javaType}>();
+                if(null != ${col.javaname} && !${col.javaname}.equals("")) {
+                for(String v : ${col.javaname}.split(",")) {
+                    ${col.javaname}List.add(Integer.parseInt(v));
+                }
+                    ${ao.requestNameLow4C}Params.set${col.upname}List(${col.javaname}List);
+                }
+                #elseif(${col.javaType} == 'String')
+                List <${col.javaType}> ${col.javaname}List = new ArrayList <${col.javaType}>();
+                if(null != ${col.javaname} && !${col.javaname}.equals("")) {
+                for(String v : ${col.javaname}.split(",")) {
+                    ${col.javaname}List.add(v);
+                }
+                    ${ao.requestNameLow4C}Params.set${col.upname}List(${col.javaname}List);
+                }
+                #end
+            #else
+                ${ao.requestNameLow4C}Params.set${col.upname}(${col.javaname});
+            #end
+        #end
+        #if("$!reqCols" != "")
+        return ${ao.apiNameLow4C}Service.get${ao.apiName4C}(${ao.requestNameLow4C}Params, pageNo, pageSize);
+        #else
+        return ${ao.apiNameLow4C}Service.get${ao.apiName4C}(pageNo, pageSize);
+        #end
+    }
+    #else
+    public JSONObject get${ao.apiName4C}(
+        #if("$!reqCols" != "")
+            #foreach($col in $reqCols)
+                #if(${col.operator} == 'in' || ${col.operator} == 'not in')
+                @ApiParam(value = "(${col.operator})${col.desc}", name = "${col.javaname}") @RequestParam(required=false, name = "${col.javaname}") String ${col.javaname}#if($velocityCount != $reqCols.size()),#end
+                #else
+                @ApiParam(value = "(${col.operator})${col.desc}", name = "${col.javaname}") @RequestParam(required=false, name = "${col.javaname}") ${col.javaType} ${col.javaname}#if($velocityCount != $reqCols.size()),#end
+                #end
+            #end
+        #end){
+        #if("$!reqCols" != "")
+            ${ao.requestName4C} ${ao.requestNameLow4C}Params = new ${ao.requestName4C}();
+        #end
+        #foreach($col in $reqCols)
+            #if(${col.operator} == 'in' || ${col.operator} == 'not in')
+            //in/not in子句參數，需要先转化为List，前台输入参数格式为"value1,value2,value3"
+                #if(${col.javaType} == 'Double')
+                List <${col.javaType}> ${col.javaname}List = new ArrayList <${col.javaType}>();
+                if(null != ${col.javaname} && !${col.javaname}.equals("")) {
+                for(String v : ${col.javaname}.split(",")) {
+                    ${col.javaname}List.add(Double.parseDouble(v));
+                }
+                    ${ao.requestNameLow4C}Params.set${col.upname}List(${col.javaname}List);
+                }
+                #elseif(${col.javaType} == 'Long')
+                List <${col.javaType}> ${col.javaname}List = new ArrayList <${col.javaType}>();
+                if(null != ${col.javaname} && !${col.javaname}.equals("")) {
+                for(String v : ${col.javaname}.split(",")) {
+                    ${col.javaname}List.add(Long.parseLong(v));
+                }
+                    ${ao.requestNameLow4C}Params.set${col.upname}List(${col.javaname}List);
+                }
+                #elseif(${col.javaType} == 'Integer')
+                List <${col.javaType}> ${col.javaname}List = new ArrayList <${col.javaType}>();
+                if(null != ${col.javaname} && !${col.javaname}.equals("")) {
+                for(String v : ${col.javaname}.split(",")) {
+                    ${col.javaname}List.add(Integer.parseInt(v));
+                }
+                    ${ao.requestNameLow4C}Params.set${col.upname}List(${col.javaname}List);
+                }
+                #elseif(${col.javaType} == 'String')
+                List <${col.javaType}> ${col.javaname}List = new ArrayList <${col.javaType}>();
+                if(null != ${col.javaname} && !${col.javaname}.equals("")) {
+                for(String v : ${col.javaname}.split(",")) {
+                    ${col.javaname}List.add(v);
+                }
+                    ${ao.requestNameLow4C}Params.set${col.upname}List(${col.javaname}List);
+                }
+                #end
+            #else
+                ${ao.requestNameLow4C}Params.set${col.upname}(${col.javaname});
+            #end
+        #end
+
+        #if("$!reqCols" != "")
+        return  ${ao.apiNameLow4C}Service.get${ao.apiName4C}(${ao.requestNameLow4C}Params);
+        #else
+        return ${ao.apiNameLow4C}Service.get${ao.apiName4C}();
+        #end
+    }
+    #end
+#end
+
+#if(${ao.insert4C} == 'on' && "$!resCols" != "")
+@RequestMapping(value = "/insert${ao.apiName4C}")
+@ResponseBody
+@ApiOperation(value = "在${tableName}中插入${className}对象", httpMethod = "GET", notes = "请参考${className}设置请求参数", tags = "${ao.apiGroup4C}")
+public JSONObject insert${ao.apiName4C}(
+    #foreach($col in $resCols)
+    @ApiParam(value = "${col.desc}", name = "${col.javaname}") @RequestParam(required=false, name = "${col.javaname}") ${col.javaType} ${col.javaname}#if($velocityCount != $resCols.size()),#end
+    #end){
+    ${ao.responseName4C} ${ao.responseNameLow4C}Params = new ${ao.responseName4C}();
+    #foreach($col in $resCols)
+        ${ao.responseNameLow4C}Params.set${col.upname}(${col.javaname});
+    #end
+
+return ${ao.apiNameLow4C}Service.insert${ao.apiName4C}(${ao.responseNameLow4C}Params);
+}
+#end
+
+#if(${ao.delete4C} == 'on' && "$!reqCols" != "")
+@RequestMapping(value = "/delete${ao.apiName4C}")
+@ResponseBody
+@ApiOperation(value = "根据${ao.requestName4C}参数删除}${className}对象", httpMethod = "GET", notes = "根据${ao.requestName4C}参数删除${className}对象", tags = "${ao.apiGroup4C}")
+public JSONObject delete${ao.apiName4C}(
+    #foreach($col in $reqCols)
+        #if(${col.operator} == 'in' || ${col.operator} == 'not in')
+        @ApiParam(required = true, value = "(${col.operator})${col.desc}", name = "${col.javaname}") @RequestParam(
+        name = "${col.javaname}") String ${col.javaname}#if($velocityCount != $reqCols.size()),#end
+        #else
+        @ApiParam(required = true, value = "(${col.operator})${col.desc}", name = "${col.javaname}") @RequestParam(
+        name = "${col.javaname}") ${col.javaType} ${col.javaname}#if($velocityCount != $reqCols.size()),#end
+        #end
+    #end) {
+    ${ao.requestName4C} ${ao.requestNameLow4C}Params = new ${ao.requestName4C}();
+    #foreach($col in $reqCols)
+        #if(${col.operator} == 'in' || ${col.operator} == 'not in')
+        //in/not in子句參數，需要先转化为List，前台输入参数格式为"value1,value2,value3"
+            #if(${col.javaType} == 'Double')
+            List <${col.javaType}> ${col.javaname}List = new ArrayList <${col.javaType}>();
+            if(null != ${col.javaname} && !${col.javaname}.equals("")) {
+            for(String v : ${col.javaname}.split(",")) {
+                ${col.javaname}List.add(Double.parseDouble(v));
+            }
+                ${ao.requestNameLow4C}Params.set${col.upname}List(${col.javaname}List);
+            }
+            #elseif(${col.javaType} == 'Long')
+            List <${col.javaType}> ${col.javaname}List = new ArrayList <${col.javaType}>();
+            if(null != ${col.javaname} && !${col.javaname}.equals("")) {
+            for(String v : ${col.javaname}.split(",")) {
+                ${col.javaname}List.add(Long.parseLong(v));
+            }
+                ${ao.requestNameLow4C}Params.set${col.upname}List(${col.javaname}List);
+            }
+            #elseif(${col.javaType} == 'Integer')
+            List <${col.javaType}> ${col.javaname}List = new ArrayList <${col.javaType}>();
+            if(null != ${col.javaname} && !${col.javaname}.equals("")) {
+            for(String v : ${col.javaname}.split(",")) {
+                ${col.javaname}List.add(Integer.parseInt(v));
+            }
+                ${ao.requestNameLow4C}Params.set${col.upname}List(${col.javaname}List);
+            }
+            #elseif(${col.javaType} == 'String')
+            List <${col.javaType}> ${col.javaname}List = new ArrayList <${col.javaType}>();
+            if(null != ${col.javaname} && !${col.javaname}.equals("")) {
+            for(String v : ${col.javaname}.split(",")) {
+                ${col.javaname}List.add(v);
+            }
+                ${ao.requestNameLow4C}Params.set${col.upname}List(${col.javaname}List);
+            }
+            #end
+        #else
+            ${ao.requestNameLow4C}Params.set${col.upname}(${col.javaname});
+        #end
+    #end
+return ${ao.apiNameLow4C}Service.delete${ao.apiName4C}(${ao.requestNameLow4C}Params);
+}
+#end
+
+#if(${ao.update4C} == 'on' && "$!reqCols" != "" && "$!resCols" != "")
+@RequestMapping(value = "/update${ao.apiName4C}")
+@ResponseBody
+@ApiOperation(value = "在${tableName}中更新${className}对象", httpMethod = "GET", notes = "请参考${ao.requestName4C}设置请求参数", tags = "${ao.apiGroup4C}")
+public JSONObject update${ao.apiName4C}(
+    #foreach($col in $resCols)
+    @ApiParam(value = "值: ${col.desc}", name = "${col.javaname}4Value") @RequestParam(required=false, name = "${col.javaname}4Value") ${col.javaType} ${col.javaname}4Value#if($velocityCount != $resCols.size()),#end#end,
+    #foreach($col in $reqCols)
+        #if(${col.operator} == 'in' || ${col.operator} == 'not in')
+        @ApiParam(required = true, value = "条件: (${col.operator})${col.desc}", name = "${col.javaname}4Condition") @RequestParam(name = "${col.javaname}4Condition") String ${col.javaname}4Condition#if($velocityCount != $reqCols.size()),#end
+        #else
+        @ApiParam(required = true, value = "条件: (${col.operator})${col.desc}", name = "${col.javaname}4Condition") @RequestParam(name = "${col.javaname}4Condition") ${col.javaType} ${col.javaname}4Condition#if($velocityCount != $reqCols.size()),#end
+        #end
+    #end
+) {
+    ${ao.requestName4C} ${ao.requestNameLow4C}Params = new ${ao.requestName4C}();
+//条件参数
+    #foreach($col in $reqCols)
+        #if(${col.operator} == 'in' || ${col.operator} == 'not in')
+        //in/not in子句參數，需要先转化为List，前台输入参数格式为"value1,value2,value3"
+            #if(${col.javaType} == 'Double')
+            List <${col.javaType}> ${col.javaname}List4Condition = new ArrayList <${col.javaType}>();
+            if(null != ${col.javaname}4Condition && !${col.javaname}4Condition.equals("")) {
+            for(String v : ${col.javaname}4Condition.split(",")) {
+                ${col.javaname}List4Condition.add(Double.parseDouble(v));
+            }
+                ${ao.requestNameLow4C}Params.set${col.upname}List4Condition(${col.javaname}List4Condition);
+            }
+            #elseif(${col.javaType} == 'Long')
+            List <${col.javaType}> ${col.javaname}List4Condition = new ArrayList <${col.javaType}>();
+            if(null != ${col.javaname}4Condition && !${col.javaname}4Condition.equals("")) {
+            for(String v : ${col.javaname}4Condition.split(",")) {
+                ${col.javaname}List4Condition.add(Long.parseLong(v));
+            }
+                ${ao.requestNameLow4C}Params.set${col.upname}List4Condition(${col.javaname}List4Condition);
+            }
+            #elseif(${col.javaType} == 'Integer')
+            List <${col.javaType}> ${col.javaname}List4Condition = new ArrayList <${col.javaType}>();
+            if(null != ${col.javaname}4Condition && !${col.javaname}4Condition.equals("")) {
+            for(String v : ${col.javaname}4Condition.split(",")) {
+                ${col.javaname}List4Condition.add(Integer.parseInt(v));
+            }
+                ${ao.requestNameLow4C}Params.set${col.upname}List4Condition(${col.javaname}List4Condition);
+            }
+            #elseif(${col.javaType} == 'String')
+            List <${col.javaType}> ${col.javaname}List4Condition = new ArrayList <${col.javaType}>();
+            if(null != ${col.javaname}4Condition && !${col.javaname}4Condition.equals("")) {
+            for(String v : ${col.javaname}4Condition.split(",")) {
+                ${col.javaname}List4Condition.add(v);
+            }
+                ${ao.requestNameLow4C}Params.set${col.upname}List4Condition(${col.javaname}List4Condition);
+            }
+            #end
+        #else
+            ${ao.requestNameLow4C}Params.set${col.upname}4Condition(${col.javaname}4Condition);
+        #end
+    #end
+//更新参数
+    #foreach($col in $resCols)
+        ${ao.requestNameLow4C}Params.set${col.upname}4Value(${col.javaname}4Value);
+    #end
+return ${ao.apiNameLow4C}Service.update${ao.apiName4C}(${ao.requestNameLow4C}Params);
+}
+#end
+}
+
+
+
+
+
+

@@ -1,0 +1,40 @@
+package ${projectPackageName}.${ppsc.pci.dpName}.${acsId};
+
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+import ${projectPackageName}.${ppsc.pci.epName}.${acsId}.${className};
+
+/**
+ *
+ * @desc 针对${className}进行增删改查
+ *
+ */
+ @Repository("${classLowName}Dao")
+public interface I${className}Dao {
+     #foreach($col in $colList)
+		#if(${col.pk} == "1")
+		#set($mainKey =${col.javaname})
+		#break
+		#end
+	#end
+    List<${className}> get${className}List();
+
+	List<${className}> get${className}(@Param("$mainKey")${objectPkJavaType} $mainKey);
+
+   	List<${className}> get${className}Ex(${className} ${classLowName}Params);
+
+	List<${className}> get${className}ListByPaging();
+
+	List<${className}> get${className}ExByPaging(${className} ${classLowName}Params);
+
+    void insert${className}(${className} ${classLowName}Params);
+
+	void insertBatch${className}(List<${className}> ${classLowName}Params);
+
+    void update${className}(${className} ${classLowName}Params);
+
+    void delete${className}(@Param("$mainKey")${objectPkJavaType} $mainKey);
+
+	void deleteBatch${className}(List<${objectPkJavaType}> ${mainKey}s);
+}

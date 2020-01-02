@@ -1,0 +1,35 @@
+package ${pps.pci.fpName}.${pps.pci.spName}.swagger;
+
+import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@Configuration
+@EnableWebMvc
+//@ComponentScan(basePackages ={"${pps.pci.fpName}.${pps.pci.spName}.${pps.pci.cpName}"})//启用Controller扫描,spring mvc配置文件中已经配置了，此处可以不需要再配置。
+@EnableSwagger2
+public class SwaggerConfig {
+
+	@Bean
+	public Docket buildDocket() {
+		return new Docket(DocumentationType.SWAGGER_2).apiInfo(buildApiInf()).select()
+				//.apis(RequestHandlerSelectors.basePackage("${pps.pci.fpName}.${pps.pci.spName}.${pps.pci.cpName}"))// controller路径
+				.paths(PathSelectors.any()).build();
+	}
+
+	private ApiInfo buildApiInf() {
+		return new ApiInfoBuilder().title("${pps.pci.projectDesc}API平台").termsOfServiceUrl("")
+				.description("集API在线测试 <a href='http://${pps.pci.swaggerServer}/${pps.pci.projectName}/druid/index.html' target='_blank'>[API性能监控页面]</a> 于一体")
+				.contact(new Contact("LBM", "", "liangbimiao@piesat.cn")).build();
+
+	}
+}

@@ -1,0 +1,85 @@
+##直接读取JavaBean中的数组对象并遍历打印出值。
+package ${ppn}.${ppsc.pci.epName}.${acsId};
+
+##如果存在in或not in子句，需要添加List数据类型
+#foreach($col in $reqCols)
+	#if(${col.operator} == 'in' || ${col.operator} == 'not in')
+    import java.util.List; #break
+	#end
+#end
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "${ao.requestName4C}", description = "${ao.requestDesc4C}")
+public class ${ao.requestName4C}{
+#if(${ao.update4C} == 'on' && "$!reqCols" != "" && "$!resCols" != "")
+//条件参数
+	#foreach($col in $reqCols)
+		#if(${col.operator} == 'in' || ${col.operator} == 'not in')
+        @ApiModelProperty(value = "${col.desc} for update")
+        private List<${col.javaType}> ${col.javaname}List4Condition;
+
+        public List <${col.javaType}> get${col.upname}List4Condition() {
+        return ${col.javaname}List4Condition;
+        }
+
+        public void set${col.upname}List4Condition(List<${col.javaType}> ${col.javaname}List4Condition) {
+        this.${col.javaname}List4Condition = ${col.javaname}List4Condition;
+        }
+		#else
+        @ApiModelProperty(value = "${col.desc} for update")
+        private ${col.javaType} ${col.javaname}4Condition;
+
+        public ${col.javaType} get${col.upname}4Condition() {
+        return ${col.javaname}4Condition;
+        }
+
+        public void set${col.upname}4Condition(${col.javaType} ${col.javaname}4Condition) {
+        this.${col.javaname}4Condition = ${col.javaname}4Condition;
+        }
+		#end
+	#end
+
+//更新参数
+	#foreach($col in $resCols)
+    @ApiModelProperty(value = "${col.desc} for update")
+    private ${col.javaType} ${col.javaname}4Value;
+
+    public ${col.javaType} get${col.upname}4Value() {
+    return ${col.javaname}4Value;
+    }
+
+    public void set${col.upname}4Value(${col.javaType} ${col.javaname}4Value) {
+    this.${col.javaname}4Value = ${col.javaname}4Value;
+    }
+	#end
+#end
+
+//除update外参数
+#foreach($col in $reqCols)
+	#if(${col.operator} == 'in' || ${col.operator} == 'not in')
+    @ApiModelProperty(value = "${col.desc}")
+    private List<${col.javaType}> ${col.javaname}List;
+
+    public List <${col.javaType}> get${col.upname}List() {
+    return ${col.javaname}List;
+    }
+
+    public void set${col.upname}List(List<${col.javaType}> ${col.javaname}List) {
+    this.${col.javaname}List = ${col.javaname}List;
+    }
+	#else
+    @ApiModelProperty(value = "${col.desc}")
+    private ${col.javaType} ${col.javaname};
+
+    public ${col.javaType} get${col.upname}() {
+    return ${col.javaname};
+    }
+
+    public void set${col.upname}(${col.javaType} ${col.javaname}) {
+    this.${col.javaname} = ${col.javaname};
+    }
+	#end
+#end
+}

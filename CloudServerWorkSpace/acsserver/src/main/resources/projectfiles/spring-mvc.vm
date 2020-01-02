@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/mvc
+	   http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	   http://www.springframework.org/schema/util
+	   http://www.springframework.org/schema/util/spring-util.xsd">
+
+	 <!-- Swagger API也依赖该项配置 -->
+	<context:component-scan base-package="${pps.pci.fpName}.${pps.pci.spName}.${pps.pci.cpName}" />
+	
+	<!-- 启用MVC注解 -->
+	<mvc:annotation-driven />
+	
+	 <!-- 启用MVC接口跨域配置，基于试探请求，因此每次请求会执行两次，这里也可以采用Web服务器跨域配置等 -->
+    <!-- 启用MVC接口跨域配置 -->
+    <mvc:cors>
+        <mvc:mapping path="/**"
+                     allowed-origins="*"
+                     allowed-methods="POST, GET, OPTIONS, DELETE, PUT"
+                     allowed-headers="*"
+                     allow-credentials="true"/>
+    </mvc:cors>
+	
+	<!-- ☆☆☆☆☆☆☆☆☆☆拦截器配置 (根据配置拦截，可根据需求取消配置注释)☆☆☆☆☆☆☆☆☆☆-->
+	<!-- <mvc:interceptors>-->
+		<!-- 使用 bean 定义一个 Interceptor，直接定义在 mvc:interceptors标签下面的 Interceptor将拦截所有的请求 -->
+		<!-- <bean class="${pps.pci.fpName}.${pps.pci.spName}.interceptor.CommonInterceptor" /> -->
+		<!-- <mvc:interceptor>-->
+			<!-- 可根据需求取消mvc:mapping标签所在行注释，开启对特定请求的拦截，目前所有的请求将拦截 -->
+			<!-- <mvc:mapping path="接口URL，如/dbcreator/getprojects，根据需求调整，比如只拦截用登录接口" /> -->
+			<!-- 定义在 mvc:interceptor下面的 Interceptor，表示对特定的请求进行拦截，特定的请求由mvc:mapping映射-->
+			<!-- <bean class="${pps.pci.fpName}.${pps.pci.spName}.interceptor.CommonInterceptor" />-->
+		<!-- </mvc:interceptor>-->
+	<!-- </mvc:interceptors>-->
+
+	<!-- 将 springSwaggerConfig加载到spring容器，属于Swagger1.0配置,2.0不需要 -->
+	<!-- <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig" /> -->
+	<!-- 将自定义的swagger配置类加载到spring容器 -->
+	<bean class="${pps.pci.fpName}.${pps.pci.spName}.swagger.SwaggerConfig" />
+
+    <!-- 对静态资源文件的访问,可通过SpringMVC自带的rerstful接口处理-->
+    <mvc:default-servlet-handler/>
+
+	<!-- 静态资源文件，不会被Spring MVC拦截，Swagger1.0与2.0均可以配置，两者静态站点不同，这与webjars有所不同，一个提供静态页面，另一个没有，并且访问地址也有所不同★ -->
+	<mvc:resources mapping="/swagger/**" location="/WEB-INF/swagger/" />
+	
+	<!--Swagger2.0配置-->
+	<!--Swagger资源重定向(仅作为后台使用不提供静态资源) -->
+    <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
+    <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
+	
+	<!-- <mvc:resources
+    mapping="/webjars/**"
+    location="classpath:/META-INF/resources/webjars/" /> -->
+
+	<bean name="jacksonObjectMapper"
+		class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
+		<property name="featuresToDisable">
+			<array>
+				<util:constant
+					static-field="com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS" />
+			</array>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+	</bean>
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean
+					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+
+					<property name="objectMapper" ref="jacksonObjectMapper" />
+
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="internalResourceViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="suffix" value=".html"></property>
+		<property name="prefix" value="/"></property>
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+	</bean>
+	
+	<!-- 文件上传配置 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 默认编码 -->
+		<property name="defaultEncoding" value="UTF-8" />
+		<!-- 上传文件大小限制为31M，31*1024*1024 -->
+		<property name="maxUploadSize" value="32505856" />
+		<!-- 内存中的最大值 -->
+		<property name="maxInMemorySize" value="4096" />
+	</bean>
+</beans>

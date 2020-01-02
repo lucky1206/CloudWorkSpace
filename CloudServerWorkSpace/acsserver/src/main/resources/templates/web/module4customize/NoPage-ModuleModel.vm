@@ -1,0 +1,21 @@
+/**
+ * Created by LBM on 2018/2/8.
+ */
+Ext.define('${ppsc.pci.projectName}.view.module.${ao.apiNameFullLow4C}.${ao.apiName4C}Model', {
+    extend: 'Ext.app.ViewModel',
+    alias: 'viewmodel.${ao.apiNameFullLow4C}',
+
+    stores: {
+        /*
+        A declaration of Ext.data.Store configurations that are first processed as binds to produce an effective
+        store configuration. For example:
+
+        users: {
+            model: '${ao.apiName4C}',
+            autoLoad: true
+        }
+        */
+    },
+
+    data: {}
+});

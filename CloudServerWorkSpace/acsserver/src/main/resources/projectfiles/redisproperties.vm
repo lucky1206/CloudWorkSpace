@@ -1,0 +1,26 @@
+#Redis连接信息,根据实际配置酌情调整
+#if("$!pps.dbci.redisAddress" == "")
+redis.host=localhost
+#else
+redis.host=${pps.dbci.redisAddress}
+#end
+
+#if("$!pps.dbci.redisPort" == "")
+redis.port=6379
+#else
+redis.port=${pps.dbci.redisPort}
+#end
+
+#if("$!pps.dbci.redisPassword" == "")
+redis.pass=redis123456
+#else
+redis.pass=${pps.dbci.redisPassword}
+#end
+
+redis.maxIdle=100
+redis.minIdle=8
+redis.testOnBorrow=true
+redis.maxTotal = 100
+redis.maxWaitMillis = -1
+redis.testOnReturn = true
+redis.dbIndex = 3

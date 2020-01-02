@@ -1,0 +1,38 @@
+/**
+ * Created by LBM on 2018/10/08.
+ */
+Ext.define('${pps.pci.projectName}.AppConfig', {
+    sys: {
+        title: '${pps.pci.projectDesc}',
+        initModule: 'test', /**test仅为示意配置，实际酌情修改*/
+        serviceUrl: 'http://${pps.pci.swaggerServer}/${pps.pci.projectName}/',
+        pageSize: 10
+    },
+	/**PS：请参考以下配置追加Web模块,示意配置可删除注释并酌情修改。*/
+	module: [
+		/**{
+			text: '分组1',
+			expanded: true,
+			children: [
+				{
+					text: '模块1',
+					routeId: 'test',
+					leaf: true
+				}
+			]
+		},
+		{
+			text: '分组2',
+			expanded: true,
+			children: [
+				{
+					text: '模块2',
+					routeId: 'test',
+					leaf: true
+				}
+			]
+		}*/
+	]
+});
+
+let conf = new ${pps.pci.projectName}.AppConfig();

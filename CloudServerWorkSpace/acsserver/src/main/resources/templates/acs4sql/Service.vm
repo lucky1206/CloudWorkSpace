@@ -1,0 +1,165 @@
+package ${ppn}.${ppsc.pci.servName}.${ppsc.pci.servNameImpl}.${acsId};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import ${ppn}.${ppsc.pci.servName}.${acsId}.I${ao.apiName}Service;
+import ${ppn}.${ppsc.pci.dpName}.${acsId}.I${ao.apiName}Dao;
+
+#if(${pagging} == true)
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+	#if("$!res" != "")
+    import java.util.List;
+    import ${ppn}.${ppsc.pci.epName}.${acsId}.${res.upperCaseName};
+	#end
+	#if("$!req" != "")
+    import ${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName};
+	#end
+#else
+	#if("$!res" != "")
+    import com.alibaba.fastjson.JSONArray;
+	#end
+	#if("$!req" != "")
+    import ${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName};
+	#end
+#end
+
+
+import com.alibaba.fastjson.JSONObject;
+
+##请求体、响应体均不为空
+#if("$!res" != "" && "$!req" != "")
+/**
+* @desc ${ao.apiDesc}
+*/
+@Service("${ao.apiNameLow}Service")
+@Transactional(rollbackFor = Exception.class)
+public class ${ao.apiName}Service implements I${ao.apiName}Service {
+@Autowired
+@Qualifier("${ao.apiNameLow}Dao")
+private I${ao.apiName}Dao ${ao.apiNameLow}Dao;
+
+	#if(${pagging} == true)
+    public JSONObject ${ao.apiNameLow}Handler(${req.upperCaseName} ${req.lowerCaseName}Params,Integer pageNo,Integer pageSize){
+    pageNo = pageNo == null?1:pageNo;
+    pageSize = pageSize == null?10:pageSize;
+
+    JSONObject jo = new JSONObject();
+    try {
+    PageHelper.startPage(pageNo, pageSize);
+    List<${res.upperCaseName}> list = ${ao.apiNameLow}Dao.${ao.apiNameLow}Handler(${req.lowerCaseName}Params);
+    //用PageInfo对结果进行包装
+    PageInfo<${res.upperCaseName}> page = new PageInfo<${res.upperCaseName}>(list);
+    jo.put("data", JSONObject.toJSON(page));
+    jo.put("status", 1);// 1-成功， 0-失败
+    jo.put("msg", "执行成功");
+    } catch (Exception e) {
+    jo.put("data", null);
+    jo.put("status", 0);// 1-成功， 0-失败
+    jo.put("msg", e.getMessage());// msg-失败信息
+    }
+
+    return jo;
+    }
+	#else
+    public JSONObject ${ao.apiNameLow}Handler(${req.upperCaseName} ${req.lowerCaseName}Params){
+    JSONObject jo = new JSONObject();
+    try {
+    jo.put("data", JSONObject.toJSON(${ao.apiNameLow}Dao.${ao.apiNameLow}Handler(${req.lowerCaseName}Params)));
+    jo.put("status", 1);// 1-成功， 0-失败
+    jo.put("msg", "执行成功");
+    } catch (Exception e) {
+    jo.put("data", null);
+    jo.put("status", 0);// 1-成功， 0-失败
+    jo.put("msg", e.getMessage());// msg-失败信息
+    }
+
+    return jo;
+
+    }
+	#end
+}
+
+##请求体为空，响应体不为空，这里是指不带条件的查询语句
+#elseif("$!res" != "" && "$!req" == "" && ${ao.apiOperation} == 'select')
+/**
+* @desc ${ao.apiDesc}
+*/
+@Service("${ao.apiNameLow}Service")
+@Transactional(rollbackFor = Exception.class)
+public class ${ao.apiName}Service implements I${ao.apiName}Service {
+@Autowired
+@Qualifier("${ao.apiNameLow}Dao")
+private I${ao.apiName}Dao ${ao.apiNameLow}Dao;
+
+	#if(${pagging} == true)
+    public JSONObject ${ao.apiNameLow}Handler(Integer pageNo,Integer pageSize){
+    pageNo = pageNo == null?1:pageNo;
+    pageSize = pageSize == null?10:pageSize;
+
+    JSONObject jo = new JSONObject();
+    try {
+    PageHelper.startPage(pageNo, pageSize);
+    List<${res.upperCaseName}> list = ${ao.apiNameLow}Dao.${ao.apiNameLow}Handler();
+    //用PageInfo对结果进行包装
+    PageInfo<${res.upperCaseName}> page = new PageInfo<${res.upperCaseName}>(list);
+    jo.put("data", JSONObject.toJSON(page));
+    jo.put("status", 1);// 1-成功， 0-失败
+    jo.put("msg", "执行成功");
+    } catch (Exception e) {
+    jo.put("data", null);
+    jo.put("status", 0);// 1-成功， 0-失败
+    jo.put("msg", e.getMessage());// msg-失败信息
+    }
+
+    return jo;
+
+    }
+	#else
+    public JSONObject ${ao.apiNameLow}Handler(){
+    JSONObject jo = new JSONObject();
+    try {
+    jo.put("data", JSONObject.toJSON(${ao.apiNameLow}Dao.${ao.apiNameLow}Handler()));
+    jo.put("status", 1);// 1-成功， 0-失败
+    jo.put("msg", "执行成功");
+    } catch (Exception e) {
+    jo.put("data", null);
+    jo.put("status", 0);// 1-成功， 0-失败
+    jo.put("msg", e.getMessage());// msg-失败信息
+    }
+
+    return jo;
+    }
+	#end
+}
+
+##请求体不为空，响应体为空
+#elseif("$!res" == "" && "$!req" != "")
+/**
+* @desc ${ao.apiDesc}
+*/
+@Service("${ao.apiNameLow}Service")
+@Transactional(rollbackFor = Exception.class)
+public class ${ao.apiName}Service implements I${ao.apiName}Service {
+@Autowired
+@Qualifier("${ao.apiNameLow}Dao")
+private I${ao.apiName}Dao ${ao.apiNameLow}Dao;
+
+public JSONObject ${ao.apiOperation}${req.upperCaseName}(${req.upperCaseName} ${req.lowerCaseName}Params){
+JSONObject jo = new JSONObject();
+try {
+	${ao.apiNameLow}Dao.${ao.apiOperation}${req.upperCaseName}(${req.lowerCaseName}Params);
+jo.put("status", 1);// 1-成功， 0-失败
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("status", 0);// 1-成功， 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
+
+return jo;
+}
+}
+#end

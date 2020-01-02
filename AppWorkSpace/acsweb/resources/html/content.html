@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>content</title>
+    <link rel="stylesheet" href="../libs/prism/prism.css">
+    <script src="../libs/jq3/jquery-3.3.1.min.js"></script>
+    <style>
+        pre {
+            outline: 1px solid #ccc;
+            padding: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+<pre id="fileContentId" class="language-java">
+    内容显示区域
+</pre>
+<script type="text/javascript">
+    function writeFileContent(content, type) {
+        if (content) {
+            let html;
+            if (type === 'xml') {
+                html = Prism.highlight(content, Prism.languages.xml, 'xml')
+            } else if (type === 'java') {
+                html = Prism.highlight(content, Prism.languages.java, 'java')
+            } else if (type === 'properties') {
+                html = Prism.highlight(content, Prism.languages.properties, 'properties')
+            } else if (type === 'html') {
+                html = Prism.highlight(content, Prism.languages.html, 'html')
+            } else if (type === 'jsp') {
+                html = Prism.highlight(content, Prism.languages.html, 'html')
+            } else if (type === 'sql') {
+                html = Prism.highlight(content, Prism.languages.sql, 'sql')
+            }
+            if (html)
+                $('#fileContentId').html(html);
+            else
+                $('#fileContentId').html('内容显示区域');
+        } else {
+            $('#fileContentId').html('内容显示区域');
+        }
+    }
+</script>
+<script src="../libs/prism/prism.js"></script>
+</body>
+</html>
