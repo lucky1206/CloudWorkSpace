@@ -1077,11 +1077,11 @@ public class DbUtils extends JdbcDaoSupport {
             return "";
         if ("VARCHAR".equalsIgnoreCase(pgtype) || "CIDR".equalsIgnoreCase(pgtype) || "INET".equalsIgnoreCase(pgtype) || "MACADDR".equalsIgnoreCase(pgtype) || "UUID".equalsIgnoreCase(pgtype))
             return "VARCHAR";
-        else if ("CHAR".equalsIgnoreCase(pgtype) || "NATIONAL CHARACTER".equalsIgnoreCase(pgtype) || "BPCHAR".equalsIgnoreCase(pgtype))
+        else if ("TEXT".equalsIgnoreCase(pgtype) || "CHAR".equalsIgnoreCase(pgtype) || "NATIONAL CHARACTER".equalsIgnoreCase(pgtype) || "BPCHAR".equalsIgnoreCase(pgtype))
             return "VARCHAR";
         else if ("BLOB".equalsIgnoreCase(pgtype))
             return "BLOB";
-        else if ("TEXT".equalsIgnoreCase(pgtype) || "NATIONAL CHARACTER VARYING".equalsIgnoreCase(pgtype) || "BYTEA".equalsIgnoreCase(pgtype))
+        else if ("NATIONAL CHARACTER VARYING".equalsIgnoreCase(pgtype) || "BYTEA".equalsIgnoreCase(pgtype))
             return "BLOB";
         else if ("INT".equalsIgnoreCase(pgtype) || "INT UNSIGNED".equalsIgnoreCase(pgtype) || "SERIAL".equalsIgnoreCase(pgtype) || "INT4".equalsIgnoreCase(pgtype))
             return "INTEGER";

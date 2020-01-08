@@ -148,18 +148,31 @@
         #if("$!schemaName" != "")
             <select id="get${className}List" resultMap="${className}ResultMap">
                 select #foreach($col in $colList)#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                date_format(${col.dbname},${dateFormatStr4MySQL}) as ${col.dbname}#if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${schemaName}.${tableName}
+                #if(${dbType} == 'postgresql')
+                    to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
+                #else
+                    date_format(${col.dbname},${dateFormatStr4MySQL}) as ${col.dbname}
+                #end #if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${schemaName}.${tableName}
             </select>
 
             <select id="get${className}ListByPaging" resultMap="${className}ResultMap">
                 select #foreach($col in $colList)#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                date_format(${col.dbname},${dateFormatStr4MySQL}) as ${col.dbname}#if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${schemaName}.${tableName}
+                #if(${dbType} == 'postgresql')
+                    to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
+                #else
+                    date_format(${col.dbname},${dateFormatStr4MySQL}) as ${col.dbname}
+                #end #if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${schemaName}.${tableName}
             </select>
 
             <select id="get${className}" parameterType="${pkJavaType}"
                     resultMap="${className}ResultMap">
                 select #foreach($col in $colList)
-                #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}#if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${schemaName}.${tableName}
+                #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
+                    #if(${dbType} == 'postgresql')
+                        to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
+                    #else
+                        date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}
+                    #end #if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${schemaName}.${tableName}
                 <where>
                     <if test=" ${mainKey} != null and ${mainKey} != '' ">
                         <![CDATA[ ${mainDbKey} = #{${mainKey}} ]]>
@@ -170,12 +183,21 @@
             <select id="get${className}Ex" parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${className}"
                     resultMap="${className}ResultMap">
                 select #foreach($col in $colList)
-                #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}#if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${schemaName}.${tableName}
+                #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
+                    #if(${dbType} == 'postgresql')
+                        to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
+                    #else
+                        date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}
+                    #end #if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${schemaName}.${tableName}
                 <where>
                     #foreach($col in $colList)
                         <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
                             #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} = str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL}) ]]>
+                                <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} = #if(${dbType} == 'postgresql')
+                                to_date(#{${col.javaname}}, ${dateFormatStr})
+                            #else
+                                str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
+                            #end ]]>
                             #else
                                 <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} = #{${col.javaname}} ]]>
                             #end
@@ -187,12 +209,21 @@
             <select id="get${className}ExByPaging" parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${className}"
                     resultMap="${className}ResultMap">
                 select #foreach($col in $colList)
-                #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}#if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${schemaName}.${tableName}
+                #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
+                    #if(${dbType} == 'postgresql')
+                        to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
+                    #else
+                        date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}
+                    #end #if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${schemaName}.${tableName}
                 <where>
                     #foreach($col in $colList)
                         <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
                             #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} = str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL}) ]]>
+                                <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} = #if(${dbType} == 'postgresql')
+                                to_date(#{${col.javaname}}, ${dateFormatStr})
+                            #else
+                                str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
+                            #end ]]>
                             #else
                                 <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} = #{${col.javaname}} ]]>
                             #end
@@ -208,7 +239,11 @@
                         ##记录主键不参与更新，主键pk=1,非主键pk=0
                         #if(${col.pk} == "0")
                             #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                <if test="${col.javaname} != null">${col.dbname}=str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})#if($velocityCount != $colList.size()),#end
+                                <if test="${col.javaname} != null">${col.dbname}=#if(${dbType} == 'postgresql')
+                                    to_date(#{${col.javaname}}, ${dateFormatStr})
+                                #else
+                                    str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
+                                #end #if($velocityCount != $colList.size()),#end
                                 </if>
                             #else
                                 <if test="${col.javaname} != null">${col.dbname}=#{${col.javaname}}#if($velocityCount != $colList.size()),#end
@@ -251,23 +286,41 @@
                 insert into ${schemaName}.${tableName}
                 (#foreach($col in $colList)${col.dbname}#if($velocityCount != $colList.size()),#end#end)
                 values
-                (#foreach($col in $colList)#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})#if($velocityCount != $colList.size()),#end#else#{${col.javaname}}#if($velocityCount != $colList.size()),#end#end#end)
+                (#foreach($col in $colList)#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
+                #if(${dbType} == 'postgresql')
+                    to_date(#{${col.javaname}}, ${dateFormatStr})
+                #else
+                    str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
+                #end #if($velocityCount != $colList.size()),#end#else#{${col.javaname}}#if($velocityCount != $colList.size()),#end#end#end)
             </insert>
         #else
             <select id="get${className}List" resultMap="${className}ResultMap">
                 select #foreach($col in $colList)#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                date_format(${col.dbname},${dateFormatStr4MySQL}) as ${col.dbname}#if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${tableName}
+                #if(${dbType} == 'postgresql')
+                    to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
+                #else
+                    date_format(${col.dbname},${dateFormatStr4MySQL}) as ${col.dbname}
+                #end #if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${tableName}
             </select>
 
             <select id="get${className}ListByPaging" resultMap="${className}ResultMap">
                 select #foreach($col in $colList)#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                date_format(${col.dbname},${dateFormatStr4MySQL}) as ${col.dbname}#if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${tableName}
+                #if(${dbType} == 'postgresql')
+                    to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
+                #else
+                    date_format(${col.dbname},${dateFormatStr4MySQL}) as ${col.dbname}
+                #end #if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${tableName}
             </select>
 
             <select id="get${className}" parameterType="${pkJavaType}"
                     resultMap="${className}ResultMap">
                 select #foreach($col in $colList)
-                #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}#if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${tableName}
+                #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
+                    #if(${dbType} == 'postgresql')
+                        to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
+                    #else
+                        date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}
+                    #end #if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${tableName}
                 <where>
                     <if test=" ${mainKey} != null and ${mainKey} != '' ">
                         <![CDATA[ ${mainDbKey} = #{${mainKey}} ]]>
@@ -278,12 +331,21 @@
             <select id="get${className}Ex" parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${className}"
                     resultMap="${className}ResultMap">
                 select #foreach($col in $colList)
-                #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}#if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${tableName}
+                #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
+                    #if(${dbType} == 'postgresql')
+                        to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
+                    #else
+                        date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}
+                    #end #if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${tableName}
                 <where>
                     #foreach($col in $colList)
                         <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
                             #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} = str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL}) ]]>
+                                <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} = #if(${dbType} == 'postgresql')
+                                to_date(#{${col.javaname}}, ${dateFormatStr})
+                            #else
+                                str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
+                            #end ]]>
                             #else
                                 <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} = #{${col.javaname}} ]]>
                             #end
@@ -295,12 +357,21 @@
             <select id="get${className}ExByPaging" parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${className}"
                     resultMap="${className}ResultMap">
                 select #foreach($col in $colList)
-                #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}#if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${tableName}
+                #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
+                    #if(${dbType} == 'postgresql')
+                        to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
+                    #else
+                        date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}
+                    #end #if($velocityCount != $colList.size()),#end#else${col.dbname}#if($velocityCount != $colList.size()),#end#end#end from ${tableName}
                 <where>
                     #foreach($col in $colList)
                         <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
                             #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} = str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL}) ]]>
+                                <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} = #if(${dbType} == 'postgresql')
+                                to_date(#{${col.javaname}}, ${dateFormatStr})
+                            #else
+                                str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
+                            #end ]]>
                             #else
                                 <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} = #{${col.javaname}} ]]>
                             #end
@@ -316,7 +387,11 @@
                         ##记录主键不参与更新，主键pk=1,非主键pk=0
                         #if(${col.pk} == "0")
                             #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                <if test="${col.javaname} != null">${col.dbname}=str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})#if($velocityCount != $colList.size()),#end
+                                <if test="${col.javaname} != null">${col.dbname}=#if(${dbType} == 'postgresql')
+                                    to_date(#{${col.javaname}}, ${dateFormatStr})
+                                #else
+                                    str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
+                                #end #if($velocityCount != $colList.size()),#end
                                 </if>
                             #else
                                 <if test="${col.javaname} != null">${col.dbname}=#{${col.javaname}}#if($velocityCount != $colList.size()),#end
@@ -359,7 +434,12 @@
                 insert into ${tableName}
                 (#foreach($col in $colList)${col.dbname}#if($velocityCount != $colList.size()),#end#end)
                 values
-                (#foreach($col in $colList)#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})#if($velocityCount != $colList.size()),#end#else#{${col.javaname}}#if($velocityCount != $colList.size()),#end#end#end)
+                (#foreach($col in $colList)#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
+                #if(${dbType} == 'postgresql')
+                    to_date(#{${col.javaname}}, ${dateFormatStr})
+                #else
+                    str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
+                #end #if($velocityCount != $colList.size()),#end#else#{${col.javaname}}#if($velocityCount != $colList.size()),#end#end#end)
             </insert>
         #end
 	#end
@@ -380,7 +460,7 @@
             </foreach>
             select 1 from dual
         </insert>
-	#elseif(${dbType} == 'mysql')
+	#elseif(${dbType} == 'mysql' || ${dbType} == 'postgresql')
         <insert id="insertBatch${className}" parameterType="java.util.List" useGeneratedKeys="false"
                 keyProperty="$mainDbKey">
             insert into #if("$!schemaName" != "")${schemaName}.#end${tableName}
@@ -389,7 +469,11 @@
             <foreach item="item" collection="list" open="" close="" separator=",">
                 (#foreach($col in $colList)
 				#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                    str_to_date(#{item.${col.javaname}}, ${dateFormatStr4MySQL})#if($velocityCount != $colList.size()),#end
+                    #if(${dbType} == 'postgresql')
+                        to_date(#{item.${col.javaname}}, ${dateFormatStr})
+                    #else
+                        str_to_date(#{item.${col.javaname}}, ${dateFormatStr4MySQL})
+                    #end #if($velocityCount != $colList.size()),#end
 				#else
                     #{item.${col.javaname}}#if($velocityCount != $colList.size()),#end
 				#end

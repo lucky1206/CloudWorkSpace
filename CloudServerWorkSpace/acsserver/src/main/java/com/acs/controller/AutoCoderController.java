@@ -437,6 +437,9 @@ public class AutoCoderController {
                 m.put("dbType", "oracle");
             } else if (dbType.toLowerCase().indexOf("mysql") > -1) {
                 m.put("dbType", "mysql");
+            } else if (dbType.toLowerCase().indexOf("postgresql") > -1) {
+                m.put("dbType", "postgresql");
+                //m.put("dbType", "mysql");//todo 20191008----这里完全按照MySQL的接口方式生成PostgreSQL接口，是否完全兼容待验证，后续逐步完善。
             }
 
             // 6.X **************根据模版创建Web工程其他必要的文件，如App.js等***********************
@@ -1653,7 +1656,9 @@ public class AutoCoderController {
                                         for (int k = 0; k < tbsArray.size(); k++) {
                                             JSONObject tbObj = tbsArray.getJSONObject(k);
                                             String tbName = tbObj.getString("dbtablename");
-                                            if (tbName.equalsIgnoreCase(tn)) {
+                                            String tbSchema = tbObj.getString("schemaname");
+                                            String tbNameInSchema = tbSchema != null ? tbSchema + "." + tbName : tbName;
+                                            if (tbName.equalsIgnoreCase(tn) || tbNameInSchema.equalsIgnoreCase(tn)) {
                                                 JSONArray cols = tbObj.getJSONArray("columns");// 当前表所有字段信息
                                                 for (int m = 0; m < cols.size(); m++) {
                                                     JSONObject colObj = cols.getJSONObject(m);
@@ -1765,7 +1770,9 @@ public class AutoCoderController {
                                         for (int k = 0; k < tbsArray.size(); k++) {
                                             JSONObject tbObj = tbsArray.getJSONObject(k);
                                             String tbName = tbObj.getString("dbtablename");
-                                            if (tbName.equalsIgnoreCase(tn)) {
+                                            String tbSchema = tbObj.getString("schemaname");
+                                            String tbNameInSchema = tbSchema != null ? tbSchema + "." + tbName : tbName;
+                                            if (tbName.equalsIgnoreCase(tn) || tbNameInSchema.equalsIgnoreCase(tn)) {
                                                 JSONArray cols = tbObj.getJSONArray("columns");// 当前表所有字段信息
                                                 for (int m = 0; m < cols.size(); m++) {
                                                     JSONObject colObj = cols.getJSONObject(m);
@@ -1873,7 +1880,9 @@ public class AutoCoderController {
                                             for (int k = 0; k < tbsArray.size(); k++) {
                                                 JSONObject tbObj = tbsArray.getJSONObject(k);
                                                 String tbName = tbObj.getString("dbtablename");
-                                                if (tbName.equalsIgnoreCase(tn)) {
+                                                String tbSchema = tbObj.getString("schemaname");
+                                                String tbNameInSchema = tbSchema != null ? tbSchema + "." + tbName : tbName;
+                                                if (tbName.equalsIgnoreCase(tn) || tbNameInSchema.equalsIgnoreCase(tn)) {
                                                     JSONArray cols = tbObj.getJSONArray("columns");// 当前表所有字段信息
                                                     if (!fn.equalsIgnoreCase("*")) {
                                                         // 不含通配符，仅需要匹配当前字段

@@ -78,6 +78,10 @@
             <property name="validationQuery">
                 <value>select * from dual</value>
             </property>
+        #elseif(${dbType} == 'postgresql')
+            <property name="validationQuery">
+                <value>select version()</value>
+            </property>
 		#end
 
         <!--
