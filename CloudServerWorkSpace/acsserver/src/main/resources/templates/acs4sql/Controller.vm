@@ -60,8 +60,8 @@ private I${ao.apiName}Service ${ao.apiNameLow}Service;
 @ApiOperation(value = "${ao.apiOperation} ${res.upperCaseName} 对象", httpMethod = "GET", notes = "${ao.apiOperation} ${res.upperCaseName}对象", response = ${res.upperCaseName}.class, responseContainer = "List", tags = "${ao.apiGroup}")
     #if(${pagging} == true) ##是否需要查询分页
     public JSONObject ${ao.apiNameLow}Handler(
-    @ApiParam(required=true, value = "(=)分页查询序号", name = "pageNo") @RequestParam(name = "pageNo") Integer pageNo,
-    @ApiParam(required=true, value = "(=)分页查询尺寸", name = "pageSize") @RequestParam(name = "pageSize") Integer pageSize,
+    @ApiParam(required=true, value = "(=)分页查询序号", name = "pageNo", example = "0") @RequestParam(name = "pageNo") Integer pageNo,
+    @ApiParam(required=true, value = "(=)分页查询尺寸", name = "pageSize", example = "0") @RequestParam(name = "pageSize") Integer pageSize,
         #foreach($col in $reqCols)
             #if(${col.in} == true)
             @ApiParam(value = "(${col.reqBody})${col.desc}", name = "${col.javaname}") @RequestParam(required=false, name = "${col.javaname}") String ${col.javaname}#if($velocityCount != $reqCols.size()),#end
@@ -184,8 +184,8 @@ private I${ao.apiName}Service ${ao.apiNameLow}Service;
 @ApiOperation(value = "${ao.apiOperation} ${res.upperCaseName}对象", httpMethod = "GET", notes = "${ao.apiOperation} ${res.upperCaseName}对象", response = ${res.upperCaseName}.class, responseContainer = "List", tags = "${ao.apiGroup}")
     #if(${pagging} == true)
     public JSONObject ${ao.apiNameLow}Handler(
-    @ApiParam(required=true, value = "(=))分页查询序号", name = "pageNo") @RequestParam(name = "pageNo") Integer pageNo,
-    @ApiParam(required=true, value = "(=))分页查询尺寸", name = "pageSize") @RequestParam(name = "pageSize") Integer pageSize) {
+    @ApiParam(required=true, value = "(=))分页查询序号", name = "pageNo", example = "0") @RequestParam(name = "pageNo") Integer pageNo,
+    @ApiParam(required=true, value = "(=))分页查询尺寸", name = "pageSize", example = "0") @RequestParam(name = "pageSize") Integer pageSize) {
     JSONObject json = ${ao.apiNameLow}Service.${ao.apiNameLow}Handler(pageNo, pageSize);
     return json;
     }

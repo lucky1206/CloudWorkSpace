@@ -53,8 +53,8 @@ public JSONObject get${className}List() {
 @ResponseBody
 @ApiOperation(value = "分页查询全部${className}对象", httpMethod = "GET", notes = "分页查询全部${className}对象", response = ${className}.class, responseContainer = "List", tags = "${tableName}")
 public JSONObject get${className}ListByPaging(
-@ApiParam(required=true, value = "(=)分页查询序号", name = "pageNo") @RequestParam(name = "pageNo") Integer pageNo,
-@ApiParam(required=true, value = "(=)分页查询尺寸", name = "pageSize") @RequestParam(name = "pageSize") Integer pageSize) {
+@ApiParam(required=true, value = "(=)分页查询序号", name = "pageNo", example = "0") @RequestParam(name = "pageNo") Integer pageNo,
+@ApiParam(required=true, value = "(=)分页查询尺寸", name = "pageSize", example = "0") @RequestParam(name = "pageSize") Integer pageSize) {
 return ${classLowName}Service.get${className}ListByPaging(pageNo, pageSize);
 }
 
@@ -71,8 +71,8 @@ public JSONObject get${className}(
 @ResponseBody
 @ApiOperation(value = "根据条件分页查询${className}对象", httpMethod = "GET", notes = "根据条件分页查询${className}对象", response = ${className}.class, responseContainer = "List", tags = "${tableName}")
 public JSONObject get${className}ExByPaging(
-	@ApiParam(required=true, value = "(=)分页查询序号", name = "pageNo") @RequestParam(name = "pageNo") Integer pageNo,
-	@ApiParam(required=true, value = "(=)分页查询尺寸", name = "pageSize") @RequestParam(name = "pageSize") Integer pageSize,
+	@ApiParam(required=true, value = "(=)分页查询序号", name = "pageNo", example = "0") @RequestParam(name = "pageNo") Integer pageNo,
+	@ApiParam(required=true, value = "(=)分页查询尺寸", name = "pageSize", example = "0") @RequestParam(name = "pageSize") Integer pageSize,
 	#foreach($col in $colList)
     	@ApiParam(value = "(=)${col.desc}", name = "${col.javaname}") @RequestParam(required=false, name = "${col.javaname}") ${col.javaType} ${col.javaname}#if($velocityCount != $colList.size()),#end
 	#end
