@@ -84,13 +84,13 @@ Ext.define('acsweb.view.entitymanager.EntityManager', {
                         '->',
                         {
                             xtype: 'button',
-                            iconCls:'cloud icon-table',
+                            iconCls: 'cloud icon-table',
                             text: '加载库表信息<b style="color: red">（必须★）</b>',
                             handler: 'loadDBTables'
                         },
                         {
                             xtype: 'button',
-                            iconCls:'cloud icon-more',
+                            iconCls: 'cloud icon-more',
                             text: '当库表结构更新时刷新<b style="color: red">（执行时间长，请耐心等待☺）</b>',
                             tooltip: '当数据库表结构发生变化请刷新缓存，执行时间长，请耐心等待！吸根烟吧！',
                             handler: 'refreshDBTables'
@@ -336,6 +336,11 @@ Ext.define('acsweb.view.entitymanager.EntityManager', {
                             xtype: 'form',
                             margin: '0 0 0 0',
                             flex: 2,
+                            layout: {
+                                type: 'vbox',
+                                pack: 'start',
+                                align: 'stretch'
+                            },
                             title: 'SQL解译',
                             border: true,
                             ui: 'sql-panel-ui',
@@ -509,7 +514,8 @@ Ext.define('acsweb.view.entitymanager.EntityManager', {
                                 },
                                 {
                                     xtype: 'textarea',
-                                    height: 200,
+                                    // height: 200,
+                                    flex: 1,
                                     allowBlank: false,
                                     fieldLabel: 'SQL语句',
                                     name: 'sqlText',
@@ -531,6 +537,7 @@ Ext.define('acsweb.view.entitymanager.EntityManager', {
                                     id: 'isModuleCheckId',
                                     name: 'isModuling',
                                     checked: true,
+                                    margin: '0 0 0 10',
                                     boxLabel: '启用JS模块'
                                 },
                                 {
@@ -544,7 +551,7 @@ Ext.define('acsweb.view.entitymanager.EntityManager', {
                                     xtype: 'checkboxfield',
                                     id: 'isPageCheckId',
                                     name: 'isPaging',
-                                    margin: '0 0 0 10',
+                                    margin: '0 10 0 10',
                                     boxLabel: '启用查询分页'
                                 },
                                 {

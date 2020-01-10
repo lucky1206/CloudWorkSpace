@@ -1,7 +1,7 @@
 /**
  * Created by LBM on 2018/10/08.
  */
-const webEnvironment = true;//内网为true,外网为false
+const webEnvironment = false;//内网为true,外网为false
 Ext.define('acsweb.AppConfig', {
     /*serviceUrl: webEnvironment ? 'http://10.1.4.22:8098/acsserver/' : 'http://weixin.piesat.cn/acsserver/',
     //GeoServer站点地址

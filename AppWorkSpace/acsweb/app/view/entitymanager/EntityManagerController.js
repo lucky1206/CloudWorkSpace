@@ -26,14 +26,15 @@ Ext.define('acsweb.view.entitymanager.EntityManagerController', {
     onDeleteApiGroupList: function () {
         let groupList = this.lookupReference('apiGroupListRef');
         let groupName = groupList.getValue();
-        if(groupName){
+        if (groupName) {
             let me = this;
             let agcForm = this.lookupReference('sqlFormRef');
             let mask = ajax.fn.showMask(agcForm, '接口分组删除中...');
 
             let params = {
-                groupName:groupName
+                groupName: groupName
             };
+
             //执行成功回调
             function successCallBack(response, opts) {
                 me.onLoadApiGroupList();
@@ -183,8 +184,7 @@ Ext.define('acsweb.view.entitymanager.EntityManagerController', {
                 isModuling: Ext.getCmp('isModuleCheckId1').getValue(), //是否生成JS模块，默认开启
                 isManaging: Ext.getCmp('isManageCheckId1').getValue() //是否启用表单管理,如增删改，默认不开启
             }, 'POST', conf.serviceUrl + 'coding/coding4onekey', successCallBack, failureCallBack);
-        }
-        else {
+        } else {
             eml.setHtml('请先完成前置操作！');
         }
     },
