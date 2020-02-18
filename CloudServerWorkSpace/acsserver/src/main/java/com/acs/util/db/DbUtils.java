@@ -996,7 +996,7 @@ public class DbUtils extends JdbcDaoSupport {
             return "BIT";
         else if ("BIGINT".equalsIgnoreCase(mysqltype) || "BIGINT UNSIGNED".equalsIgnoreCase(mysqltype))
             return "BIGINT";
-        else if ("FLOAT".equalsIgnoreCase(mysqltype))
+        else if ("FLOAT".equalsIgnoreCase(mysqltype)  || "FLOAT UNSIGNED".equalsIgnoreCase(mysqltype))
             return "FLOAT";
         else if ("DOUBLE".equalsIgnoreCase(mysqltype))
             return "DOUBLE";
@@ -1046,7 +1046,7 @@ public class DbUtils extends JdbcDaoSupport {
             return Boolean.class.getSimpleName();
         else if ("BIGINT".equalsIgnoreCase(mysqltype) || "BIGINT UNSIGNED".equalsIgnoreCase(mysqltype))
             return Long.class.getSimpleName();
-        else if ("FLOAT".equalsIgnoreCase(mysqltype))
+        else if ("FLOAT".equalsIgnoreCase(mysqltype) || "FLOAT UNSIGNED".equalsIgnoreCase(mysqltype))
             return Float.class.getSimpleName();
         else if ("DOUBLE".equalsIgnoreCase(mysqltype))
             return Double.class.getSimpleName();
@@ -1083,11 +1083,11 @@ public class DbUtils extends JdbcDaoSupport {
             return "BLOB";
         else if ("NATIONAL CHARACTER VARYING".equalsIgnoreCase(pgtype) || "BYTEA".equalsIgnoreCase(pgtype))
             return "BLOB";
-        else if ("INT".equalsIgnoreCase(pgtype) || "INT UNSIGNED".equalsIgnoreCase(pgtype) || "SERIAL".equalsIgnoreCase(pgtype) || "INT4".equalsIgnoreCase(pgtype))
+        else if ("INT".equalsIgnoreCase(pgtype) || "INT UNSIGNED".equalsIgnoreCase(pgtype) || "SERIAL".equalsIgnoreCase(pgtype) || "INT2".equalsIgnoreCase(pgtype) || "INT4".equalsIgnoreCase(pgtype) || "INT8".equalsIgnoreCase(pgtype))
             return "INTEGER";
         else if ("INTEGER".equalsIgnoreCase(pgtype))
             return "INTEGER";
-        else if ("TINYINT".equalsIgnoreCase(pgtype) || "TINYINT UNSIGNED".equalsIgnoreCase(pgtype) || "BOOLEAN".equalsIgnoreCase(pgtype))
+        else if ("TINYINT".equalsIgnoreCase(pgtype) || "TINYINT UNSIGNED".equalsIgnoreCase(pgtype))
             return "TINYINT";
         else if ("SMALLINT".equalsIgnoreCase(pgtype) || "SMALLSERIAL".equalsIgnoreCase(pgtype))
             return "SMALLINT";
@@ -1097,7 +1097,7 @@ public class DbUtils extends JdbcDaoSupport {
             return "BIT";
         else if ("BIGINT".equalsIgnoreCase(pgtype) || "BIGINT UNSIGNED".equalsIgnoreCase(pgtype) || "BIGSERIAL".equalsIgnoreCase(pgtype))
             return "BIGINT";
-        else if ("FLOAT".equalsIgnoreCase(pgtype) || "REAL".equalsIgnoreCase(pgtype))
+        else if ("FLOAT".equalsIgnoreCase(pgtype) || "FLOAT4".equalsIgnoreCase(pgtype) || "FLOAT8".equalsIgnoreCase(pgtype) || "REAL".equalsIgnoreCase(pgtype))
             return "FLOAT";
         else if ("DOUBLE".equalsIgnoreCase(pgtype) || "DOUBLE PRECISION".equalsIgnoreCase(pgtype))
             return "DOUBLE";
@@ -1129,13 +1129,13 @@ public class DbUtils extends JdbcDaoSupport {
             return String.class.getSimpleName();
         else if ("CIDR".equalsIgnoreCase(pgtype) || "INET".equalsIgnoreCase(pgtype) || "MACADDR".equalsIgnoreCase(pgtype) || "BOX".equalsIgnoreCase(pgtype) || "CIRCLE".equalsIgnoreCase(pgtype) || "INTERVAL".equalsIgnoreCase(pgtype) || "LINE".equalsIgnoreCase(pgtype) || "LSEG".equalsIgnoreCase(pgtype) || "PATH".equalsIgnoreCase(pgtype) || "POINT".equalsIgnoreCase(pgtype) || "POLYGON".equalsIgnoreCase(pgtype) || "VARBIT".equalsIgnoreCase(pgtype) || "TXID_SNAPSHOT".equalsIgnoreCase(pgtype))
             return String.class.getSimpleName();
-        else if ("CHAR".equalsIgnoreCase(pgtype) || "NATIONAL CHARACTER".equalsIgnoreCase(pgtype) || "VARCHAR".equalsIgnoreCase(pgtype) || "NATIONAL CHARACTER VARYING".equalsIgnoreCase(pgtype))
+        else if ("CHAR".equalsIgnoreCase(pgtype) || "NATIONAL CHARACTER".equalsIgnoreCase(pgtype)|| "NATIONAL CHARACTER VARYING".equalsIgnoreCase(pgtype))
             return String.class.getSimpleName();
         else if ("BLOB".equalsIgnoreCase(pgtype) || "BYTEA".equalsIgnoreCase(pgtype))
             return Byte[].class.getSimpleName();
         else if ("TEXT".equalsIgnoreCase(pgtype))
             return String.class.getSimpleName();
-        else if ("INT".equalsIgnoreCase(pgtype) || "INT UNSIGNED".equalsIgnoreCase(pgtype) || "INT2".equalsIgnoreCase(pgtype) || "INT4".equalsIgnoreCase(pgtype) || "INTEGER".equalsIgnoreCase(pgtype))
+        else if ("INT".equalsIgnoreCase(pgtype) || "INT UNSIGNED".equalsIgnoreCase(pgtype) || "INT2".equalsIgnoreCase(pgtype) || "INT4".equalsIgnoreCase(pgtype) || "INT8".equalsIgnoreCase(pgtype) || "INTEGER".equalsIgnoreCase(pgtype))
             return Integer.class.getSimpleName();
         else if ("TINYINT".equalsIgnoreCase(pgtype) || "TINYINT UNSIGNED".equalsIgnoreCase(pgtype))
             return Short.class.getSimpleName();
@@ -1145,9 +1145,9 @@ public class DbUtils extends JdbcDaoSupport {
             return Integer.class.getSimpleName();
         else if ("BIT".equalsIgnoreCase(pgtype) || "BOOL".equalsIgnoreCase(pgtype))
             return Boolean.class.getSimpleName();
-        else if ("BIGINT".equalsIgnoreCase(pgtype) || "BIGINT UNSIGNED".equalsIgnoreCase(pgtype) || "INT8".equalsIgnoreCase(pgtype) || "BIGSERIAL".equalsIgnoreCase(pgtype))
+        else if ("BIGINT".equalsIgnoreCase(pgtype) || "BIGINT UNSIGNED".equalsIgnoreCase(pgtype) || "BIGSERIAL".equalsIgnoreCase(pgtype))
             return Long.class.getSimpleName();
-        else if ("FLOAT".equalsIgnoreCase(pgtype) || "FLOAT4".equalsIgnoreCase(pgtype) || "REAL".equalsIgnoreCase(pgtype))
+        else if ("FLOAT".equalsIgnoreCase(pgtype) || "FLOAT4".equalsIgnoreCase(pgtype) || "FLOAT8".equalsIgnoreCase(pgtype) || "REAL".equalsIgnoreCase(pgtype))
             return Float.class.getSimpleName();
         else if ("DOUBLE".equalsIgnoreCase(pgtype) || "DOUBLE PRECISION".equalsIgnoreCase(pgtype))
             return Double.class.getSimpleName();

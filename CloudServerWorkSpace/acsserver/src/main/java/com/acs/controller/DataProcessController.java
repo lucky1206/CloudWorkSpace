@@ -13,6 +13,8 @@ import io.swagger.annotations.ApiParam;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.gdal.gdal.gdal;
+import org.gdal.ogr.ogr;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
