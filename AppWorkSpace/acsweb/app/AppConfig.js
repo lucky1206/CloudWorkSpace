@@ -1,18 +1,18 @@
 /**
  * Created by LBM on 2018/10/08.
  */
-const webEnvironment = false;//内网为true,外网为false
+const webEnvironment = true;//内网为true,外网为false
 Ext.define('acsweb.AppConfig', {
     /*serviceUrl: webEnvironment ? 'http://10.1.4.22:8098/acsserver/' : 'http://weixin.piesat.cn/acsserver/',
     //GeoServer站点地址
     mapServerUrl: webEnvironment ? 'http://10.1.4.22:8088/geoserver/web/' : 'http://weixin.piesat.cn/geoserver/web/',
     //GeoServer服务地址根路径
     geoMapRootUrl: webEnvironment ? 'http://10.1.4.22:8088/geoserver/gwc/service/wmts' : 'http://weixin.piesat.cn/geoserver/gwc/service/wmts',*/
-    serviceUrl: webEnvironment ? 'http://localhost:8090/acsserver/' : 'http://114.116.231.97:8080/acsserver/',
+    serviceUrl: webEnvironment ? 'http://localhost:8080/acsserver/' : 'http://114.116.231.97:8080/acsserver/',
     //GeoServer站点地址
-    mapServerUrl: webEnvironment ? 'http://114.116.231.97:6080/geoserver/web/' : 'http://114.116.231.97:6080/geoserver/web/',
+    mapServerUrl: webEnvironment ? 'http://localhost:6080/geoserver/web/' : 'http://114.116.231.97:6080/geoserver/web/',
     //GeoServer服务地址根路径
-    geoMapRootUrl: webEnvironment ? 'http://114.116.231.97:6080/geoserver/gwc/service/wmts' : 'http://114.116.231.97:6080/geoserver/gwc/service/wmts',
+    geoMapRootUrl: webEnvironment ? 'http://localhost:6080/geoserver/gwc/service/wmts' : 'http://114.116.231.97:6080/geoserver/gwc/service/wmts',
     //行政区划边界矢量服务
     regionLayerName: 'MyVectorSpace:CHINA_province_region2000',
     //全国瓦片加载范围

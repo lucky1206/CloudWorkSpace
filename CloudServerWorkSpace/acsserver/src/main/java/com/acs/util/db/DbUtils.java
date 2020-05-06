@@ -6,7 +6,7 @@ import com.acs.model.database.DBConnectInfo;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -980,7 +980,8 @@ public class DbUtils extends JdbcDaoSupport {
             return "VARCHAR";
         else if ("BLOB".equalsIgnoreCase(mysqltype) || "GEOMETRY".equalsIgnoreCase(mysqltype))
             return "BLOB";
-        else if ("TEXT".equalsIgnoreCase(mysqltype) || "MEDIUMTEXT".equalsIgnoreCase(mysqltype))
+        else if ("TEXT".equalsIgnoreCase(mysqltype) || "MEDIUMTEXT".equalsIgnoreCase(mysqltype)
+                || "LONGTEXT".equalsIgnoreCase(mysqltype))
             return "BLOB";
         else if ("INT".equalsIgnoreCase(mysqltype) || "INT UNSIGNED".equalsIgnoreCase(mysqltype))
             return "INTEGER";
@@ -996,7 +997,7 @@ public class DbUtils extends JdbcDaoSupport {
             return "BIT";
         else if ("BIGINT".equalsIgnoreCase(mysqltype) || "BIGINT UNSIGNED".equalsIgnoreCase(mysqltype))
             return "BIGINT";
-        else if ("FLOAT".equalsIgnoreCase(mysqltype)  || "FLOAT UNSIGNED".equalsIgnoreCase(mysqltype))
+        else if ("FLOAT".equalsIgnoreCase(mysqltype) || "FLOAT UNSIGNED".equalsIgnoreCase(mysqltype))
             return "FLOAT";
         else if ("DOUBLE".equalsIgnoreCase(mysqltype))
             return "DOUBLE";
@@ -1030,7 +1031,7 @@ public class DbUtils extends JdbcDaoSupport {
             return String.class.getSimpleName();
         else if ("BLOB".equalsIgnoreCase(mysqltype) || "GEOMETRY".equalsIgnoreCase(mysqltype))
             return Byte[].class.getSimpleName();
-        else if ("TEXT".equalsIgnoreCase(mysqltype) || "MEDIUMTEXT".equalsIgnoreCase(mysqltype))
+        else if ("TEXT".equalsIgnoreCase(mysqltype) || "MEDIUMTEXT".equalsIgnoreCase(mysqltype) || "LONGTEXT".equalsIgnoreCase(mysqltype))
             return String.class.getSimpleName();
         else if ("INT".equalsIgnoreCase(mysqltype) || "INT UNSIGNED".equalsIgnoreCase(mysqltype))
             return Integer.class.getSimpleName();
@@ -1077,7 +1078,7 @@ public class DbUtils extends JdbcDaoSupport {
             return "";
         if ("VARCHAR".equalsIgnoreCase(pgtype) || "CIDR".equalsIgnoreCase(pgtype) || "INET".equalsIgnoreCase(pgtype) || "MACADDR".equalsIgnoreCase(pgtype) || "UUID".equalsIgnoreCase(pgtype))
             return "VARCHAR";
-        else if ("TEXT".equalsIgnoreCase(pgtype) || "CHAR".equalsIgnoreCase(pgtype) || "NATIONAL CHARACTER".equalsIgnoreCase(pgtype) || "BPCHAR".equalsIgnoreCase(pgtype))
+        else if ("TEXT".equalsIgnoreCase(pgtype) || "CHAR".equalsIgnoreCase(pgtype) || "NATIONAL CHARACTER".equalsIgnoreCase(pgtype) || "BPCHAR".equalsIgnoreCase(pgtype) || "GEOMETRY".equalsIgnoreCase(pgtype))
             return "VARCHAR";
         else if ("BLOB".equalsIgnoreCase(pgtype))
             return "BLOB";
@@ -1127,9 +1128,9 @@ public class DbUtils extends JdbcDaoSupport {
             return "";
         if ("VARCHAR".equalsIgnoreCase(pgtype) || "BPCHAR".equalsIgnoreCase(pgtype))
             return String.class.getSimpleName();
-        else if ("CIDR".equalsIgnoreCase(pgtype) || "INET".equalsIgnoreCase(pgtype) || "MACADDR".equalsIgnoreCase(pgtype) || "BOX".equalsIgnoreCase(pgtype) || "CIRCLE".equalsIgnoreCase(pgtype) || "INTERVAL".equalsIgnoreCase(pgtype) || "LINE".equalsIgnoreCase(pgtype) || "LSEG".equalsIgnoreCase(pgtype) || "PATH".equalsIgnoreCase(pgtype) || "POINT".equalsIgnoreCase(pgtype) || "POLYGON".equalsIgnoreCase(pgtype) || "VARBIT".equalsIgnoreCase(pgtype) || "TXID_SNAPSHOT".equalsIgnoreCase(pgtype))
+        else if ("CIDR".equalsIgnoreCase(pgtype) || "INET".equalsIgnoreCase(pgtype) || "MACADDR".equalsIgnoreCase(pgtype) || "BOX".equalsIgnoreCase(pgtype) || "CIRCLE".equalsIgnoreCase(pgtype) || "INTERVAL".equalsIgnoreCase(pgtype) || "LINE".equalsIgnoreCase(pgtype) || "LSEG".equalsIgnoreCase(pgtype) || "PATH".equalsIgnoreCase(pgtype) || "POINT".equalsIgnoreCase(pgtype) || "POLYGON".equalsIgnoreCase(pgtype) || "VARBIT".equalsIgnoreCase(pgtype) || "TXID_SNAPSHOT".equalsIgnoreCase(pgtype) || "GEOMETRY".equalsIgnoreCase(pgtype))
             return String.class.getSimpleName();
-        else if ("CHAR".equalsIgnoreCase(pgtype) || "NATIONAL CHARACTER".equalsIgnoreCase(pgtype)|| "NATIONAL CHARACTER VARYING".equalsIgnoreCase(pgtype))
+        else if ("CHAR".equalsIgnoreCase(pgtype) || "NATIONAL CHARACTER".equalsIgnoreCase(pgtype) || "NATIONAL CHARACTER VARYING".equalsIgnoreCase(pgtype))
             return String.class.getSimpleName();
         else if ("BLOB".equalsIgnoreCase(pgtype) || "BYTEA".equalsIgnoreCase(pgtype))
             return Byte[].class.getSimpleName();

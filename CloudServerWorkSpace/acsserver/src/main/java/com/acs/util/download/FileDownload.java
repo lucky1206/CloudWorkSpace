@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.net.URLEncoder;
 
 /**
- * 下载文件 创建人：FH 创建时间：2014年12月23日
  * 
  * @version
  */
