@@ -3,65 +3,66 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-	#if(${ao.apiOperation} == 'delete' || ${ao.apiOperation} == 'update' || ${ao.apiOperation} == 'insert')
+    #if(${ao.apiOperation} == 'delete' || ${ao.apiOperation} == 'update' || ${ao.apiOperation} == 'insert')
     <!--
 	ps：1、目前针对增、删、改操作，自动生成的代码默认不返回值(void)，
 	如需要捕获相关的操作是否正常执行，可通过捕获异常处理，或自行完善相关代码。
 		2、关于<![CDATA[]]>标签，可根据需要自行调整。
 	-->
 
-	#end
+    #end
 <mapper namespace="${ppn}.${ppsc.pci.dpName}.${acsId}.I${ao.apiName}Dao">
 ##请求体、响应体均不为空
 #if("$!res" != "" && "$!req" != "")
     <resultMap id="${ao.apiName}ResultMap" type="${ppn}.${ppsc.pci.epName}.${acsId}.${res.upperCaseName}">
-		#foreach($col in $resCols)
-			#if(${col.javaType} == 'CLOB' || ${col.javaType} == 'Clob')
+        #foreach($col in $resCols)
+            #if(${col.javaType} == 'CLOB' || ${col.javaType} == 'Clob')
                 <result property="${col.javaname}" column="${col.dbname}" javaType="${col.javaType}"
                         jdbcType="${col.dbType}"
                         typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
-			#elseif(${col.javaType} == 'BLOB' || ${col.javaType} == 'Blob')
+            #elseif(${col.javaType} == 'BLOB' || ${col.javaType} == 'Blob')
                 <result property="${col.javaname}" column="${col.dbname}" javaType="${col.javaType}"
                         jdbcType="${col.dbType}"
                         typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
-			#else
+            #else
                 <result property="${col.javaname}" column="${col.dbname}" javaType="${col.javaType}"
                         jdbcType="${col.dbType}"/>
-			#end
-		#end
+            #end
+        #end
     </resultMap>
 
-    <${ao.apiOperation} id="${ao.apiNameLow}Handler" parameterType="${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName}"
+    <${ao.apiOperation} id="${ao.apiNameLow}Handler" parameterType="${ppn}.${ppsc.pci.epName}.${acsId}
+    .${req.upperCaseName}"
     resultMap="${ao.apiName}ResultMap">
     <![CDATA[ ${so.formatedSql} ]]>
 </${ao.apiOperation}>
-##请求体为空，响应体不为空，这里是指不带条件的查询语句
+    ##请求体为空，响应体不为空，这里是指不带条件的查询语句
 #elseif("$!res" != "" && "$!req" == "" && ${ao.apiOperation} == 'select')
 <resultMap id="${ao.apiName}ResultMap" type="${ppn}.${ppsc.pci.epName}.${acsId}.${res.upperCaseName}">
-	#foreach($col in $resCols)
-		#if(${col.javaType} == 'Clob')
+    #foreach($col in $resCols)
+        #if(${col.javaType} == 'Clob')
             <result property="${col.javaname}" column="${col.dbname}" javaType="${col.javaType}"
                     jdbcType="${col.dbType}"
                     typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
-		#elseif(${col.javaType} == 'Blob')
+        #elseif(${col.javaType} == 'Blob')
             <result property="${col.javaname}" column="${col.dbname}" javaType="${col.javaType}"
                     jdbcType="${col.dbType}"
                     typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
-		#else
+        #else
             <result property="${col.javaname}" column="${col.dbname}" javaType="${col.javaType}"
                     jdbcType="${col.dbType}"/>
-		#end
-	#end
+        #end
+    #end
 </resultMap>
 
 <${ao.apiOperation} id="${ao.apiNameLow}Handler" resultMap="${ao.apiName}ResultMap">
-	<![CDATA[ ${so.formatedSql} ]]>
+<![CDATA[ ${so.formatedSql} ]]>
 </${ao.apiOperation}>
 
-##请求体不为空，响应体为空
+    ##请求体不为空，响应体为空
 #elseif("$!res" == "" && "$!req" != "")
 <${ao.apiOperation} id="${ao.apiNameLow}Handler" parameterType="${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName}">
-	<![CDATA[ ${so.formatedSql} ]]>
+<![CDATA[ ${so.formatedSql} ]]>
 </${ao.apiOperation}>
 
 #end

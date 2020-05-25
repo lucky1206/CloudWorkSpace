@@ -17,185 +17,185 @@ import ${projectPackageName}.${ppsc.pci.epName}.${acsId}.${className};
 import ${projectPackageName}.${ppsc.pci.dpName}.${acsId}.I${className}Dao;
 
 /**
- * @desc 业务处理实现类，根据需求在该类相应方法中实现业务逻辑
- */
+* @desc 业务处理实现类，根据需求在该类相应方法中实现业务逻辑
+*/
 @Service("${classLowName}Service")
 @Transactional(rollbackFor = Exception.class)
 public class ${className}Service implements I${className}Service {
-   #foreach($col in $colList)
-		#if(${col.pk} == "1")
-		#set($mainKey =${col.javaname})
-		#break
-		#end
-	#end
+#foreach($col in $colList)
+    #if(${col.pk} == "1")
+        #set($mainKey =${col.javaname})
+        #break
+    #end
+#end
 
-	@Autowired
-	@Qualifier("${classLowName}Dao")
-	private I${className}Dao ${classLowName}Dao;
+@Autowired
+@Qualifier("${classLowName}Dao")
+private I${className}Dao ${classLowName}Dao;
 
-    public JSONObject get${className}List() {
-		JSONObject jo = new JSONObject();
-		try {
-			jo.put("data", JSONObject.toJSON(${classLowName}Dao.get${className}List()));
-			jo.put("status", 1);// 1-成功
-			jo.put("msg", "执行成功");
-		} catch (Exception e) {
-			jo.put("data", null);
-			jo.put("status", 0);// 0-失败
-			jo.put("msg", e.getMessage());// msg-失败信息
-		}
+public JSONObject get${className}List() {
+JSONObject jo = new JSONObject();
+try {
+jo.put("data", JSONObject.toJSON(${classLowName}Dao.get${className}List()));
+jo.put("status", 1);// 1-成功
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("data", null);
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
 
-		return jo;
-    }
+return jo;
+}
 
-	public JSONObject get${className}(${objectPkJavaType} $mainKey){
-		JSONObject jo = new JSONObject();
-		try {
-			jo.put("data", JSONObject.toJSON(${classLowName}Dao.get${className}($mainKey)));
-			jo.put("status", 1);// 1-成功
-			jo.put("msg", "执行成功");
-		} catch (Exception e) {
-			jo.put("data", null);
-			jo.put("status", 0);// 0-失败
-			jo.put("msg", e.getMessage());// msg-失败信息
-		}
+public JSONObject get${className}(${objectPkJavaType} $mainKey){
+JSONObject jo = new JSONObject();
+try {
+jo.put("data", JSONObject.toJSON(${classLowName}Dao.get${className}($mainKey)));
+jo.put("status", 1);// 1-成功
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("data", null);
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
 
-		return jo;
-	}
+return jo;
+}
 
-	public JSONObject get${className}Ex(${className} ${classLowName}Params){
-		JSONObject jo = new JSONObject();
-		try {
-			jo.put("data", JSONObject.toJSON(${classLowName}Dao.get${className}Ex(${classLowName}Params)));
-			jo.put("status", 1);// 1-成功
-			jo.put("msg", "执行成功");
-		} catch (Exception e) {
-			jo.put("data", null);
-			jo.put("status", 0);// 0-失败
-			jo.put("msg", e.getMessage());// msg-失败信息
-		}
+public JSONObject get${className}Ex(${className} ${classLowName}Params){
+JSONObject jo = new JSONObject();
+try {
+jo.put("data", JSONObject.toJSON(${classLowName}Dao.get${className}Ex(${classLowName}Params)));
+jo.put("status", 1);// 1-成功
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("data", null);
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
 
-		return jo;
-	}
+return jo;
+}
 
-	public JSONObject get${className}ListByPaging(Integer pageNo,Integer pageSize){
-		pageNo = pageNo == null?1:pageNo;
-		pageSize = pageSize == null?10:pageSize;
+public JSONObject get${className}ListByPaging(Integer pageNo,Integer pageSize){
+pageNo = pageNo == null?1:pageNo;
+pageSize = pageSize == null?10:pageSize;
 
-		JSONObject jo = new JSONObject();
-		try {
-		PageHelper.startPage(pageNo, pageSize);
-		List<${className}> list = ${classLowName}Dao.get${className}ListByPaging();
-		//用PageInfo对结果进行包装
-		PageInfo<${className}> page = new PageInfo<${className}>(list);
-		jo.put("data", JSONObject.toJSON(page));
-		jo.put("status", 1);// 1-成功
-		jo.put("msg", "执行成功");
-		} catch (Exception e) {
-		jo.put("data", null);
-		jo.put("status", 0);// 0-失败
-		jo.put("msg", e.getMessage());// msg-失败信息
-		}
+JSONObject jo = new JSONObject();
+try {
+PageHelper.startPage(pageNo, pageSize);
+List<${className}> list = ${classLowName}Dao.get${className}ListByPaging();
+//用PageInfo对结果进行包装
+PageInfo<${className}> page = new PageInfo<${className}>(list);
+jo.put("data", JSONObject.toJSON(page));
+jo.put("status", 1);// 1-成功
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("data", null);
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
 
-		return jo;
-	}
+return jo;
+}
 
-	public JSONObject get${className}ExByPaging(${className} ${classLowName}Params, Integer pageNo,Integer pageSize){
-		pageNo = pageNo == null?1:pageNo;
-		pageSize = pageSize == null?10:pageSize;
+public JSONObject get${className}ExByPaging(${className} ${classLowName}Params, Integer pageNo,Integer pageSize){
+pageNo = pageNo == null?1:pageNo;
+pageSize = pageSize == null?10:pageSize;
 
-		JSONObject jo = new JSONObject();
-		try {
-		PageHelper.startPage(pageNo, pageSize);
-		List<${className}> list = ${classLowName}Dao.get${className}ExByPaging(${classLowName}Params);
-		//用PageInfo对结果进行包装
-		PageInfo<${className}> page = new PageInfo<${className}>(list);
-		jo.put("data", JSONObject.toJSON(page));
-		jo.put("status", 1);// 1-成功
-		jo.put("msg", "执行成功");
-		} catch (Exception e) {
-		jo.put("data", null);
-		jo.put("status", 0);// 0-失败
-		jo.put("msg", e.getMessage());// msg-失败信息
-		}
+JSONObject jo = new JSONObject();
+try {
+PageHelper.startPage(pageNo, pageSize);
+List<${className}> list = ${classLowName}Dao.get${className}ExByPaging(${classLowName}Params);
+//用PageInfo对结果进行包装
+PageInfo<${className}> page = new PageInfo<${className}>(list);
+jo.put("data", JSONObject.toJSON(page));
+jo.put("status", 1);// 1-成功
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("data", null);
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
 
-		return jo;
-	}
+return jo;
+}
 
-    public JSONObject insert${className}(${className} ${classLowName}Params){
-		JSONObject jo = new JSONObject();
-		try {
-			${classLowName}Dao.insert${className}(${classLowName}Params);
+public JSONObject insert${className}(${className} ${classLowName}Params){
+JSONObject jo = new JSONObject();
+try {
+${classLowName}Dao.insert${className}(${classLowName}Params);
 
-			jo.put("status", 1);// 1-成功
-			jo.put("msg", "执行成功");
-		} catch (Exception e) {
-			jo.put("status", 0);// 0-失败
-			jo.put("msg", e.getMessage());// msg-失败信息
-		}
+jo.put("status", 1);// 1-成功
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
 
-		return jo;
-    }
+return jo;
+}
 
-	public JSONObject insertBatch${className}(List<${className}> ${classLowName}Params){
-		JSONObject jo = new JSONObject();
-		try {
-			${classLowName}Dao.insertBatch${className}(${classLowName}Params);
+public JSONObject insertBatch${className}(List<${className}> ${classLowName}Params){
+JSONObject jo = new JSONObject();
+try {
+${classLowName}Dao.insertBatch${className}(${classLowName}Params);
 
-			jo.put("status", 1);// 1-成功
-			jo.put("msg", "执行成功");
-		} catch (Exception e) {
-			jo.put("status", 0);// 0-失败
-			jo.put("msg", e.getMessage());// msg-失败信息
-		}
+jo.put("status", 1);// 1-成功
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
 
-		return jo;
-	}
+return jo;
+}
 
-    public JSONObject update${className}(${className} ${classLowName}Params){
-		JSONObject jo = new JSONObject();
-		try {
-			${classLowName}Dao.update${className}(${classLowName}Params);
+public JSONObject update${className}(${className} ${classLowName}Params){
+JSONObject jo = new JSONObject();
+try {
+${classLowName}Dao.update${className}(${classLowName}Params);
 
-			jo.put("status", 1);// 1-成功
-			jo.put("msg", "执行成功");
-		} catch (Exception e) {
-			jo.put("status", 0);// 0-失败
-			jo.put("msg", e.getMessage());// msg-失败信息
-		}
+jo.put("status", 1);// 1-成功
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
 
-		return jo;
-    }
+return jo;
+}
 
-    public JSONObject delete${className}(${objectPkJavaType} $mainKey){
-		JSONObject jo = new JSONObject();
-		try {
-			${classLowName}Dao.delete${className}($mainKey);
+public JSONObject delete${className}(${objectPkJavaType} $mainKey){
+JSONObject jo = new JSONObject();
+try {
+${classLowName}Dao.delete${className}($mainKey);
 
-			jo.put("status", 1);// 1-成功
-			jo.put("msg", "执行成功");
-		} catch (Exception e) {
-			jo.put("status", 0);// 0-失败
-			jo.put("msg", e.getMessage());// msg-失败信息
-		}
+jo.put("status", 1);// 1-成功
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
 
-		return jo;
-    }
+return jo;
+}
 
-	public JSONObject deleteBatch${className}(List<${objectPkJavaType}> ${mainKey}s){
-		JSONObject jo = new JSONObject();
-		try {
-			if(${mainKey}s.size() > 0) {
-				${classLowName}Dao.deleteBatch${className}(${mainKey}s);
-				jo.put("msg", "执行成功");
-			}else{
-				jo.put("msg", "参数为空");// msg-失败信息
-			}
-			jo.put("status", 1);// 1-成功
-		} catch (Exception e) {
-			jo.put("status", 0);// 0-失败
-			jo.put("msg", e.getMessage());// msg-失败信息
-		}
-		return jo;
-	}
+public JSONObject deleteBatch${className}(List<${objectPkJavaType}> ${mainKey}s){
+JSONObject jo = new JSONObject();
+try {
+if(${mainKey}s.size() > 0) {
+${classLowName}Dao.deleteBatch${className}(${mainKey}s);
+jo.put("msg", "执行成功");
+}else{
+jo.put("msg", "参数为空");// msg-失败信息
+}
+jo.put("status", 1);// 1-成功
+} catch (Exception e) {
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
+return jo;
+}
 }

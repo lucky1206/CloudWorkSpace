@@ -33,12 +33,12 @@ import ${ppn}.${ppsc.pci.servName}.${acsId}.I${ao.apiName}Service;
 import ${ppn}.${ppsc.pci.epName}.${acsId}.${res.upperCaseName};
 #end
 #if("$!req" != "" || ${pagging} == true)
-##需要分页，则需要有分页相关的参数
+    ##需要分页，则需要有分页相关的参数
 import org.springframework.web.bind.annotation.RequestParam;
 import io.swagger.annotations.ApiParam;
 #end
 #if("$!req" != "")
-##返回实体不为空，则需要实体类引用
+    ##返回实体不为空，则需要实体类引用
 import ${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName};
 #end
 
@@ -60,8 +60,8 @@ private I${ao.apiName}Service ${ao.apiNameLow}Service;
 @ApiOperation(value = "${ao.apiOperation} ${res.upperCaseName} 对象", httpMethod = "GET", notes = "${ao.apiOperation} ${res.upperCaseName}对象", response = ${res.upperCaseName}.class, responseContainer = "List", tags = "${ao.apiGroup}")
     #if(${pagging} == true) ##是否需要查询分页
     public JSONObject ${ao.apiNameLow}Handler(
-    @ApiParam(required=true, value = "(=)分页查询序号", name = "pageNo", example = "0") @RequestParam(name = "pageNo") Integer pageNo,
-    @ApiParam(required=true, value = "(=)分页查询尺寸", name = "pageSize", example = "0") @RequestParam(name = "pageSize") Integer pageSize,
+    @ApiParam(required=true, value = "(=)分页查询序号", name = "pageNo", example = "1") @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+    @ApiParam(required=true, value = "(=)分页查询尺寸", name = "pageSize", example = "10") @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
         #foreach($col in $reqCols)
             #if(${col.in} == true)
             @ApiParam(value = "(${col.reqBody})${col.desc}", name = "${col.javaname}") @RequestParam(required=false, name = "${col.javaname}") String ${col.javaname}#if($velocityCount != $reqCols.size()),#end
@@ -166,7 +166,7 @@ private I${ao.apiName}Service ${ao.apiNameLow}Service;
     }
     #end
 }
-##请求体为空，响应体不为空，这里是指不带条件的查询语句
+    ##请求体为空，响应体不为空，这里是指不带条件的查询语句
 #elseif("$!res" != "" && "$!req" == "" && ${ao.apiOperation} == 'select')
 /**
 * @desc：${ao.apiDesc}
@@ -184,8 +184,8 @@ private I${ao.apiName}Service ${ao.apiNameLow}Service;
 @ApiOperation(value = "${ao.apiOperation} ${res.upperCaseName}对象", httpMethod = "GET", notes = "${ao.apiOperation} ${res.upperCaseName}对象", response = ${res.upperCaseName}.class, responseContainer = "List", tags = "${ao.apiGroup}")
     #if(${pagging} == true)
     public JSONObject ${ao.apiNameLow}Handler(
-    @ApiParam(required=true, value = "(=))分页查询序号", name = "pageNo", example = "0") @RequestParam(name = "pageNo") Integer pageNo,
-    @ApiParam(required=true, value = "(=))分页查询尺寸", name = "pageSize", example = "0") @RequestParam(name = "pageSize") Integer pageSize) {
+    @ApiParam(required=true, value = "(=))分页查询序号", name = "pageNo", example = "1") @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+    @ApiParam(required=true, value = "(=))分页查询尺寸", name = "pageSize", example = "10") @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
     JSONObject json = ${ao.apiNameLow}Service.${ao.apiNameLow}Handler(pageNo, pageSize);
     return json;
     }
@@ -195,7 +195,7 @@ private I${ao.apiName}Service ${ao.apiNameLow}Service;
     }
     #end
 }
-##请求体不为空，响应体为空
+    ##请求体不为空，响应体为空
 #elseif("$!res" == "" && "$!req" != "")
 /**
 * @desc：${ao.apiDesc}

@@ -3,9 +3,9 @@
 /**-----------------${ao.requestName}对象，仅供请求参数参考，不建议直接引用-----------------*/
 var ${ao.requestName} ={
 #foreach($col in $reqCols)
-    
-    //${col.desc}
-	${col.javaname} : null#if($velocityCount != $reqCols.size()),#end ##最后一个属性不再添加逗号。  
+
+//${col.desc}
+    ${col.javaname} : null#if($velocityCount != $reqCols.size()),#end ##最后一个属性不再添加逗号。
 #end
 
 }

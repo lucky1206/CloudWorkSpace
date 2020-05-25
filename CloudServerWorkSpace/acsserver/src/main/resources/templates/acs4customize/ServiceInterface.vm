@@ -16,20 +16,20 @@ import com.alibaba.fastjson.JSONObject;
 */
 public interface I${ao.apiName4C}Service {
 #if(${ao.select4C} == 'on' && "$!resCols" != "")
-##此处根据pagging设置是否进行查询
-	#if(${pagging} == true)
-		#if("$!reqCols" != "")
+    ##此处根据pagging设置是否进行查询
+    #if(${pagging} == true)
+        #if("$!reqCols" != "")
         JSONObject get${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params,Integer pageNo,Integer pageSize);
-		#else
+        #else
         JSONObject get${ao.apiName4C}(Integer pageNo,Integer pageSize);
-		#end
-	#else
-		#if("$!reqCols" != "")
+        #end
+    #else
+        #if("$!reqCols" != "")
         JSONObject get${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params);
-		#else
+        #else
         JSONObject get${ao.apiName4C}();
-		#end
-	#end
+        #end
+    #end
 #end
 #if(${ao.insert4C} == 'on' && "$!resCols" != "")
 JSONObject insert${ao.apiName4C}(${ao.responseName4C} ${ao.responseNameLow4C}Params);

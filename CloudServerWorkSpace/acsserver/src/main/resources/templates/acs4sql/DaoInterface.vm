@@ -1,5 +1,5 @@
 package ${ppn}.${ppsc.pci.dpName}.${acsId};
-
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import ${ppn}.${ppsc.pci.dpName}.${acsId}.I${ao.apiName}Dao;
 #if("$!res" != "")
@@ -13,28 +13,31 @@ import ${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName};
 ##请求体、响应体均不为空
 #if("$!res" != "" && "$!req" != "")
 /**
- * @desc ${ao.apiDesc}
- */
+* @desc ${ao.apiDesc}
+*/
+@Mapper
 @Repository("${ao.apiNameLow}Dao")
 public interface I${ao.apiName}Dao {
-    List<${res.upperCaseName}> ${ao.apiNameLow}Handler(${req.upperCaseName} ${req.lowerCaseName}Params);
+List<${res.upperCaseName}> ${ao.apiNameLow}Handler(${req.upperCaseName} ${req.lowerCaseName}Params);
 }
-##请求体为空，响应体不为空，这里是指不带条件的查询语句
+    ##请求体为空，响应体不为空，这里是指不带条件的查询语句
 #elseif("$!res" != "" && "$!req" == "" && ${ao.apiOperation} == 'select')
 /**
- * @desc ${ao.apiDesc}
- */
+* @desc ${ao.apiDesc}
+*/
+@Mapper
 @Repository("${ao.apiNameLow}Dao")
 public interface I${ao.apiName}Dao {
-    List<${res.upperCaseName}> ${ao.apiNameLow}Handler();
+List<${res.upperCaseName}> ${ao.apiNameLow}Handler();
 }
-##请求体不为空，响应体为空
+    ##请求体不为空，响应体为空
 #elseif("$!res" == "" && "$!req" != "")
 /**
- * @desc ${ao.apiDesc}
- */
+* @desc ${ao.apiDesc}
+*/
+@Mapper
 @Repository("${ao.apiNameLow}Dao")
 public interface I${ao.apiName}Dao {
-    void ${ao.apiNameLow}Handler(${req.upperCaseName} ${req.lowerCaseName}Params);
+void ${ao.apiNameLow}Handler(${req.upperCaseName} ${req.lowerCaseName}Params);
 }
 #end

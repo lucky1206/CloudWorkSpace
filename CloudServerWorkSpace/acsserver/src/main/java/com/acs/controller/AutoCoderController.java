@@ -857,13 +857,13 @@ public class AutoCoderController {
             fu.writeFile(javaFolder, resName, ".java", javaStr4Res);
 
             // 单表Mapper模版解释
-            String mapperStr = vu.mergeTemplate(m, "Mapping.vm");
+            String mapperStr = vu.mergeTemplate(m, "Mapper.vm");
             String mapperFolder = ppsc.getMapperPath() + AcsConstants.ACS4CUSTOMIZE + "/";
             File mapperDir = new File(mapperFolder);
             if (!mapperDir.exists())
                 mapperDir.mkdirs();
             // 覆盖相同文件内容
-            fu.writeFile(mapperFolder, apiClassName + "Mapping", ".xml", mapperStr);
+            fu.writeFile(mapperFolder, apiClassName + "Mapper", ".xml", mapperStr);
 
             // Dao接口模版解释
             String daoStr = vu.mergeTemplate(m, "DaoInterface.vm");
@@ -1192,13 +1192,13 @@ public class AutoCoderController {
                 fu.writeFile(javaFolder, t.getUpperCaseName(), ".java", javaStr);
 
                 // 单表Mapper模版解释
-                String mapperStr = vu.mergeTemplate(m, "Mapping.vm");
+                String mapperStr = vu.mergeTemplate(m, "Mapper.vm");
                 String mapperFolder = ppsc.getMapperPath() + AcsConstants.ACS4ONEKEY + "/";
                 File mapperDir = new File(mapperFolder);
                 if (!mapperDir.exists())
                     mapperDir.mkdirs();
                 // 覆盖相同文件内容
-                fu.writeFile(mapperFolder, t.getUpperCaseName() + "Mapping", ".xml", mapperStr);
+                fu.writeFile(mapperFolder, t.getUpperCaseName() + "Mapper", ".xml", mapperStr);
 
                 // Dao接口模版解释
                 String daoStr = vu.mergeTemplate(m, "DaoInterface.vm");
@@ -2182,8 +2182,8 @@ public class AutoCoderController {
 
             // Mapper模版解释
             String mapperName = apiObj.getString("apiName");
-            String mapperStr4Mapper = vu.mergeTemplate(m, "Mapping.vm");
-            fu.writeFile(mapperFolder, mapperName + "Mapping", ".xml", mapperStr4Mapper);
+            String mapperStr4Mapper = vu.mergeTemplate(m, "Mapper.vm");
+            fu.writeFile(mapperFolder, mapperName + "Mapper", ".xml", mapperStr4Mapper);
 
             // Dao接口存放目录
             String daoFolder = ppsc.getDaoPath() + AcsConstants.ACS4SQL + "/";

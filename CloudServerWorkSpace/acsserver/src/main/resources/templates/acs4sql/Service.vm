@@ -11,20 +11,20 @@ import ${ppn}.${ppsc.pci.dpName}.${acsId}.I${ao.apiName}Dao;
 #if(${pagging} == true)
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-	#if("$!res" != "")
+    #if("$!res" != "")
     import java.util.List;
     import ${ppn}.${ppsc.pci.epName}.${acsId}.${res.upperCaseName};
-	#end
-	#if("$!req" != "")
+    #end
+    #if("$!req" != "")
     import ${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName};
-	#end
+    #end
 #else
-	#if("$!res" != "")
+    #if("$!res" != "")
     import com.alibaba.fastjson.JSONArray;
-	#end
-	#if("$!req" != "")
+    #end
+    #if("$!req" != "")
     import ${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName};
-	#end
+    #end
 #end
 
 
@@ -42,7 +42,7 @@ public class ${ao.apiName}Service implements I${ao.apiName}Service {
 @Qualifier("${ao.apiNameLow}Dao")
 private I${ao.apiName}Dao ${ao.apiNameLow}Dao;
 
-	#if(${pagging} == true)
+    #if(${pagging} == true)
     public JSONObject ${ao.apiNameLow}Handler(${req.upperCaseName} ${req.lowerCaseName}Params,Integer pageNo,Integer pageSize){
     pageNo = pageNo == null?1:pageNo;
     pageSize = pageSize == null?10:pageSize;
@@ -64,7 +64,7 @@ private I${ao.apiName}Dao ${ao.apiNameLow}Dao;
 
     return jo;
     }
-	#else
+    #else
     public JSONObject ${ao.apiNameLow}Handler(${req.upperCaseName} ${req.lowerCaseName}Params){
     JSONObject jo = new JSONObject();
     try {
@@ -80,10 +80,10 @@ private I${ao.apiName}Dao ${ao.apiNameLow}Dao;
     return jo;
 
     }
-	#end
+    #end
 }
 
-##请求体为空，响应体不为空，这里是指不带条件的查询语句
+    ##请求体为空，响应体不为空，这里是指不带条件的查询语句
 #elseif("$!res" != "" && "$!req" == "" && ${ao.apiOperation} == 'select')
 /**
 * @desc ${ao.apiDesc}
@@ -95,7 +95,7 @@ public class ${ao.apiName}Service implements I${ao.apiName}Service {
 @Qualifier("${ao.apiNameLow}Dao")
 private I${ao.apiName}Dao ${ao.apiNameLow}Dao;
 
-	#if(${pagging} == true)
+    #if(${pagging} == true)
     public JSONObject ${ao.apiNameLow}Handler(Integer pageNo,Integer pageSize){
     pageNo = pageNo == null?1:pageNo;
     pageSize = pageSize == null?10:pageSize;
@@ -118,7 +118,7 @@ private I${ao.apiName}Dao ${ao.apiNameLow}Dao;
     return jo;
 
     }
-	#else
+    #else
     public JSONObject ${ao.apiNameLow}Handler(){
     JSONObject jo = new JSONObject();
     try {
@@ -133,10 +133,10 @@ private I${ao.apiName}Dao ${ao.apiNameLow}Dao;
 
     return jo;
     }
-	#end
+    #end
 }
 
-##请求体不为空，响应体为空
+    ##请求体不为空，响应体为空
 #elseif("$!res" == "" && "$!req" != "")
 /**
 * @desc ${ao.apiDesc}
@@ -151,7 +151,7 @@ private I${ao.apiName}Dao ${ao.apiNameLow}Dao;
 public JSONObject ${ao.apiOperation}${req.upperCaseName}(${req.upperCaseName} ${req.lowerCaseName}Params){
 JSONObject jo = new JSONObject();
 try {
-	${ao.apiNameLow}Dao.${ao.apiOperation}${req.upperCaseName}(${req.lowerCaseName}Params);
+    ${ao.apiNameLow}Dao.${ao.apiOperation}${req.upperCaseName}(${req.lowerCaseName}Params);
 jo.put("status", 1);// 1-成功， 0-失败
 jo.put("msg", "执行成功");
 } catch (Exception e) {

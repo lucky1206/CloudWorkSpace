@@ -7,16 +7,16 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "${res.upperCaseName}", description = "${res.responseDesc}")
 public class ${res.upperCaseName}{
 #foreach($col in $resCols)
-	@ApiModelProperty(value = "${col.desc}")
-	private ${col.javaType} ${col.javaname};
+@ApiModelProperty(value = "${col.desc}")
+private ${col.javaType} ${col.javaname};
 
-	public ${col.javaType} get${col.upname}() {
-		return ${col.javaname};
-	}
+public ${col.javaType} get${col.upname}() {
+return ${col.javaname};
+}
 
-	public void set${col.upname}(${col.javaType} ${col.javaname}) {
-		this.${col.javaname} = ${col.javaname};
-	}
-	
+public void set${col.upname}(${col.javaType} ${col.javaname}) {
+this.${col.javaname} = ${col.javaname};
+}
+
 #end
 }

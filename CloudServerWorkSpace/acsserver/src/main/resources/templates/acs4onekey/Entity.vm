@@ -6,17 +6,17 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value = "${className}", description = "${className}实体模型")
 public class ${className}{
-	#foreach($col in $colList)
-	@ApiModelProperty(value = "${col.desc}")
-	private ${col.javaType} ${col.javaname};
+#foreach($col in $colList)
+@ApiModelProperty(value = "${col.desc}")
+private ${col.javaType} ${col.javaname};
 
-	public ${col.javaType} get${col.upname}() {
-		return ${col.javaname};
-	}
+public ${col.javaType} get${col.upname}() {
+return ${col.javaname};
+}
 
-	public void set${col.upname}(${col.javaType} ${col.javaname}) {
-		this.${col.javaname} = ${col.javaname};
-	}
-	#end
+public void set${col.upname}(${col.javaType} ${col.javaname}) {
+this.${col.javaname} = ${col.javaname};
+}
+#end
 }
 

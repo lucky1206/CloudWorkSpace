@@ -11,20 +11,20 @@ import ${ppn}.${ppsc.pci.dpName}.${acsId}.I${ao.apiName4C}Dao;
 #if(${pagging} == true)
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-	#if("$!resCols" != "")
+    #if("$!resCols" != "")
     import java.util.List;
     import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.responseName4C};
-	#end
-	#if("$!reqCols" != "")
+    #end
+    #if("$!reqCols" != "")
     import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C};
-	#end
+    #end
 #else
-	#if("$!resCols" != "")
+    #if("$!resCols" != "")
     import com.alibaba.fastjson.JSONArray;
-	#end
-	#if("$!reqCols" != "")
+    #end
+    #if("$!reqCols" != "")
     import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C};
-	#end
+    #end
 #end
 
 import com.alibaba.fastjson.JSONObject;
@@ -38,8 +38,8 @@ public class ${ao.apiName4C}Service implements I${ao.apiName4C}Service {
 @Qualifier("${ao.apiNameLow4C}Dao")
 private I${ao.apiName4C}Dao ${ao.apiNameLow4C}Dao;
 #if(${ao.select4C} == 'on' && "$!resCols" != "")
-	#if(${pagging} == true)
-		#if("$!reqCols" != "")
+    #if(${pagging} == true)
+        #if("$!reqCols" != "")
         public JSONObject get${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params,Integer pageNo,Integer pageSize){
         pageNo = pageNo == null?1:pageNo;
         pageSize = pageSize == null?10:pageSize;
@@ -61,7 +61,7 @@ private I${ao.apiName4C}Dao ${ao.apiNameLow4C}Dao;
 
         return jo;
         }
-		#else
+        #else
         public JSONObject get${ao.apiName4C}(Integer pageNo,Integer pageSize){
         pageNo = pageNo == null?1:pageNo;
         pageSize = pageSize == null?10:pageSize;
@@ -83,9 +83,9 @@ private I${ao.apiName4C}Dao ${ao.apiNameLow4C}Dao;
 
         return jo;
         }
-		#end
-	#else
-		#if("$!reqCols" != "")
+        #end
+    #else
+        #if("$!reqCols" != "")
         public JSONObject get${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params){
         JSONObject jo = new JSONObject();
         try {
@@ -100,7 +100,7 @@ private I${ao.apiName4C}Dao ${ao.apiNameLow4C}Dao;
 
         return jo;
         }
-		#else
+        #else
         public JSONObject get${ao.apiName4C}(){
         JSONObject jo = new JSONObject();
         try {
@@ -115,14 +115,14 @@ private I${ao.apiName4C}Dao ${ao.apiNameLow4C}Dao;
 
         return jo;
         }
-		#end
-	#end
+        #end
+    #end
 #end
 #if(${ao.insert4C} == 'on' && "$!resCols" != "")
 public JSONObject insert${ao.apiName4C}(${ao.responseName4C} ${ao.responseNameLow4C}Params){
 JSONObject jo = new JSONObject();
 try {
-	${ao.apiNameLow4C}Dao.insert${ao.apiName4C}(${ao.responseNameLow4C}Params);
+    ${ao.apiNameLow4C}Dao.insert${ao.apiName4C}(${ao.responseNameLow4C}Params);
 jo.put("status", 1);// 1-成功
 jo.put("msg", "执行成功");
 } catch (Exception e) {
@@ -137,7 +137,7 @@ return jo;
 public JSONObject delete${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params){
 JSONObject jo = new JSONObject();
 try {
-	${ao.apiNameLow4C}Dao.delete${ao.apiName4C}(${ao.requestNameLow4C}Params);
+    ${ao.apiNameLow4C}Dao.delete${ao.apiName4C}(${ao.requestNameLow4C}Params);
 jo.put("status", 1);// 1-成功
 jo.put("msg", "执行成功");
 } catch (Exception e) {
@@ -152,13 +152,13 @@ return jo;
 public JSONObject update${ao.apiName4C}(${ao.requestName4C} ${ao.requestNameLow4C}Params){
 JSONObject jo = new JSONObject();
 try {
-		${ao.apiNameLow4C}Dao.update${ao.apiName4C}(${ao.requestNameLow4C}Params);
-		jo.put("status", 1);// 1-成功
-		jo.put("msg", "执行成功");
-	} catch (Exception e) {
-		jo.put("status", 0);// 0-失败
-		jo.put("msg", e.getMessage());// msg-失败信息
-	}
+    ${ao.apiNameLow4C}Dao.update${ao.apiName4C}(${ao.requestNameLow4C}Params);
+jo.put("status", 1);// 1-成功
+jo.put("msg", "执行成功");
+} catch (Exception e) {
+jo.put("status", 0);// 0-失败
+jo.put("msg", e.getMessage());// msg-失败信息
+}
 
 return jo;
 }

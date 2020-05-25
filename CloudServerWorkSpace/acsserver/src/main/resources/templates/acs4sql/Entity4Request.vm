@@ -3,9 +3,9 @@ package ${ppn}.${ppsc.pci.epName}.${acsId};
 
 ##如果存在in或not in子句，需要添加List数据类型
 #foreach($col in $reqCols)
-	#if(${col.in} == true)
+    #if(${col.in} == true)
     import java.util.List; #break
-	#end
+    #end
 #end
 
 import io.swagger.annotations.ApiModel;
@@ -13,29 +13,32 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value = "${req.upperCaseName}", description = "${req.requestDesc}")
 public class ${req.upperCaseName}{
-	#foreach($col in $reqCols)
-		#if(${col.in} == true)
-		@ApiModelProperty(value = "${col.desc}")
-		private List<String> ${col.javaname}List;
+#foreach($col in $reqCols)
+    #if(${col.in} == true)
+    @ApiModelProperty(value = "${col.desc}")
+    private List
+    <String> ${col.javaname}List;
 
-			public List <String> get${col.upname}List() {
-			return ${col.javaname}List;
-			}
+        public List
+    <String> get${col.upname}List() {
+        return ${col.javaname}List;
+        }
 
-			public void set${col.upname}List(List<String> ${col.javaname}List) {
-			this.${col.javaname}List = ${col.javaname}List;
-			}
-		#else
-			@ApiModelProperty(value = "${col.desc}")
-			private ${col.javaType} ${col.javaname};
+        public void set${col.upname}List(List
+    <String> ${col.javaname}List) {
+        this.${col.javaname}List = ${col.javaname}List;
+        }
+    #else
+        @ApiModelProperty(value = "${col.desc}")
+        private ${col.javaType} ${col.javaname};
 
-			public ${col.javaType} get${col.upname}() {
-			return ${col.javaname};
-			}
+        public ${col.javaType} get${col.upname}() {
+        return ${col.javaname};
+        }
 
-			public void set${col.upname}(${col.javaType} ${col.javaname}) {
-			this.${col.javaname} = ${col.javaname};
-			}
-		#end
-	#end
-}
+        public void set${col.upname}(${col.javaType} ${col.javaname}) {
+        this.${col.javaname} = ${col.javaname};
+        }
+    #end
+#end
+    }

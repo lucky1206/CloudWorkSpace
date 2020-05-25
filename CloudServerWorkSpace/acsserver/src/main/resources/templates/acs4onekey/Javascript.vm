@@ -3,9 +3,9 @@
 /**------------------${className}-----------------------------*/
 var ${className} ={
 #foreach($col in $colList)
-    
-    //${col.desc}
-	${col.javaname} : null#if($velocityCount != $colList.size()),#end ##最后一个属性不再添加逗号。  
+
+//${col.desc}
+    ${col.javaname} : null#if($velocityCount != $colList.size()),#end ##最后一个属性不再添加逗号。
 #end
 
 }
