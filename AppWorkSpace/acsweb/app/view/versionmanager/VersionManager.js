@@ -86,9 +86,18 @@ Ext.define('acsweb.view.versionmanager.VersionManager', {
         },
         {
             xtype: 'button',
+            iconCls: 'cloud icon-service',
+            text: '下载WEB工程（废弃）',
+            margin: '0 0 0 10',
+            tooltip: '<b style="color: red">注意：若前端采用Vue,则没有必要下载，框架不适配。</b>',
+            handler: 'oneKey4WebProject'
+        },
+        {
+            xtype: 'button',
             iconCls: 'cloud icon-schema',
             text: '下载Java工程',
             margin: '0 0 0 10',
+            tooltip: '<b style="color: red">注意：工程为采用SpringMVC,如无必要，可直接下载API、Mapper文件。</b>',
             handler: 'oneKey4Download'
         },
         {
@@ -104,13 +113,6 @@ Ext.define('acsweb.view.versionmanager.VersionManager', {
             text: '下载Mapper文件',
             margin: '0 0 0 10',
             handler: 'oneKey4Mapping'
-        },
-        {
-            xtype: 'button',
-            iconCls: 'cloud icon-service',
-            text: '下载WEB工程',
-            margin: '0 10 0 10',
-            handler: 'oneKey4WebProject'
         }
     ]
 });

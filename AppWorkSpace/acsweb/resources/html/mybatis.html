@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../libs/jq3/jquery-3.3.1.min.js"></script>
+    <title>MyBatis映射文件Mapper增删改查标准写法</title>
+    <style>
+        pre {
+            outline: 1px solid #ccc;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .string {
+            color: green;
+        }
+
+        .number {
+            color: darkorange;
+        }
+
+        .boolean {
+            color: blue;
+        }
+
+        .null {
+            color: magenta;
+        }
+
+        .key {
+            color: red;
+        }
+    </style>
+    <link rel="stylesheet" href="../libs/prism/prism.css">
+</head>
+<body onload="writeXmlText()">
+<script src="../libs/prism/prism.js"></script>
+<h5>Spring多源数据库配置模板</h5>
+<p style="color:red;font-family: 黑体,serif;font-weight: bold;">
+    写在前面：MyBatis映射文件增删改查写法模版。</p>
+<pre id="xmlContentId" class="language-java"></pre>
+</body>
+<script type="text/javascript">
+    let xml = '<?xml version="1.0" encoding="UTF-8" ?>\n' +
+        '<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >\n' +
+        '<mapper namespace="com.baizhi.dao.UserMapper" >\n' +
+        '  <resultMap id="BaseResultMap" type="com.baizhi.entity.User" >\n' +
+        '    <id column="id" property="id" jdbcType="INTEGER" />\n' +
+        '    <result column="username" property="username" jdbcType="VARCHAR" />\n' +
+        '    <result column="gender" property="gender" jdbcType="VARCHAR" />\n' +
+        '    <result column="age" property="age" jdbcType="INTEGER" />\n' +
+        '  </resultMap>\n' +
+        '  <sql id="Base_Column_List" >\n' +
+        '    id, username, gender, age\n' +
+        '  </sql>\n' +
+        '  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >\n' +
+        '    select \n' +
+        '    <include refid="Base_Column_List" />\n' +
+        '    from my_user\n' +
+        '    where id = #{id,jdbcType=INTEGER}\n' +
+        '  </select>\n' +
+        '  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >\n' +
+        '    delete from my_user\n' +
+        '    where id = #{id,jdbcType=INTEGER}\n' +
+        '  </delete>\n' +
+        '  <insert id="insert" parameterType="com.baizhi.entity.User" >\n' +
+        '    insert into my_user (id, username, gender, \n' +
+        '      age)\n' +
+        '    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, \n' +
+        '      #{age,jdbcType=INTEGER})\n' +
+        '  </insert>\n' +
+        '  <insert id="insertSelective" parameterType="com.baizhi.entity.User" >\n' +
+        '    insert into my_user\n' +
+        '    <trim prefix="(" suffix=")" suffixOverrides="," >\n' +
+        '      <if test="id != null" >\n' +
+        '        id,\n' +
+        '      </if>\n' +
+        '      <if test="username != null" >\n' +
+        '        username,\n' +
+        '      </if>\n' +
+        '      <if test="gender != null" >\n' +
+        '        gender,\n' +
+        '      </if>\n' +
+        '      <if test="age != null" >\n' +
+        '        age,\n' +
+        '      </if>\n' +
+        '    </trim>\n' +
+        '    <trim prefix="values (" suffix=")" suffixOverrides="," >\n' +
+        '      <if test="id != null" >\n' +
+        '        #{id,jdbcType=INTEGER},\n' +
+        '      </if>\n' +
+        '      <if test="username != null" >\n' +
+        '        #{username,jdbcType=VARCHAR},\n' +
+        '      </if>\n' +
+        '      <if test="gender != null" >\n' +
+        '        #{gender,jdbcType=VARCHAR},\n' +
+        '      </if>\n' +
+        '      <if test="age != null" >\n' +
+        '        #{age,jdbcType=INTEGER},\n' +
+        '      </if>\n' +
+        '    </trim>\n' +
+        '  </insert>\n' +
+        '  <update id="updateByPrimaryKeySelective" parameterType="com.baizhi.entity.User" >\n' +
+        '    update my_user\n' +
+        '    <set >\n' +
+        '      <if test="username != null" >\n' +
+        '        username = #{username,jdbcType=VARCHAR},\n' +
+        '      </if>\n' +
+        '      <if test="gender != null" >\n' +
+        '        gender = #{gender,jdbcType=VARCHAR},\n' +
+        '      </if>\n' +
+        '      <if test="age != null" >\n' +
+        '        age = #{age,jdbcType=INTEGER},\n' +
+        '      </if>\n' +
+        '    </set>\n' +
+        '    where id = #{id,jdbcType=INTEGER}\n' +
+        '  </update>\n' +
+        '  <update id="updateByPrimaryKey" parameterType="com.baizhi.entity.User" >\n' +
+        '    update my_user\n' +
+        '    set username = #{username,jdbcType=VARCHAR},\n' +
+        '      gender = #{gender,jdbcType=VARCHAR},\n' +
+        '      age = #{age,jdbcType=INTEGER}\n' +
+        '    where id = #{id,jdbcType=INTEGER}\n' +
+        '  </update>\n' +
+        '</mapper>';
+
+    // Returns a highlighted HTML string
+    let html = Prism.highlight(xml, Prism.languages.xml, 'xml');
+
+    function writeXmlText() {
+        $('#xmlContentId').html(html);
+    }
+</script>
+</html>

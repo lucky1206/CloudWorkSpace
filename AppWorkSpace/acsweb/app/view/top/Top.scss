@@ -14,13 +14,13 @@
 }
 .app-menu-high-cls {
   font-size: 24px !important;
-  color: $base-highlight-color !important;
+  color: $base-icon-color !important;
 }
 
 @include extjs-button-medium-ui(
         $ui: 'menu-button-ui',
-        $font-size: 14px,
-        $font-weight: bold,
+        $font-size: 16px,
+        $font-weight: normal,
         $border-width: 0px,
         $inner-border-width: 0px 0px 0px 0px,
         $color: rgba($base-common-color, 1),

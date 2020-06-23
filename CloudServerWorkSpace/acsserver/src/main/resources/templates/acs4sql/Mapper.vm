@@ -31,8 +31,7 @@
         #end
     </resultMap>
 
-    <${ao.apiOperation} id="${ao.apiNameLow}Handler" parameterType="${ppn}.${ppsc.pci.epName}.${acsId}
-    .${req.upperCaseName}"
+    <${ao.apiOperation} id="${ao.apiNameLow}Handler" parameterType="${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName}"
     resultMap="${ao.apiName}ResultMap">
     <![CDATA[ ${so.formatedSql} ]]>
 </${ao.apiOperation}>

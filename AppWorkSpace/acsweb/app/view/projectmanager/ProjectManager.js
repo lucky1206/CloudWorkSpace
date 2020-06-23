@@ -182,7 +182,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                     iconCls: 'cloud icon-connect redCls',
                     disabled: true,
                     formBind: true,
-                    tooltip: '<b style="color: red">此处仅对Oracle/MySQL数据库进行测试并连接，请自行确认Redis可用。</b>',
+                    tooltip: '<b style="color: red">仅对数据库进行测试并连接，请自行确认Redis可用。</b>',
                     reference: 'testDBRef',
                     handler: 'onDBTest'
                 }
@@ -251,7 +251,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                         name: 'fpName',
                         flex: 2,
                         value: 'com',
-                        editable: false,
+                        editable: true,
                         emptyText: '顶级包名,如：com',
                         allowBlank: false
                     }, {
@@ -268,7 +268,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                     fieldLabel: '拦截器包名',
                     name: 'interceptorName',
                     value: 'interceptor',
-                    editable: false,
+                    editable: true,
                     emptyText: '如：interceptor'
                 },
                 {
@@ -276,7 +276,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                     fieldLabel: '控制器包名',
                     name: 'cpName',
                     value: 'controller',
-                    editable: false,
+                    editable: true,
                     emptyText: '如：controller'
                 },
                 {
@@ -284,7 +284,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                     fieldLabel: '业务层包名',
                     name: 'servName',
                     value: 'service',
-                    editable: false,
+                    editable: true,
                     emptyText: '如：service'
                 },
                 {
@@ -292,15 +292,15 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                     fieldLabel: 'Dao接口包名',
                     name: 'dpName',
                     value: 'dao',
-                    editable: false,
+                    editable: true,
                     emptyText: '如：idao、dao等'
                 },
                 {
                     allowBlank: false,
-                    fieldLabel: 'Mapping映射文件目录名',
+                    fieldLabel: 'Mapper文件目录名',
                     name: 'mfdName',
-                    value: 'mapping',
-                    editable: false,
+                    value: 'mapper',
+                    editable: true,
                     emptyText: '如：mapping、mapper等'
                 },
                 {
@@ -308,7 +308,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                     fieldLabel: 'Java实体模型包名',
                     name: 'epName',
                     value: 'entity',
-                    editable: false,
+                    editable: true,
                     emptyText: '如：entity、models等'
                 },
                 {
@@ -325,7 +325,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                         fieldLabel: 'JS文件目录名',
                         name: 'jsfdName',
                         value: 'jsentity',
-                        editable: false,
+                        editable: true,
                         flex: 2,
                         emptyText: 'JS文件目录名，如：jsentity、jsmodel',
                         allowBlank: false
@@ -333,7 +333,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                         fieldLabel: 'JS文件名',
                         name: 'jsfName',
                         value: 'JsObject',
-                        editable: false,
+                        editable: true,
                         flex: 3,
                         margin: '0 0 0 6',
                         emptyText: 'JS文件名，如：工程名称',
@@ -412,7 +412,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
             margin: '0 0 0 1',
             flex: 1,
             height: 610,
-            html: '<span style="font-size: 13px; color: #212121; line-height: 150%;"><b>1</b>、配置正确的数据库连接信息（目前仅在MySQL数据库上开发测试，Oracle数据库待实测。），并测试通过，方可进行下一步操作;<br/><br/><b>2</b>、系统初始化默认加载所有已经创建工程配置信息;<br/><br/><b>3</b>、可以在“工程名称”栏输入新的工程名称并填写其他配置信息，点击“制作工程”创建新的配置或直接选择已有配置开始下一步，注意不要点击“制作工程”，否则会重置配置并清空对应项目已有文件。</span>'
+            html: '<span style="font-size: 14px; color: #212121; line-height: 150%;"><b>1</b>、,目前已经支持Oracle、MySQL、PostgresSQL数据库，请配置正确的数据库连接信息并测试通过，方可进行下一步操作;<br/><br/><b>2</b>、系统初始化默认加载所有已经创建工程配置信息;<br/><br/><b>3</b>、可以在“工程名称”栏输入新的工程名称并填写其他配置信息，点击“制作工程”创建新的配置或直接选择已有配置开始下一步，注意不要点击“制作工程”，否则会重置配置并清空对应项目已有文件。</span>'
         }
     ]
 });

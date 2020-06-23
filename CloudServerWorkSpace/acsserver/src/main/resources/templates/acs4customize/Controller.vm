@@ -59,7 +59,7 @@ private I${ao.apiName4C}Service ${ao.apiNameLow4C}Service;
 #if(${ao.select4C} == 'on' && "$!resCols" != "")
 @RequestMapping(value = "/get${ao.apiName4C}")
 @ResponseBody
-@ApiOperation(value = "select ${className}对象", httpMethod = "GET", notes = "select ${className}对象", response =${ao.responseName4C}.class, responseContainer = "List", tags = "${ao.apiGroup4C}")
+@ApiOperation(value = "查询 ${className}对象", httpMethod = "GET", notes = "查询 ${className}对象", response =${ao.responseName4C}.class, responseContainer = "List", tags = "${ao.apiGroup4C}")
     #if(${pagging} == true)##是否需要查询分页
     public JSONObject get${ao.apiName4C}(
     @ApiParam(required=true, value = "(=)分页查询序号)", name = "pageNo", example = "1") @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,

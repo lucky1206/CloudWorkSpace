@@ -1,31 +1,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>${pps.pci.fpName}.${pps.pci.spName}</groupId>
-	<artifactId>${pps.pci.projectName}</artifactId>
-	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>${pps.pci.projectDesc}</name>
-	<url>http://maven.apache.org</url>
-	<properties>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>${pps.pci.fpName}.${pps.pci.spName}</groupId>
+    <artifactId>${pps.pci.projectName}</artifactId>
+    <packaging>war</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>${pps.pci.projectDesc}</name>
+    <url>http://maven.apache.org</url>
+    <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring.version>5.0.8.RELEASE</spring.version>
         <!-- log4j日志文件管理包版本 -->
         <log4j.version>2.12.1</log4j.version>
-	</properties>
-	
-	#set( $mcsVersion = '$'+'{maven.compiler.source}' )
-	#set( $mctVersion = '$'+'{maven.compiler.target}' )
-	#set( $springVersion = '$'+'{spring.version}' )
-	#set( $projBaseDir = '$'+'{project.basedir}' )
-	#set( $projBuildDir = '$'+'{project.build.directory}' )
-	#set( $projBuildName = '$'+'{project.build.finalName}' )
+    </properties>
+
+    #set( $mcsVersion = '$'+'{maven.compiler.source}' )
+    #set( $mctVersion = '$'+'{maven.compiler.target}' )
+    #set( $springVersion = '$'+'{spring.version}' )
+    #set( $projBaseDir = '$'+'{project.basedir}' )
+    #set( $projBuildDir = '$'+'{project.build.directory}' )
+    #set( $projBuildName = '$'+'{project.build.finalName}' )
     #set( $log4jVersion = '$'+'{log4j.version}' )
-	
-	<build>
-		<finalName>${pps.pci.projectName}</finalName>
+
+    <build>
+        <finalName>${pps.pci.projectName}</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -86,39 +86,39 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-	</build>
+    </build>
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<!-- 分页插件相关 -->
-		<!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
-		<dependency>
-			<groupId>com.github.pagehelper</groupId>
-			<artifactId>pagehelper</artifactId>
-			<version>5.1.4</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/javax/javaee-api -->
-		<dependency>
-		    <groupId>javax</groupId>
-		    <artifactId>javaee-api</artifactId>
-		    <version>8.0</version>
-		    <scope>provided</scope>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/javax/javaee-web-api -->
-		<dependency>
-		    <groupId>javax</groupId>
-		    <artifactId>javaee-web-api</artifactId>
-		    <version>8.0</version>
-		    <scope>provided</scope>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- 分页插件相关 -->
+        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.1.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/javax/javaee-api -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>8.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/javax/javaee-web-api -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>8.0</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- druid 数据库连接池 and SQL -->
         <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
@@ -127,21 +127,21 @@
             <artifactId>druid</artifactId>
             <version>1.1.17</version>
         </dependency>
-				
-		<!-- database -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.47</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>ojdbc14</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${projBaseDir}/src/main/webapp/WEB-INF/lib/ojdbc14.jar</systemPath>
-		</dependency>
+
+        <!-- database -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.47</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ojdbc14</groupId>
+            <artifactId>ojdbc14</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${projBaseDir}/src/main/webapp/WEB-INF/lib/ojdbc14.jar</systemPath>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
@@ -151,18 +151,18 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>3.4.6</version>
-		</dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.4.6</version>
+        </dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>1.3.2</version>
-		</dependency>
+        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.3.2</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
         <dependency>
@@ -177,10 +177,10 @@
             <artifactId>spring-data-redis</artifactId>
             <version>2.0.9.RELEASE</version>
         </dependency>
-		<!--database end-->
+        <!--database end-->
 
-		<!-- common -->
-		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+        <!-- common -->
+        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
@@ -227,11 +227,11 @@
 
         <!--log4j2 start-->
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-       #* <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
-        </dependency>*#
+        #* <dependency>
+             <groupId>org.slf4j</groupId>
+             <artifactId>slf4j-api</artifactId>
+             <version>1.7.25</version>
+         </dependency>*#
 
         #*说明：工程采用slf4j作为日志适配器，因此工程只需要有一种日志实现类即可，工程保留
         log4j-slf4j-impl，其他日志实现类均移除。
@@ -289,37 +289,37 @@
         </dependency>
         <!--log4j2 end-->
 
-		<!-- spring start -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${springVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aspects</artifactId>
-			<version>${springVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${springVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${springVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${springVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${springVersion}</version>
-		</dependency>
+        <!-- spring start -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
@@ -355,22 +355,22 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${springVersion}</version>
         </dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-dao</artifactId>
-			<version>2.0.8</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-mock</artifactId>
-			<version>2.0.8</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-remoting</artifactId>
-			<version>2.0.8</version>
-		</dependency>
-		<!-- Spring end -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-dao</artifactId>
+            <version>2.0.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-mock</artifactId>
+            <version>2.0.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-remoting</artifactId>
+            <version>2.0.8</version>
+        </dependency>
+        <!-- Spring end -->
 
         <!-- servlet start -->
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
@@ -381,13 +381,13 @@
             <scope>provided</scope>
         </dependency>
 
-		<!-- fastjson -->
-		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.49</version>
-		</dependency>
+        <!-- fastjson -->
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.49</version>
+        </dependency>
 
         <!--swagger start-->
         <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-core -->
@@ -443,5 +443,5 @@
             <artifactId>classmate</artifactId>
             <version>1.4.0</version>
         </dependency>
-	</dependencies>
+    </dependencies>
 </project>

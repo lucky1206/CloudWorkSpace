@@ -22,6 +22,7 @@ Ext.define('acsweb.view.entitymanager.EntityManager', {
         'Ext.grid.Panel',
         'Ext.grid.plugin.RowWidget',
         'Ext.layout.container.HBox',
+        'Ext.layout.container.VBox',
         'Ext.panel.Panel',
         'Ext.resizer.Splitter',
         'Ext.tab.Panel',
@@ -597,7 +598,7 @@ Ext.define('acsweb.view.entitymanager.EntityManager', {
                             bodyPadding: 10,
                             flex: 1,
                             scrollable: 'y',
-                            html: '<h3><i class="fa fa-exclamation-circle"></i> 使用说明</h3><br/><span style="font-size: 13px; color: #212121; line-height: 150%;"><b>1</b>、本模块的所有操作需要完成前置模块的所有操作才能执行，（例外：本模块第3步操作可以跳过第2步直接执行）;<br/><br/><b>2</b>、本模块内容需要按照标题序号依次执行操作;<br/><br/><b>3</b>、关系管理中SQL语句限制条件说明：<br/><b style="color: #ff0000">a</b>、前提在编写sql语句时，所有表名均需要设置别名，标准格式如：select t.* from test t where t.test_id > 2,查询体 * 号之前的别名不能省略★；<br/><b style="color: #ff0000">b</b>、case子句保留原样，不进行参数化,并且case子句需要满足格式要求end之后有必须关键字as；<br/><b style="color: #ff0000">c</b>、like子句合并通配符并参数化，测试时需要将通配符与查询字符同时传入，如%减灾%；<br/><b style="color: #ff0000">d</b>、in子句保留原样，不进行参数化,注意这里的in子句必须满足格式，如in(10,20)；<br/><b style="color: #ff0000">e</b>、目前对大部分sql语句支持较为完善，update、delete、insert语句也已经支持，除Insert,Delete语句外，其他语句均需要采用表别名的方式编写；<br/><b style="color: #ff0000">f</b>、需要注意是否分页选项只针对select语句有效，请根据实际情况确定是否需要查询分页。</span>'
+                            html: '<h3><i class="fa fa-exclamation-circle"></i> 使用说明</h3><br/><span style="font-size: 14px; color: #212121; line-height: 150%;"><b>1</b>、本模块的所有操作需要完成前置模块的所有操作才能执行，（例外：本模块第3步操作可以跳过第2步直接执行）;<br/><br/><b>2</b>、本模块内容需要按照标题序号依次执行操作;<br/><br/><b>3</b>、关系管理中SQL语句限制条件说明：<br/><b style="color: #ff0000">a</b>、前提在编写sql语句时，所有表名均需要设置别名，标准格式如：select t.* from test t where t.test_id > 2,查询体 * 号之前的别名不能省略★；<br/><b style="color: #ff0000">b</b>、case子句保留原样，不进行参数化,并且case子句需要满足格式要求end之后有必须关键字as；<br/><b style="color: #ff0000">c</b>、like子句合并通配符并参数化，测试时需要将通配符与查询字符同时传入，如%生态环境%；<br/><b style="color: #ff0000">d</b>、in子句保留原样，不进行参数化,注意这里的in子句必须满足格式，如in(10,20)；<br/><b style="color: #ff0000">e</b>、目前对大部分sql语句支持较为完善，update、delete、insert语句也已经支持，除Insert,Delete语句外，其他语句均需要采用表别名的方式编写；<br/><b style="color: #ff0000">f</b>、需要注意是否分页选项只针对select语句有效，请根据实际情况确定是否需要查询分页。</span>'
                         }
                     ]
                 },
@@ -606,10 +607,10 @@ Ext.define('acsweb.view.entitymanager.EntityManager', {
                     xtype: 'customizeentity'
                 },
                 {
-                    title: '5.多数据库配置模板',
+                    title: '5.Mapper增删改查模版',
                     xtype: 'panel',
                     scrollable: false,
-                    html: '<iframe name="showXmliFrame" src="resources/html/xml.html" style="width: 100%; height: 100%;border: none;overflow: hidden"></iframe>'
+                    html: '<iframe name="showXmliFrame" src="resources/html/mybatis.html" style="width: 100%; height: 100%;border: none;overflow: hidden"></iframe>'
                 }
             ]
         }

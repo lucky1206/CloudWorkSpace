@@ -141,7 +141,7 @@
                 <where>
                     #foreach($col in $reqCols)
                         #if(${col.operator} == 'in' || ${col.operator} == 'not in')
-                            <if test=" ${col.javaname}List4Condition != null ">
+                            <if test=" ${col.javaname}List4Condition != null and ${col.javaname}List4Condition != '' ">
                                 #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
                                 <foreach collection="${col.javaname}List4Condition" index="index" item="item" open="("
                                          close=")" separator=",">
@@ -463,7 +463,7 @@
                             ##记录主键不参与更新，主键pk=1,非主键pk=0
                             #if(${col.pk} == "0")
                                 #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                    <if test="${col.javaname}4Value != null">${col.dbname}=#if(${dbType} ==
+                                    <if test="${col.javaname}4Value != null  and ${col.javaname}4Value !=''">${col.dbname}=#if(${dbType} ==
                                         'postgresql')
                                         to_date(#{${col.javaname}4Value}, ${dateFormatStr})
                                     #else
@@ -471,7 +471,7 @@
                                     #end #if($velocityCount != $resCols.size()),#end
                                     </if>
                                 #else
-                                    <if test="${col.javaname}4Value != null">${col.dbname}=#{${col.javaname}
+                                    <if test="${col.javaname}4Value != null and ${col.javaname}4Value != ''">${col.dbname}=#{${col.javaname}
                                         4Value}#if($velocityCount != $resCols.size()),#end
                                     </if>
                                 #end

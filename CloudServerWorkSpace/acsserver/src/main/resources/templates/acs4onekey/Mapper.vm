@@ -108,11 +108,11 @@
                     ##记录主键不参与更新，主键pk=1,非主键pk=0
                     #if(${col.pk} == "0")
                         #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                            <if test="${col.javaname} != null">${col.dbname}=to_date(#{${col.javaname}
+                            <if test="${col.javaname} != null and ${col.javaname} != ''">${col.dbname}=to_date(#{${col.javaname}
                                 }, ${dateFormatStr})#if($velocityCount != $colList.size()),#end
                             </if>
                         #else
-                            <if test="${col.javaname} != null">${col.dbname}=#{${col.javaname}
+                            <if test="${col.javaname} != null and ${col.javaname} != ''">${col.dbname}=#{${col.javaname}
                                 }#if($velocityCount != $colList.size()),#end
                             </if>
                         #end
@@ -267,14 +267,14 @@
                         ##记录主键不参与更新，主键pk=1,非主键pk=0
                         #if(${col.pk} == "0")
                             #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                <if test="${col.javaname} != null">${col.dbname}=#if(${dbType} == 'postgresql')
+                                <if test="${col.javaname} != null and ${col.javaname} != ''">${col.dbname}=#if(${dbType} == 'postgresql')
                                     to_date(#{${col.javaname}}, ${dateFormatStr})
                                 #else
                                     str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
                                 #end #if($velocityCount != $colList.size()),#end
                                 </if>
                             #else
-                                <if test="${col.javaname} != null">${col.dbname}=#{${col.javaname}
+                                <if test="${col.javaname} != null and ${col.javaname} != ''">${col.dbname}=#{${col.javaname}
                                     }#if($velocityCount != $colList.size()),#end
                                 </if>
                             #end
@@ -428,14 +428,14 @@
                         ##记录主键不参与更新，主键pk=1,非主键pk=0
                         #if(${col.pk} == "0")
                             #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                <if test="${col.javaname} != null">${col.dbname}=#if(${dbType} == 'postgresql')
+                                <if test="${col.javaname} != null and ${col.javaname} != ''">${col.dbname}=#if(${dbType} == 'postgresql')
                                     to_date(#{${col.javaname}}, ${dateFormatStr})
                                 #else
                                     str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
                                 #end #if($velocityCount != $colList.size()),#end
                                 </if>
                             #else
-                                <if test="${col.javaname} != null">${col.dbname}=#{${col.javaname}
+                                <if test="${col.javaname} != null and ${col.javaname} != ''">${col.dbname}=#{${col.javaname}
                                     }#if($velocityCount != $colList.size()),#end
                                 </if>
                             #end

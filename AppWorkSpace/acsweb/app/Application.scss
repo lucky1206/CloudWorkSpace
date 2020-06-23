@@ -4,17 +4,17 @@
  */
 $enable-font-awesome: dynamic(true);
 
-$base-color: rgba(0, 155, 254, 1);
+$base-color: #003446;
 
-$base-component-color: rgb(0, 155, 254);
-$font-size: 12px;
-$font-family: "微软雅黑";
+$base-component-color: #003446;
+$font-size: 14px;
+$font-family: "Microsoft YaHei";
 
 $base-transparent-color: rgba(255, 255, 255, 0);
-$base-common-color: rgba(255, 255, 255, 1);
-$base-icon-color: rgba(255, 255, 255, 1);
-$base-highlight-color: rgba(38, 50, 56, 1.0);
-$base-dark-color: rgba(0, 155, 254, 1);
+$base-common-color: #01f9e3;
+$base-icon-color: #01f9e3;
+$base-highlight-color: #f57a0f;
+$base-dark-color: #003446;
 //----------------------去掉组件水印------start-------可根据需要自行增加---
 .x-title-text-navigation:after {
   display: none !important;

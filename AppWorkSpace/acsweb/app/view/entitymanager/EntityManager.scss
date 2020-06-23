@@ -24,7 +24,7 @@
         $ui-header-border-width: 0px,
         $ui-header-text-padding: 0 0 0 5px,
         $ui-header-background-color: $base-transparent-color,
-        $ui-header-color: rgb(19, 34, 122),
+        $ui-header-color: $base-component-color,
         $ui-header-glyph-color: rgba(66, 66, 66, 1.0),
         $ui-header-glyph-opacity: 1,
         $ui-header-font-size: 12px,
@@ -40,11 +40,11 @@
 
 @include extjs-panel-ui(
         $ui: 'db-grid-panel-ui',
-        $ui-header-background-color: rgb(16, 154, 228),
+        $ui-header-background-color: $base-color,
         $ui-header-color: #ffffff,
         $ui-header-glyph-color: #ffffff,
         $ui-header-glyph-opacity: 1,
-        $ui-body-color: rgba(63, 81, 181, 1.0),
+        $ui-body-color: $base-component-color,
         $ui-header-font-size: 12px,
         $ui-header-line-height: 28px,
         $ui-header-font-weight: normal,

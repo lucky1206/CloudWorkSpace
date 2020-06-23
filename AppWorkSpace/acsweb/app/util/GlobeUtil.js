@@ -657,14 +657,14 @@ Ext.define('acsweb.util.GlobeUtil', {
 
                     if (isShowLabel) {
                         //影像标注
-                        addMapLabelProvider(TDTURL_CONFIG.TDT_CIA_C, 'tdtLabel4Acs_c', tileMatrixSetID);
+                        //addMapLabelProvider(TDTURL_CONFIG.TDT_CIA_C, 'tdtLabel4Acs_c', tileMatrixSetID);
                     }
 
                     return tdt;
                 }
             });
             //矢量底图切换
-            let vector_tdt = new Cesium.ProviderViewModel({
+            /*let vector_tdt = new Cesium.ProviderViewModel({
                 name: "天地图矢量",
                 tooltip: "矢量底图",
                 iconUrl: "resources/images/acsweb/vector.png",
@@ -686,10 +686,10 @@ Ext.define('acsweb.util.GlobeUtil', {
                     }
                     return tdt;
                 }
-            });
+            });*/
 
             //地形底图切换
-            let terrain_tdt = new Cesium.ProviderViewModel({
+            /*let terrain_tdt = new Cesium.ProviderViewModel({
                 name: "天地图地形",
                 tooltip: "地形底图",
                 iconUrl: "resources/images/acsweb/terrain.png",
@@ -714,7 +714,7 @@ Ext.define('acsweb.util.GlobeUtil', {
 
                     return tdt;
                 }
-            });
+            });*/
 
             //标注加载
             let addMapLabelProvider = function (url, layerName, tmsId) {
@@ -736,7 +736,8 @@ Ext.define('acsweb.util.GlobeUtil', {
             document.querySelector('.cesium-baseLayerPicker-sectionTitle').innerText = "场景底图";
 
             //设置默认地图源
-            viewer.baseLayerPicker.viewModel.imageryProviderViewModels = [image_tdt, vector_tdt, terrain_tdt];
+            //viewer.baseLayerPicker.viewModel.imageryProviderViewModels = [image_tdt, vector_tdt, terrain_tdt];
+            viewer.baseLayerPicker.viewModel.imageryProviderViewModels = [image_tdt];
             viewer.baseLayerPicker.viewModel.selectedImagery = viewer.baseLayerPicker.viewModel.imageryProviderViewModels[0];
         }
     },
