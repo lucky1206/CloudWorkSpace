@@ -5,7 +5,7 @@
 ###系统简介
 
     * 前端采用sencha extjs
-    * 后端采用Spring Mvc、Redis、Velocity模版引擎
+    * 后端采用Spring Mvc、Redis、Druid、Velocity模版引擎
     * 支持MySQL、Oracle、PostgresSQL
     * 支持数据库以及Spring工程配置管理
     * 支持单表增删改查接口一键生成
