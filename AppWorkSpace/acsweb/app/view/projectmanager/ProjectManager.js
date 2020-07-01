@@ -313,7 +313,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                 },
                 {
                     xtype: 'fieldcontainer',
-                    fieldLabel: 'Java实体合并打包为JS对象文件',
+                    fieldLabel: 'JS实体对象',
                     layout: 'hbox',
                     combineErrors: false,
                     defaultType: 'textfield',
