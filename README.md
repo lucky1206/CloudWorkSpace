@@ -31,8 +31,8 @@
 4. 集成SVN
 
 ### 系统截图（图片目录：CloudServerWorkSpace/acsserver/imgs）
-1. ![image](https://github.com/winnerlbm/CloudWorkSpace/blob/master/CloudServerWorkSpace/acsserver/imgs/1.png)
-2. ![image](https://github.com/winnerlbm/CloudWorkSpace/blob/master/CloudServerWorkSpace/acsserver/imgs/2.png)
-3. ![image](https://github.com/winnerlbm/CloudWorkSpace/blob/master/CloudServerWorkSpace/acsserver/imgs/3.png)
-4. ![image](https://github.com/winnerlbm/CloudWorkSpace/blob/master/CloudServerWorkSpace/acsserver/imgs/4.png)
-5. ![image](https://github.com/winnerlbm/CloudWorkSpace/blob/master/CloudServerWorkSpace/acsserver/imgs/5.png)
+![image](https://github.com/winnerlbm/CloudWorkSpace/blob/master/CloudServerWorkSpace/acsserver/imgs/1.png)
+![image](https://github.com/winnerlbm/CloudWorkSpace/blob/master/CloudServerWorkSpace/acsserver/imgs/2.png)
+![image](https://github.com/winnerlbm/CloudWorkSpace/blob/master/CloudServerWorkSpace/acsserver/imgs/3.png)
+![image](https://github.com/winnerlbm/CloudWorkSpace/blob/master/CloudServerWorkSpace/acsserver/imgs/4.png)
+![image](https://github.com/winnerlbm/CloudWorkSpace/blob/master/CloudServerWorkSpace/acsserver/imgs/5.png)
