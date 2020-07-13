@@ -12,6 +12,7 @@
 * 支持单表自定义增删改查接口一键生成
 * 支持SQL语句解译生成接口，包括单表或多表,较为完美解决多表关联查询无法自动生成接口的问题
 * 生成的Java代码可同时适配SpringMVC和SpringBoot工程
+* MySQL数据及库表结构SQL文件所在目录：CloudServerWorkSpace/acsserver/db
 
 ### 系统功能
 
