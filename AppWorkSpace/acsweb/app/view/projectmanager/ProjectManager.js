@@ -269,7 +269,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                     name: 'interceptorName',
                     value: 'interceptor',
                     editable: true,
-                    emptyText: '如：interceptor'
+                    emptyText: '如：sys.interceptor'
                 },
                 {
                     allowBlank: false,
@@ -277,7 +277,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                     name: 'cpName',
                     value: 'controller',
                     editable: true,
-                    emptyText: '如：controller'
+                    emptyText: '如：sys.controller'
                 },
                 {
                     allowBlank: false,
@@ -285,7 +285,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                     name: 'servName',
                     value: 'service',
                     editable: true,
-                    emptyText: '如：service'
+                    emptyText: '如：sys.service'
                 },
                 {
                     allowBlank: false,
@@ -293,7 +293,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                     name: 'dpName',
                     value: 'dao',
                     editable: true,
-                    emptyText: '如：idao、dao等'
+                    emptyText: '如：sys.interface.idao、sys.dao等'
                 },
                 {
                     allowBlank: false,
@@ -301,7 +301,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                     name: 'mfdName',
                     value: 'mapper',
                     editable: true,
-                    emptyText: '如：mapping、mapper等'
+                    emptyText: '如：sys.mapping.xml、sys.mapper.xml等'
                 },
                 {
                     allowBlank: false,
@@ -309,7 +309,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                     name: 'epName',
                     value: 'entity',
                     editable: true,
-                    emptyText: '如：entity、models等'
+                    emptyText: '如：sys.entity、sys.models等'
                 },
                 {
                     xtype: 'fieldcontainer',
@@ -327,7 +327,7 @@ Ext.define('acsweb.view.projectmanager.ProjectManager', {
                         value: 'jsentity',
                         editable: true,
                         flex: 2,
-                        emptyText: 'JS文件目录名，如：jsentity、jsmodel',
+                        emptyText: 'JS文件目录名，如：sys.jsentity、sys.jsmodel',
                         allowBlank: false
                     }, {
                         fieldLabel: 'JS文件名',

@@ -1,4 +1,4 @@
-package ${projectPackageName}.${ppsc.pci.servName}.${ppsc.pci.servNameImpl}.${acsId};
+package ${projectPackageName}.${ppsc.pci.servName}.${ppsc.pci.servNameImpl};
 
 import java.util.List;
 import com.alibaba.fastjson.JSONArray;
@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-import ${projectPackageName}.${ppsc.pci.servName}.${acsId}.I${className}Service;
-import ${projectPackageName}.${ppsc.pci.epName}.${acsId}.${className};
-import ${projectPackageName}.${ppsc.pci.dpName}.${acsId}.I${className}Dao;
+import ${projectPackageName}.${ppsc.pci.servName}.I${className}Service;
+import ${projectPackageName}.${ppsc.pci.epName}.${className};
+import ${projectPackageName}.${ppsc.pci.dpName}.I${className}Dao;
 
 /**
 * @desc 业务处理实现类，根据需求在该类相应方法中实现业务逻辑

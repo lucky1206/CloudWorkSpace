@@ -1,4 +1,4 @@
-package ${ppn}.${ppsc.pci.cpName}.${acsId};
+package ${ppn}.${ppsc.pci.cpName};
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,9 +28,9 @@ import com.alibaba.fastjson.JSONObject;
     #end
 #end
 
-import ${ppn}.${ppsc.pci.servName}.${acsId}.I${ao.apiName}Service;
+import ${ppn}.${ppsc.pci.servName}.I${ao.apiName}Service;
 #if("$!res" != "")
-import ${ppn}.${ppsc.pci.epName}.${acsId}.${res.upperCaseName};
+import ${ppn}.${ppsc.pci.epName}.${res.upperCaseName};
 #end
 #if("$!req" != "" || ${pagging} == true)
     ##需要分页，则需要有分页相关的参数
@@ -39,7 +39,7 @@ import io.swagger.annotations.ApiParam;
 #end
 #if("$!req" != "")
     ##返回实体不为空，则需要实体类引用
-import ${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName};
+import ${ppn}.${ppsc.pci.epName}.${req.upperCaseName};
 #end
 
 ##请求体、响应体均不为空

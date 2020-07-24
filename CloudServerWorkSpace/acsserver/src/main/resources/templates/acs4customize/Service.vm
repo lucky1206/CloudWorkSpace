@@ -1,29 +1,29 @@
-package ${ppn}.${ppsc.pci.servName}.${ppsc.pci.servNameImpl}.${acsId};
+package ${ppn}.${ppsc.pci.servName}.${ppsc.pci.servNameImpl};
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ${ppn}.${ppsc.pci.servName}.${acsId}.I${ao.apiName4C}Service;
-import ${ppn}.${ppsc.pci.dpName}.${acsId}.I${ao.apiName4C}Dao;
+import ${ppn}.${ppsc.pci.servName}.I${ao.apiName4C}Service;
+import ${ppn}.${ppsc.pci.dpName}.I${ao.apiName4C}Dao;
 
 #if(${pagging} == true)
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
     #if("$!resCols" != "")
     import java.util.List;
-    import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.responseName4C};
+    import ${ppn}.${ppsc.pci.epName}.${ao.responseName4C};
     #end
     #if("$!reqCols" != "")
-    import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C};
+    import ${ppn}.${ppsc.pci.epName}.${ao.requestName4C};
     #end
 #else
     #if("$!resCols" != "")
     import com.alibaba.fastjson.JSONArray;
     #end
     #if("$!reqCols" != "")
-    import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C};
+    import ${ppn}.${ppsc.pci.epName}.${ao.requestName4C};
     #end
 #end
 

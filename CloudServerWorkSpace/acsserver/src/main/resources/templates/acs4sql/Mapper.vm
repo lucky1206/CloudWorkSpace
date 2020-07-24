@@ -11,10 +11,10 @@
 	-->
 
     #end
-<mapper namespace="${ppn}.${ppsc.pci.dpName}.${acsId}.I${ao.apiName}Dao">
+<mapper namespace="${ppn}.${ppsc.pci.dpName}.I${ao.apiName}Dao">
 ##请求体、响应体均不为空
 #if("$!res" != "" && "$!req" != "")
-    <resultMap id="${ao.apiName}ResultMap" type="${ppn}.${ppsc.pci.epName}.${acsId}.${res.upperCaseName}">
+    <resultMap id="${ao.apiName}ResultMap" type="${ppn}.${ppsc.pci.epName}.${res.upperCaseName}">
         #foreach($col in $resCols)
             #if(${col.javaType} == 'CLOB' || ${col.javaType} == 'Clob')
                 <result property="${col.javaname}" column="${col.dbname}" javaType="${col.javaType}"
@@ -31,13 +31,13 @@
         #end
     </resultMap>
 
-    <${ao.apiOperation} id="${ao.apiNameLow}Handler" parameterType="${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName}"
+    <${ao.apiOperation} id="${ao.apiNameLow}Handler" parameterType="${ppn}.${ppsc.pci.epName}.${req.upperCaseName}"
     resultMap="${ao.apiName}ResultMap">
     <![CDATA[ ${so.formatedSql} ]]>
 </${ao.apiOperation}>
     ##请求体为空，响应体不为空，这里是指不带条件的查询语句
 #elseif("$!res" != "" && "$!req" == "" && ${ao.apiOperation} == 'select')
-<resultMap id="${ao.apiName}ResultMap" type="${ppn}.${ppsc.pci.epName}.${acsId}.${res.upperCaseName}">
+<resultMap id="${ao.apiName}ResultMap" type="${ppn}.${ppsc.pci.epName}.${res.upperCaseName}">
     #foreach($col in $resCols)
         #if(${col.javaType} == 'Clob')
             <result property="${col.javaname}" column="${col.dbname}" javaType="${col.javaType}"
@@ -60,7 +60,7 @@
 
     ##请求体不为空，响应体为空
 #elseif("$!res" == "" && "$!req" != "")
-<${ao.apiOperation} id="${ao.apiNameLow}Handler" parameterType="${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName}">
+<${ao.apiOperation} id="${ao.apiNameLow}Handler" parameterType="${ppn}.${ppsc.pci.epName}.${req.upperCaseName}">
 <![CDATA[ ${so.formatedSql} ]]>
 </${ao.apiOperation}>
 

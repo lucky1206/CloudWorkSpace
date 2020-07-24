@@ -1,29 +1,29 @@
-package ${ppn}.${ppsc.pci.servName}.${ppsc.pci.servNameImpl}.${acsId};
+package ${ppn}.${ppsc.pci.servName}.${ppsc.pci.servNameImpl};
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ${ppn}.${ppsc.pci.servName}.${acsId}.I${ao.apiName}Service;
-import ${ppn}.${ppsc.pci.dpName}.${acsId}.I${ao.apiName}Dao;
+import ${ppn}.${ppsc.pci.servName}.I${ao.apiName}Service;
+import ${ppn}.${ppsc.pci.dpName}.I${ao.apiName}Dao;
 
 #if(${pagging} == true)
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
     #if("$!res" != "")
     import java.util.List;
-    import ${ppn}.${ppsc.pci.epName}.${acsId}.${res.upperCaseName};
+    import ${ppn}.${ppsc.pci.epName}.${res.upperCaseName};
     #end
     #if("$!req" != "")
-    import ${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName};
+    import ${ppn}.${ppsc.pci.epName}.${req.upperCaseName};
     #end
 #else
     #if("$!res" != "")
     import com.alibaba.fastjson.JSONArray;
     #end
     #if("$!req" != "")
-    import ${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName};
+    import ${ppn}.${ppsc.pci.epName}.${req.upperCaseName};
     #end
 #end
 

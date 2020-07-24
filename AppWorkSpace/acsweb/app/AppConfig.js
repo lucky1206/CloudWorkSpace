@@ -1,13 +1,13 @@
 /**
  * Created by LBM on 2018/10/08.
  */
-const webEnvironment = false;//内网为true,外网为false
+const webEnvironment = true;//内网为true,外网为false
 Ext.define('acsweb.AppConfig', {
-    serviceUrl: webEnvironment ? 'http://localhost:8080/acsserver/' : 'http://localhost:8080/acsserver/',
+    serviceUrl: webEnvironment ? 'http://localhost:8080/acsserver/' : 'http://114.116.231.97:8080/acsserver/',
     //GeoServer站点地址
-    mapServerUrl: webEnvironment ? 'http://localhost:7080/geoserver/web/' : 'http://localhost:7080/geoserver/web/',
+    mapServerUrl: webEnvironment ? 'http://114.116.231.97:7080/geoserver/web/' : 'http://114.116.231.97:7080/geoserver/web/',
     //GeoServer服务地址根路径
-    geoMapRootUrl: webEnvironment ? 'http://localhost:7080/geoserver/gwc/service/wmts' : 'http://localhost:7080/geoserver/gwc/service/wmts',
+    geoMapRootUrl: webEnvironment ? 'http://114.116.231.97:7080/geoserver/gwc/service/wmts' : 'http://114.116.231.97:7080/geoserver/gwc/service/wmts',
     //行政区划边界矢量服务
     regionLayerName: 'MyVectorSpace:CHINA_province_region2000',
     //全国瓦片加载范围
@@ -144,22 +144,22 @@ let conf = new acsweb.AppConfig();
  */
 //天地图URL配置
 let TDTURL_CONFIG = {
-    TDT_IMG_C: "http://localhost:7080/proxy/{s}/img_c/wmts?service=wmts&request=GetTile&version=1.0.0" +
+    TDT_IMG_C: "http://114.116.231.97:7080/proxy/{s}/img_c/wmts?service=wmts&request=GetTile&version=1.0.0" +
         "&LAYER=img&tileMatrixSet=c&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}" +
         "&style=default&format=tiles&tk=" + conf.tdtToken  //在线天地图影像服务地址(经纬度)
-    , TDT_VEC_C: "http://localhost:7080/proxy/{s}/vec_c/wmts?service=wmts&request=GetTile&version=1.0.0" +
+    , TDT_VEC_C: "http://114.116.231.97:7080/proxy/{s}/vec_c/wmts?service=wmts&request=GetTile&version=1.0.0" +
         "&LAYER=vec&tileMatrixSet=c&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}" +
         "&style=default&format=tiles&tk=" + conf.tdtToken   //在线天地图矢量地图服务(经纬度)
-    , TDT_TER_C: "http://localhost:7080/proxy/{s}/ter_c/wmts?service=wmts&request=GetTile&version=1.0.0" +
+    , TDT_TER_C: "http://114.116.231.97:7080/proxy/{s}/ter_c/wmts?service=wmts&request=GetTile&version=1.0.0" +
         "&LAYER=ter&tileMatrixSet=c&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}" +
         "&style=default&format=tiles&tk=" + conf.tdtToken   //在线天地图地形地图服务(经纬度)
-    , TDT_CIA_C: "http://localhost:7080/proxy/{s}/cia_c/wmts?service=wmts&request=GetTile&version=1.0.0" +
+    , TDT_CIA_C: "http://114.116.231.97:7080/proxy/{s}/cia_c/wmts?service=wmts&request=GetTile&version=1.0.0" +
         "&LAYER=cia&tileMatrixSet=c&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}" +
         "&style=default&format=tiles&tk=" + conf.tdtToken      //在线天地图影像中文标记服务(经纬度)
-    , TDT_CVA_C: "http://localhost:7080/proxy/{s}/cva_c/wmts?service=wmts&request=GetTile&version=1.0.0" +
+    , TDT_CVA_C: "http://114.116.231.97:7080/proxy/{s}/cva_c/wmts?service=wmts&request=GetTile&version=1.0.0" +
         "&LAYER=cva&tileMatrixSet=c&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}" +
         "&style=default&format=tiles&tk=" + conf.tdtToken      //在线天地图矢量中文标记服务(经纬度)
-    , TDT_CTA_C: "http://localhost:7080/proxy/{s}/cta_c/wmts?service=wmts&request=GetTile&version=1.0.0" +
+    , TDT_CTA_C: "http://114.116.231.97:7080/proxy/{s}/cta_c/wmts?service=wmts&request=GetTile&version=1.0.0" +
         "&LAYER=cta&tileMatrixSet=c&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}" +
         "&style=default&format=tiles&tk=" + conf.tdtToken      //在线天地图地形中文标记服务(经纬度)
 };

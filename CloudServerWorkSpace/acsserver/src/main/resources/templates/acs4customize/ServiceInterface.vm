@@ -1,11 +1,11 @@
-package ${ppn}.${ppsc.pci.servName}.${acsId};
+package ${ppn}.${ppsc.pci.servName};
 
 #if("$!reqCols" != "")
-import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C};
+import ${ppn}.${ppsc.pci.epName}.${ao.requestName4C};
 #end
 
 #if("$!reqCols" != "" && ${ao.insert4C} == 'on')
-import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.responseName4C};
+import ${ppn}.${ppsc.pci.epName}.${ao.responseName4C};
 #end
 
 import com.alibaba.fastjson.JSONObject;

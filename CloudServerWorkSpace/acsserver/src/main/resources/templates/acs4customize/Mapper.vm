@@ -8,9 +8,9 @@
     #set($dateFormatStr4MySQL="'%Y-%m-%d %H:%i:%s'")
 
     ##其中包含对CLOB and BLOB类型处理
-<mapper namespace="${projectPackageName}.${ppsc.pci.dpName}.${acsId}.I${ao.apiName4C}Dao">
+<mapper namespace="${projectPackageName}.${ppsc.pci.dpName}.I${ao.apiName4C}Dao">
     <resultMap id="${ao.apiName4C}ResultMap"
-               type="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${ao.responseName4C}">
+               type="${projectPackageName}.${ppsc.pci.epName}.${ao.responseName4C}">
         #foreach($col in $colList)
             #if(${col.javaType} == 'CLOB' || ${col.javaType} == 'Clob')
                 <result property="${col.javaname}" column="${col.dbname}" javaType="${col.javaType}"
@@ -30,35 +30,29 @@
         #if(${ao.select4C} == 'on' && "$!resCols" != "")
             #if("$!reqCols" != "")
                 <select id="get${ao.apiName4C}"
-                        parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C}"
+                        parameterType="${projectPackageName}.${ppsc.pci.epName}.${ao.requestName4C}"
                         resultMap="${ao.apiName4C}ResultMap">
                     select #foreach($col in $resCols)
-                    #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')to_char(${col.dbname},${dateFormatStr}
-                        )as ${col.dbname}#if($velocityCount != $resCols.size())
-                        ,#end#else${col.dbname}#if($velocityCount != $resCols.size()),#end#end#end from ${tableName}
+                    #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')to_char(${col.dbname},${dateFormatStr})as ${col.dbname}#if($velocityCount != $resCols.size()),#end#else${col.dbname}#if($velocityCount != $resCols.size()),#end#end#end from ${tableName}
                     <where>
                         #foreach($col in $reqCols)
                             #if(${col.operator} == 'in' || ${col.operator} == 'not in')
                                 <if test=" ${col.javaname}List != null ">
                                     #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    <foreach collection="${col.javaname}List" index="index" item="item" open="("
-                                             close=")" separator=",">
+                                    <foreach collection="${col.javaname}List" index="index" item="item" open="("close=")" separator=",">
                                         #{item}
                                     </foreach>
                                 </if>
                             #elseif(${col.operator} == 'like')
-                                <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
-                                    #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    CONCAT(CONCAT('%',#{${col.javaname}}), '%')
+                                <if test=" ${col.javaname} != null ">
+                                    #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} CONCAT(CONCAT('%',#{${col.javaname}}), '%')
                                 </if>
                             #else
-                                <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
+                                <if test=" ${col.javaname} != null ">
                                     #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                        <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                        to_date(#{${col.javaname}},${dateFormatStr}) ]]>
+                                        <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} to_date(#{${col.javaname}},${dateFormatStr}) ]]>
                                     #else
-                                        <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                        #{${col.javaname}} ]]>
+                                        <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} #{${col.javaname}} ]]>
                                     #end
                                 </if>
                             #end
@@ -68,17 +62,15 @@
             #else
                 <select id="get${ao.apiName4C}" resultMap="${ao.apiName4C}ResultMap">
                     select #foreach($col in $resCols)#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                    to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}#if($velocityCount != $resCols.size())
-                        ,#end#else${col.dbname}#if($velocityCount != $resCols.size()),#end#end#end from ${tableName}
+                    to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}#if($velocityCount != $resCols.size()),#end#else${col.dbname}#if($velocityCount != $resCols.size()),#end#end#end from ${tableName}
                 </select>
             #end
         #end
         #if(${ao.insert4C} == 'on' && "$!resCols" != "")
             <insert id="insert${ao.apiName4C}"
-                    parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${ao.responseName4C}"
+                    parameterType="${projectPackageName}.${ppsc.pci.epName}.${ao.responseName4C}"
                     useGeneratedKeys="false">
-                insert into ${tableName} (#foreach($col in $resCols)${col.dbname}#if($velocityCount != $resCols.size())
-                ,#end#end)
+                insert into ${tableName} (#foreach($col in $resCols)${col.dbname}#if($velocityCount != $resCols.size()),#end#end)
                 values
                 (#foreach($col in $resCols)#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
                 to_date(#{${col.javaname}}, ${dateFormatStr})#if($velocityCount != $resCols.size()),#end#else
@@ -94,23 +86,19 @@
                         #if(${col.operator} == 'in' || ${col.operator} == 'not in')
                             <if test=" ${col.javaname}List != null ">
                                 #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                <foreach collection="${col.javaname}List" index="index" item="item" open="(" close=")"
-                                         separator=",">
+                                <foreach collection="${col.javaname}List" index="index" item="item" open="(" close=")" separator=",">
                                     #{item}
                                 </foreach>
                             </if>
                         #elseif(${col.operator} == 'like')
-                            <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
-                                #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                CONCAT(CONCAT('%',#{${col.javaname}}), '%')
+                            <if test=" ${col.javaname} != null ">
+                                #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} CONCAT(CONCAT('%',#{${col.javaname}}), '%')
                             </if>
                         #else
-                            <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
+                            <if test=" ${col.javaname} != null ">
                                 #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                    <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    to_date(#{${col.javaname}}, ${dateFormatStr}) ]]>
-                                #else <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    #{${col.javaname}} ]]>
+                                    <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} to_date(#{${col.javaname}}, ${dateFormatStr}) ]]>
+                                #else <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} #{${col.javaname}} ]]>
                                 #end
                             </if>
                         #end
@@ -120,19 +108,17 @@
         #end
         #if(${ao.update4C} == 'on' && "$!reqCols" != "" && "$!resCols" != "")
             <update id="update${ao.apiName4C}"
-                    parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C}">
+                    parameterType="${projectPackageName}.${ppsc.pci.epName}.${ao.requestName4C}">
                 update ${tableName}
                 <set>
                     #foreach($col in $resCols)
                         ##记录主键不参与更新，主键pk=1,非主键pk=0
                         #if(${col.pk} == "0")
                             #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                <if test="${col.javaname}4Value != null">${col.dbname}=to_date(#{${col.javaname}
-                                    4Value}, ${dateFormatStr}) #if($velocityCount != $resCols.size()),#end
+                                <if test="${col.javaname}4Value != null">${col.dbname}=to_date(#{${col.javaname}4Value}, ${dateFormatStr}) #if($velocityCount != $resCols.size()),#end
                                 </if>
                             #else
-                                <if test="${col.javaname}4Value != null">${col.dbname}=#{${col.javaname}
-                                    4Value}#if($velocityCount != $resCols.size()),#end
+                                <if test="${col.javaname}4Value != null">${col.dbname}=#{${col.javaname}4Value}#if($velocityCount != $resCols.size()),#end
                                 </if>
                             #end
                         #end
@@ -141,26 +127,22 @@
                 <where>
                     #foreach($col in $reqCols)
                         #if(${col.operator} == 'in' || ${col.operator} == 'not in')
-                            <if test=" ${col.javaname}List4Condition != null and ${col.javaname}List4Condition != '' ">
+                            <if test=" ${col.javaname}List4Condition != null ">
                                 #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                <foreach collection="${col.javaname}List4Condition" index="index" item="item" open="("
-                                         close=")" separator=",">
+                                <foreach collection="${col.javaname}List4Condition" index="index" item="item" open="("close=")" separator=",">
                                     #{item}
                                 </foreach>
                             </if>
                         #elseif(${col.operator} == 'like')
-                            <if test=" ${col.javaname}4Condition != null  and ${col.javaname}4Condition !='' ">
-                                #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                CONCAT(CONCAT('%',#{${col.javaname}4Condition}), '%')
+                            <if test=" ${col.javaname}4Condition != null ">
+                                #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} CONCAT(CONCAT('%',#{${col.javaname}4Condition}), '%')
                             </if>
                         #else
-                            <if test=" ${col.javaname}4Condition != null  and ${col.javaname}4Condition !='' ">
+                            <if test=" ${col.javaname}4Condition != null ">
                                 #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                    <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    to_date(#{${col.javaname}4Condition}, ${dateFormatStr}) ]]>
+                                    <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} to_date(#{${col.javaname}4Condition}, ${dateFormatStr}) ]]>
                                 #else
-                                    <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    #{${col.javaname}4Condition} ]]>
+                                    <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} #{${col.javaname}4Condition} ]]>
                                 #end
                             </if>
                         #end
@@ -173,34 +155,28 @@
             #if(${ao.select4C} == 'on' && "$!resCols" != "")
                 #if("$!reqCols" != "")
                     <select id="get${ao.apiName4C}"
-                            parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C}"
+                            parameterType="${projectPackageName}.${ppsc.pci.epName}.${ao.requestName4C}"
                             resultMap="${ao.apiName4C}ResultMap">
                         select #foreach($col in $resCols)
                         #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                            #if(${dbType} == 'postgresql')
-                                to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
-                            #else
-                                date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname}
-                            #end #if($velocityCount != $resCols.size())
-                            ,#end#else${col.dbname}#if($velocityCount != $resCols.size()),#end#end#end
+                            #if(${dbType} == 'postgresql') to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
+                            #else date_format(${col.dbname},${dateFormatStr4MySQL})as ${col.dbname} #end #if($velocityCount != $resCols.size()),#end#else${col.dbname}#if($velocityCount != $resCols.size()),#end#end#end
                         from ${schemaName}.${tableName}
                         <where>
                             #foreach($col in $reqCols)
                                 #if(${col.operator} == 'in' || ${col.operator} == 'not in')
                                     <if test=" ${col.javaname}List != null ">
                                         #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                        <foreach collection="${col.javaname}List" index="index" item="item" open="("
-                                                 close=")" separator=",">
+                                        <foreach collection="${col.javaname}List" index="index" item="item" open="("close=")" separator=",">
                                             #{item}
                                         </foreach>
                                     </if>
                                 #elseif(${col.operator} == 'like')
-                                    <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
-                                        #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                        CONCAT(CONCAT('%',#{${col.javaname}}), '%')
+                                    <if test=" ${col.javaname} != null ">
+                                        #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} CONCAT(CONCAT('%',#{${col.javaname}}), '%')
                                     </if>
                                 #else
-                                    <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
+                                    <if test=" ${col.javaname} != null ">
                                         #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
                                             <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
                                             #if(${dbType} == 'postgresql')
@@ -209,8 +185,7 @@
                                                 str_to_date(#{${col.javaname}},${dateFormatStr4MySQL})
                                             #end]]>
                                         #else
-                                            <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                            #{${col.javaname}} ]]>
+                                            <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} #{${col.javaname}} ]]>
                                         #end
                                     </if>
                                 #end
@@ -220,19 +195,14 @@
                 #else
                     <select id="get${ao.apiName4C}" resultMap="${ao.apiName4C}ResultMap">
                         select #foreach($col in $resCols)#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                        #if(${dbType} == 'postgresql')
-                            to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
-                        #else
-                            date_format(${col.dbname},${dateFormatStr4MySQL}) as ${col.dbname}
-                        #end #if($velocityCount != $resCols.size())
-                            ,#end#else${col.dbname}#if($velocityCount != $resCols.size()),#end#end#end
-                        from ${schemaName}.${tableName}
+                        #if(${dbType} == 'postgresql') to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
+                        #else date_format(${col.dbname},${dateFormatStr4MySQL}) as ${col.dbname}#end #if($velocityCount != $resCols.size()),#end#else${col.dbname}#if($velocityCount != $resCols.size()),#end#end#end from ${schemaName}.${tableName}
                     </select>
                 #end
             #end
             #if(${ao.insert4C} == 'on' && "$!resCols" != "")
                 <insert id="insert${ao.apiName4C}"
-                        parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${ao.responseName4C}"
+                        parameterType="${projectPackageName}.${ppsc.pci.epName}.${ao.responseName4C}"
                         useGeneratedKeys="false">
                     insert into ${schemaName}.${tableName}
                     (#foreach($col in $resCols)${col.dbname}#if($velocityCount != $resCols.size()),#end#end)
@@ -240,10 +210,7 @@
                     (#foreach($col in $resCols)#if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
                     #if(${dbType} == 'postgresql')
                         to_date(#{${col.javaname}}, ${dateFormatStr})
-                    #else
-                        str_to_date(#{${col.javaname}},${dateFormatStr4MySQL})
-                    #end #if($velocityCount != $resCols.size())
-                        ,#end#else #{${col.javaname}}#if($velocityCount != $resCols.size()),#end#end#end)
+                    #else str_to_date(#{${col.javaname}},${dateFormatStr4MySQL})#end #if($velocityCount != $resCols.size()),#end#else #{${col.javaname}}#if($velocityCount != $resCols.size()),#end#end#end)
                 </insert>
             #end
             #if(${ao.delete4C} == 'on' && "$!reqCols" != "")
@@ -255,18 +222,16 @@
                             #if(${col.operator} == 'in' || ${col.operator} == 'not in')
                                 <if test=" ${col.javaname}List != null ">
                                     #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    <foreach collection="${col.javaname}List" index="index" item="item" open="("
-                                             close=")" separator=",">
+                                    <foreach collection="${col.javaname}List" index="index" item="item" open="("close=")" separator=",">
                                         #{item}
                                     </foreach>
                                 </if>
                             #elseif(${col.operator} == 'like')
-                                <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
-                                    #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    CONCAT(CONCAT('%',#{${col.javaname}}), '%')
+                                <if test=" ${col.javaname} != null ">
+                                    #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} CONCAT(CONCAT('%',#{${col.javaname}}), '%')
                                 </if>
                             #else
-                                <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
+                                <if test=" ${col.javaname} != null ">
                                     #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
                                         <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
                                         #if(${dbType} == 'postgresql')
@@ -285,15 +250,14 @@
             #end
             #if(${ao.update4C} == 'on' && "$!reqCols" != "" && "$!resCols" != "")
                 <update id="update${ao.apiName4C}"
-                        parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C}">
+                        parameterType="${projectPackageName}.${ppsc.pci.epName}.${ao.requestName4C}">
                     update ${schemaName}.${tableName}
                     <set>
                         #foreach($col in $resCols)
                             ##记录主键不参与更新，主键pk=1,非主键pk=0
                             #if(${col.pk} == "0")
                                 #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                    <if test="${col.javaname}4Value != null">${col.dbname}=#if(${dbType} ==
-                                        'postgresql')
+                                    <if test="${col.javaname}4Value != null">${col.dbname}=#if(${dbType} =='postgresql')
                                         to_date(#{${col.javaname}4Value}, ${dateFormatStr})
                                     #else
                                         str_to_date(#{${col.javaname}4Value}, ${dateFormatStr4MySQL})
@@ -301,8 +265,7 @@
                                         #if($velocityCount != $resCols.size()),#end
                                     </if>
                                 #else
-                                    <if test="${col.javaname}4Value != null">${col.dbname}=#{${col.javaname}
-                                        4Value}#if($velocityCount != $resCols.size()),#end
+                                    <if test="${col.javaname}4Value != null">${col.dbname}=#{${col.javaname}4Value}#if($velocityCount != $resCols.size()),#end
                                     </if>
                                 #end
                             #end
@@ -313,28 +276,24 @@
                             #if(${col.operator} == 'in' || ${col.operator} == 'not in')
                                 <if test=" ${col.javaname}List4Condition != null ">
                                     #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    <foreach collection="${col.javaname}List4Condition" index="index" item="item"
-                                             open="(" close=")" separator=",">
+                                    <foreach collection="${col.javaname}List4Condition" index="index" item="item" open="(" close=")" separator=",">
                                         #{item}
                                     </foreach>
                                 </if>
                             #elseif(${col.operator} == 'like')
-                                <if test=" ${col.javaname}4Condition != null  and ${col.javaname}4Condition !='' ">
-                                    #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    CONCAT(CONCAT('%',#{${col.javaname}4Condition}), '%')
+                                <if test=" ${col.javaname}4Condition != null ">
+                                    #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} CONCAT(CONCAT('%',#{${col.javaname}4Condition}), '%')
                                 </if>
                             #else
-                                <if test=" ${col.javaname}4Condition != null  and ${col.javaname}4Condition !='' ">
+                                <if test=" ${col.javaname}4Condition != null ">
                                     #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
                                         <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
                                         #if(${dbType} == 'postgresql')
                                             to_date(#{${col.javaname}4Condition}, ${dateFormatStr})
-                                        #else
-                                            str_to_date(#{${col.javaname}4Condition}, ${dateFormatStr4MySQL})
+                                        #else str_to_date(#{${col.javaname}4Condition}, ${dateFormatStr4MySQL})
                                         #end ]]>
                                     #else
-                                        <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                        #{${col.javaname}4Condition} ]]>
+                                        <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} #{${col.javaname}4Condition} ]]>
                                     #end
                                 </if>
                             #end
@@ -346,7 +305,7 @@
             #if(${ao.select4C} == 'on' && "$!resCols" != "")
                 #if("$!reqCols" != "")
                     <select id="get${ao.apiName4C}"
-                            parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C}"
+                            parameterType="${projectPackageName}.${ppsc.pci.epName}.${ao.requestName4C}"
                             resultMap="${ao.apiName4C}ResultMap">
                         select #foreach($col in $resCols)
                         #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
@@ -354,35 +313,30 @@
                                 to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
                             #else
                                 date_format(${col.dbname},${dateFormatStr4MySQL}) as ${col.dbname}
-                            #end #if($velocityCount != $resCols.size())
-                            ,#end#else${col.dbname}#if($velocityCount != $resCols.size()),#end#end#end from ${tableName}
+                            #end #if($velocityCount != $resCols.size()),#end#else${col.dbname}#if($velocityCount != $resCols.size()),#end#end#end from ${tableName}
                         <where>
                             #foreach($col in $reqCols)
                                 #if(${col.operator} == 'in' || ${col.operator} == 'not in')
                                     <if test=" ${col.javaname}List != null ">
                                         #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                        <foreach collection="${col.javaname}List" index="index" item="item" open="("
-                                                 close=")" separator=",">
+                                        <foreach collection="${col.javaname}List" index="index" item="item" open="("close=")" separator=",">
                                             #{item}
                                         </foreach>
                                     </if>
                                 #elseif(${col.operator} == 'like')
-                                    <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
-                                        #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                        CONCAT(CONCAT('%',#{${col.javaname}}), '%')
+                                    <if test=" ${col.javaname} != null ">
+                                        #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} CONCAT(CONCAT('%',#{${col.javaname}}), '%')
                                     </if>
                                 #else
-                                    <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
+                                    <if test=" ${col.javaname} != null ">
                                         #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
                                             <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
                                             #if(${dbType} == 'postgresql')
                                                 to_date(#{${col.javaname}}, ${dateFormatStr})
-                                            #else
-                                                str_to_date(#{${col.javaname}},${dateFormatStr4MySQL})
+                                            #else str_to_date(#{${col.javaname}},${dateFormatStr4MySQL})
                                             #end ]]>
                                         #else
-                                            <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                            #{${col.javaname}} ]]>
+                                            <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} #{${col.javaname}} ]]>
                                         #end
                                     </if>
                                 #end
@@ -396,14 +350,13 @@
                             to_char(${col.dbname},${dateFormatStr}) as ${col.dbname}
                         #else
                             date_format(${col.dbname},${dateFormatStr4MySQL}) as ${col.dbname}
-                        #end #if($velocityCount != $resCols.size())
-                            ,#end#else${col.dbname}#if($velocityCount != $resCols.size()),#end#end#end from ${tableName}
+                        #end #if($velocityCount != $resCols.size()),#end#else${col.dbname}#if($velocityCount != $resCols.size()),#end#end#end from ${tableName}
                     </select>
                 #end
             #end
             #if(${ao.insert4C} == 'on' && "$!resCols" != "")
                 <insert id="insert${ao.apiName4C}"
-                        parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${ao.responseName4C}"
+                        parameterType="${projectPackageName}.${ppsc.pci.epName}.${ao.responseName4C}"
                         useGeneratedKeys="false">
                     insert into ${tableName}
                     (#foreach($col in $resCols)${col.dbname}#if($velocityCount != $resCols.size()),#end#end)
@@ -412,9 +365,7 @@
                     #if(${dbType} == 'postgresql')
                         to_date(#{${col.javaname}}, ${dateFormatStr})
                     #else
-                        str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
-                    #end #if($velocityCount != $resCols.size())
-                        ,#end#else #{${col.javaname}}#if($velocityCount != $resCols.size()),#end#end#end)
+                        str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})#end #if($velocityCount != $resCols.size()),#end#else #{${col.javaname}}#if($velocityCount != $resCols.size()),#end#end#end)
                 </insert>
             #end
             #if(${ao.delete4C} == 'on' && "$!reqCols" != "")
@@ -426,24 +377,21 @@
                             #if(${col.operator} == 'in' || ${col.operator} == 'not in')
                                 <if test=" ${col.javaname}List != null ">
                                     #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    <foreach collection="${col.javaname}List" index="index" item="item" open="("
-                                             close=")" separator=",">
+                                    <foreach collection="${col.javaname}List" index="index" item="item" open="("close=")" separator=",">
                                         #{item}
                                     </foreach>
                                 </if>
                             #elseif(${col.operator} == 'like')
-                                <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
-                                    #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    CONCAT(CONCAT('%',#{${col.javaname}}), '%')
+                                <if test=" ${col.javaname} != null ">
+                                    #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} CONCAT(CONCAT('%',#{${col.javaname}}), '%')
                                 </if>
                             #else
-                                <if test=" ${col.javaname} != null  and ${col.javaname} !='' ">
+                                <if test=" ${col.javaname} != null ">
                                     #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
                                         <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
                                         #if(${dbType} == 'postgresql')
                                             to_date(#{${col.javaname}}, ${dateFormatStr})
-                                        #else
-                                            str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
+                                        #else str_to_date(#{${col.javaname}}, ${dateFormatStr4MySQL})
                                         #end ]]>
                                     #else <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
                                         #{${col.javaname}} ]]>
@@ -456,23 +404,21 @@
             #end
             #if(${ao.update4C} == 'on' && "$!reqCols" != "" && "$!resCols" != "")
                 <update id="update${ao.apiName4C}"
-                        parameterType="${projectPackageName}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C}">
+                        parameterType="${projectPackageName}.${ppsc.pci.epName}.${ao.requestName4C}">
                     update ${tableName}
                     <set>
                         #foreach($col in $resCols)
                             ##记录主键不参与更新，主键pk=1,非主键pk=0
                             #if(${col.pk} == "0")
                                 #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
-                                    <if test="${col.javaname}4Value != null  and ${col.javaname}4Value !=''">${col.dbname}=#if(${dbType} ==
-                                        'postgresql')
-                                        to_date(#{${col.javaname}4Value}, ${dateFormatStr})
-                                    #else
-                                        str_to_date(#{${col.javaname}4Value}, ${dateFormatStr4MySQL})
-                                    #end #if($velocityCount != $resCols.size()),#end
+                                    <if test="${col.javaname}4Value != null ">${col.dbname}
+                                        =#if(${dbType} =='postgresql')
+                                            to_date(#{${col.javaname}4Value}, ${dateFormatStr})
+                                        #else str_to_date(#{${col.javaname}4Value}, ${dateFormatStr4MySQL})
+                                        #end #if($velocityCount != $resCols.size()),#end
                                     </if>
                                 #else
-                                    <if test="${col.javaname}4Value != null and ${col.javaname}4Value != ''">${col.dbname}=#{${col.javaname}
-                                        4Value}#if($velocityCount != $resCols.size()),#end
+                                    <if test="${col.javaname}4Value != null">${col.dbname} =#{${col.javaname}4Value}#if($velocityCount != $resCols.size()),#end
                                     </if>
                                 #end
                             #end
@@ -483,28 +429,24 @@
                             #if(${col.operator} == 'in' || ${col.operator} == 'not in')
                                 <if test=" ${col.javaname}List4Condition != null ">
                                     #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    <foreach collection="${col.javaname}List4Condition" index="index" item="item"
-                                             open="(" close=")" separator=",">
+                                    <foreach collection="${col.javaname}List4Condition" index="index" item="item" open="(" close=")" separator=",">
                                         #{item}
                                     </foreach>
                                 </if>
                             #elseif(${col.operator} == 'like')
-                                <if test=" ${col.javaname}4Condition != null  and ${col.javaname}4Condition !='' ">
-                                    #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                    CONCAT(CONCAT('%',#{${col.javaname}4Condition}), '%')
+                                <if test=" ${col.javaname}4Condition != null ">
+                                    #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} CONCAT(CONCAT('%',#{${col.javaname}4Condition}), '%')
                                 </if>
                             #else
-                                <if test=" ${col.javaname}4Condition != null  and ${col.javaname}4Condition !='' ">
+                                <if test=" ${col.javaname}4Condition != null ">
                                     #if(${col.dbType} == 'TIMESTAMP' || ${col.dbType} == 'DATE')
                                         <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
                                         #if(${dbType} == 'postgresql')
                                             to_date(#{${col.javaname}4Condition}, ${dateFormatStr})
-                                        #else
-                                            str_to_date(#{${col.javaname}4Condition}, ${dateFormatStr4MySQL})
+                                        #else str_to_date(#{${col.javaname}4Condition}, ${dateFormatStr4MySQL})
                                         #end ]]>
                                     #else
-                                        <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator}
-                                        #{${col.javaname}4Condition} ]]>
+                                        <![CDATA[ #if($velocityCount > 1) and #end ${col.dbname} ${col.operator} #{${col.javaname}4Condition} ]]>
                                     #end
                                 </if>
                             #end

@@ -1,5 +1,5 @@
 ##直接读取JavaBean中的数组对象并遍历打印出值。
-package ${projectPackageName}.${ppsc.pci.epName}.${acsId};
+package ${projectPackageName}.${ppsc.pci.epName};
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,13 +1,13 @@
-package ${ppn}.${ppsc.pci.dpName}.${acsId};
+package ${ppn}.${ppsc.pci.dpName};
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import ${ppn}.${ppsc.pci.dpName}.${acsId}.I${ao.apiName}Dao;
+import ${ppn}.${ppsc.pci.dpName}.I${ao.apiName}Dao;
 #if("$!res" != "")
 import java.util.List;
-import ${ppn}.${ppsc.pci.epName}.${acsId}.${res.upperCaseName};
+import ${ppn}.${ppsc.pci.epName}.${res.upperCaseName};
 #end
 #if("$!req" != "")
-import ${ppn}.${ppsc.pci.epName}.${acsId}.${req.upperCaseName};
+import ${ppn}.${ppsc.pci.epName}.${req.upperCaseName};
 #end
 
 ##请求体、响应体均不为空

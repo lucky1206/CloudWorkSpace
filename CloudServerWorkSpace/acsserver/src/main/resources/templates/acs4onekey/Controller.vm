@@ -1,7 +1,8 @@
-package ${projectPackageName}.${ppsc.pci.cpName}.${acsId};
+package ${projectPackageName}.${ppsc.pci.cpName};
 
 import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import com.alibaba.fastjson.JSONObject;
 
-import ${projectPackageName}.${ppsc.pci.servName}.${acsId}.I${className}Service;
-import ${projectPackageName}.${ppsc.pci.epName}.${acsId}.${className};
+import ${projectPackageName}.${ppsc.pci.servName}.I${className}Service;
+import ${projectPackageName}.${ppsc.pci.epName}.${className};
 
 /**
 * @desc：${className}控制器
@@ -193,14 +194,9 @@ List
     }
     return ${classLowName}Service.deleteBatch${className}(mainKeyList);
 #else
-    List
-<String> mainKeyList = new ArrayList
-<String>();
+    List<String> mainKeyList = new ArrayList<String>();
     if(null != ${mainKey}s && !${mainKey}s.equals("")) {
-    ##		for(String v : ${mainKey}s.split(",")) {
-    ##			mainKeyList.add(v);
-    ##		}
-    mainKeyList.add(Arrays.asList(${mainKey}s.split(",")))
+         mainKeyList.addAll(Arrays.asList(${mainKey}s.split(",")));
     }
     return ${classLowName}Service.deleteBatch${className}(mainKeyList);
 #end

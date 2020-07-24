@@ -1,4 +1,4 @@
-package ${ppn}.${ppsc.pci.cpName}.${acsId};
+package ${ppn}.${ppsc.pci.cpName};
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,14 +34,14 @@ import com.alibaba.fastjson.JSONObject;
     #end
 #end
 
-import ${ppn}.${ppsc.pci.servName}.${acsId}.I${ao.apiName4C}Service;
+import ${ppn}.${ppsc.pci.servName}.I${ao.apiName4C}Service;
 #if("$!resCols" != "" && (${ao.select4C} == 'on' || ${ao.insert4C} == 'on'))
-import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.responseName4C};
+import ${ppn}.${ppsc.pci.epName}.${ao.responseName4C};
 #end
 
 #if("$!reqCols" != "")
     ##返回实体不为空，则需要实体类引用
-import ${ppn}.${ppsc.pci.epName}.${acsId}.${ao.requestName4C};
+import ${ppn}.${ppsc.pci.epName}.${ao.requestName4C};
 #end
 
 /**
